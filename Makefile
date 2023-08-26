@@ -32,6 +32,10 @@ clean:
 lint:
 	golangci-lint run ./...
 
+.PHONY: full-rebuild
+full-rebuild: make clean build dump-all
+	_build/combiner > data/database.json
+
 .PHONY: dump-all
 dump-all: clean build
 	./hack/dump-kind-clusters.sh

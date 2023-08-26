@@ -1,0 +1,843 @@
+{
+  "version": "1.21.14",
+  "release": "1.21",
+  "apiGroups": [
+    {
+      "name": "",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "Binding",
+              "namespaced": true,
+              "singular": "binding",
+              "plural": "bindings"
+            },
+            {
+              "kind": "ComponentStatus",
+              "namespaced": false,
+              "singular": "componentstatus",
+              "plural": "componentstatuses"
+            },
+            {
+              "kind": "ConfigMap",
+              "namespaced": true,
+              "singular": "configmap",
+              "plural": "configmaps"
+            },
+            {
+              "kind": "Endpoints",
+              "namespaced": true,
+              "singular": "endpoints",
+              "plural": "endpoints"
+            },
+            {
+              "kind": "Event",
+              "namespaced": true,
+              "singular": "event",
+              "plural": "events"
+            },
+            {
+              "kind": "LimitRange",
+              "namespaced": true,
+              "singular": "limitrange",
+              "plural": "limitranges"
+            },
+            {
+              "kind": "Namespace",
+              "namespaced": false,
+              "singular": "namespace",
+              "plural": "namespaces"
+            },
+            {
+              "kind": "Node",
+              "namespaced": false,
+              "singular": "node",
+              "plural": "nodes"
+            },
+            {
+              "kind": "PersistentVolumeClaim",
+              "namespaced": true,
+              "singular": "persistentvolumeclaim",
+              "plural": "persistentvolumeclaims"
+            },
+            {
+              "kind": "PersistentVolume",
+              "namespaced": false,
+              "singular": "persistentvolume",
+              "plural": "persistentvolumes"
+            },
+            {
+              "kind": "Pod",
+              "namespaced": true,
+              "singular": "pod",
+              "plural": "pods"
+            },
+            {
+              "kind": "PodTemplate",
+              "namespaced": true,
+              "singular": "podtemplate",
+              "plural": "podtemplates"
+            },
+            {
+              "kind": "ReplicationController",
+              "namespaced": true,
+              "singular": "replicationcontroller",
+              "plural": "replicationcontrollers"
+            },
+            {
+              "kind": "ResourceQuota",
+              "namespaced": true,
+              "singular": "resourcequota",
+              "plural": "resourcequotas"
+            },
+            {
+              "kind": "Secret",
+              "namespaced": true,
+              "singular": "secret",
+              "plural": "secrets"
+            },
+            {
+              "kind": "ServiceAccount",
+              "namespaced": true,
+              "singular": "serviceaccount",
+              "plural": "serviceaccounts"
+            },
+            {
+              "kind": "Service",
+              "namespaced": true,
+              "singular": "service",
+              "plural": "services"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apiregistration.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "APIService",
+              "namespaced": false,
+              "singular": "apiservice",
+              "plural": "apiservices"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "APIService",
+              "namespaced": false,
+              "singular": "apiservice",
+              "plural": "apiservices"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apps",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "ControllerRevision",
+              "namespaced": true,
+              "singular": "controllerrevision",
+              "plural": "controllerrevisions"
+            },
+            {
+              "kind": "DaemonSet",
+              "namespaced": true,
+              "singular": "daemonset",
+              "plural": "daemonsets"
+            },
+            {
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments"
+            },
+            {
+              "kind": "ReplicaSet",
+              "namespaced": true,
+              "singular": "replicaset",
+              "plural": "replicasets"
+            },
+            {
+              "kind": "StatefulSet",
+              "namespaced": true,
+              "singular": "statefulset",
+              "plural": "statefulsets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "events.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "Event",
+              "namespaced": true,
+              "singular": "event",
+              "plural": "events"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "Event",
+              "namespaced": true,
+              "singular": "event",
+              "plural": "events"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "authentication.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "TokenReview",
+              "namespaced": false,
+              "singular": "tokenreview",
+              "plural": "tokenreviews"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "TokenReview",
+              "namespaced": false,
+              "singular": "tokenreview",
+              "plural": "tokenreviews"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "authorization.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "LocalSubjectAccessReview",
+              "namespaced": true,
+              "singular": "localsubjectaccessreview",
+              "plural": "localsubjectaccessreviews"
+            },
+            {
+              "kind": "SelfSubjectAccessReview",
+              "namespaced": false,
+              "singular": "selfsubjectaccessreview",
+              "plural": "selfsubjectaccessreviews"
+            },
+            {
+              "kind": "SelfSubjectRulesReview",
+              "namespaced": false,
+              "singular": "selfsubjectrulesreview",
+              "plural": "selfsubjectrulesreviews"
+            },
+            {
+              "kind": "SubjectAccessReview",
+              "namespaced": false,
+              "singular": "subjectaccessreview",
+              "plural": "subjectaccessreviews"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "LocalSubjectAccessReview",
+              "namespaced": true,
+              "singular": "localsubjectaccessreview",
+              "plural": "localsubjectaccessreviews"
+            },
+            {
+              "kind": "SelfSubjectAccessReview",
+              "namespaced": false,
+              "singular": "selfsubjectaccessreview",
+              "plural": "selfsubjectaccessreviews"
+            },
+            {
+              "kind": "SelfSubjectRulesReview",
+              "namespaced": false,
+              "singular": "selfsubjectrulesreview",
+              "plural": "selfsubjectrulesreviews"
+            },
+            {
+              "kind": "SubjectAccessReview",
+              "namespaced": false,
+              "singular": "subjectaccessreview",
+              "plural": "subjectaccessreviews"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "autoscaling",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "HorizontalPodAutoscaler",
+              "namespaced": true,
+              "singular": "horizontalpodautoscaler",
+              "plural": "horizontalpodautoscalers"
+            }
+          ]
+        },
+        {
+          "version": "v2beta1",
+          "resources": [
+            {
+              "kind": "HorizontalPodAutoscaler",
+              "namespaced": true,
+              "singular": "horizontalpodautoscaler",
+              "plural": "horizontalpodautoscalers"
+            }
+          ]
+        },
+        {
+          "version": "v2beta2",
+          "resources": [
+            {
+              "kind": "HorizontalPodAutoscaler",
+              "namespaced": true,
+              "singular": "horizontalpodautoscaler",
+              "plural": "horizontalpodautoscalers"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "batch",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "CronJob",
+              "namespaced": true,
+              "singular": "cronjob",
+              "plural": "cronjobs"
+            },
+            {
+              "kind": "Job",
+              "namespaced": true,
+              "singular": "job",
+              "plural": "jobs"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CronJob",
+              "namespaced": true,
+              "singular": "cronjob",
+              "plural": "cronjobs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "certificates.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "CertificateSigningRequest",
+              "namespaced": false,
+              "singular": "certificatesigningrequest",
+              "plural": "certificatesigningrequests"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CertificateSigningRequest",
+              "namespaced": false,
+              "singular": "certificatesigningrequest",
+              "plural": "certificatesigningrequests"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "networking.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "IngressClass",
+              "namespaced": false,
+              "singular": "ingressclass",
+              "plural": "ingressclasses"
+            },
+            {
+              "kind": "Ingress",
+              "namespaced": true,
+              "singular": "ingress",
+              "plural": "ingresses"
+            },
+            {
+              "kind": "NetworkPolicy",
+              "namespaced": true,
+              "singular": "networkpolicy",
+              "plural": "networkpolicies"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "IngressClass",
+              "namespaced": false,
+              "singular": "ingressclass",
+              "plural": "ingressclasses"
+            },
+            {
+              "kind": "Ingress",
+              "namespaced": true,
+              "singular": "ingress",
+              "plural": "ingresses"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extensions",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "Ingress",
+              "namespaced": true,
+              "singular": "ingress",
+              "plural": "ingresses"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "policy",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "PodDisruptionBudget",
+              "namespaced": true,
+              "singular": "poddisruptionbudget",
+              "plural": "poddisruptionbudgets"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "PodDisruptionBudget",
+              "namespaced": true,
+              "singular": "poddisruptionbudget",
+              "plural": "poddisruptionbudgets"
+            },
+            {
+              "kind": "PodSecurityPolicy",
+              "namespaced": false,
+              "singular": "podsecuritypolicy",
+              "plural": "podsecuritypolicies"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rbac.authorization.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings"
+            },
+            {
+              "kind": "ClusterRole",
+              "namespaced": false,
+              "singular": "clusterrole",
+              "plural": "clusterroles"
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings"
+            },
+            {
+              "kind": "Role",
+              "namespaced": true,
+              "singular": "role",
+              "plural": "roles"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings"
+            },
+            {
+              "kind": "ClusterRole",
+              "namespaced": false,
+              "singular": "clusterrole",
+              "plural": "clusterroles"
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings"
+            },
+            {
+              "kind": "Role",
+              "namespaced": true,
+              "singular": "role",
+              "plural": "roles"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "storage.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "CSIDriver",
+              "namespaced": false,
+              "singular": "csidriver",
+              "plural": "csidrivers"
+            },
+            {
+              "kind": "CSINode",
+              "namespaced": false,
+              "singular": "csinode",
+              "plural": "csinodes"
+            },
+            {
+              "kind": "StorageClass",
+              "namespaced": false,
+              "singular": "storageclass",
+              "plural": "storageclasses"
+            },
+            {
+              "kind": "VolumeAttachment",
+              "namespaced": false,
+              "singular": "volumeattachment",
+              "plural": "volumeattachments"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CSIDriver",
+              "namespaced": false,
+              "singular": "csidriver",
+              "plural": "csidrivers"
+            },
+            {
+              "kind": "CSINode",
+              "namespaced": false,
+              "singular": "csinode",
+              "plural": "csinodes"
+            },
+            {
+              "kind": "CSIStorageCapacity",
+              "namespaced": true,
+              "singular": "csistoragecapacity",
+              "plural": "csistoragecapacities"
+            },
+            {
+              "kind": "StorageClass",
+              "namespaced": false,
+              "singular": "storageclass",
+              "plural": "storageclasses"
+            },
+            {
+              "kind": "VolumeAttachment",
+              "namespaced": false,
+              "singular": "volumeattachment",
+              "plural": "volumeattachments"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admissionregistration.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "MutatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "mutatingwebhookconfiguration",
+              "plural": "mutatingwebhookconfigurations"
+            },
+            {
+              "kind": "ValidatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "validatingwebhookconfiguration",
+              "plural": "validatingwebhookconfigurations"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "MutatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "mutatingwebhookconfiguration",
+              "plural": "mutatingwebhookconfigurations"
+            },
+            {
+              "kind": "ValidatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "validatingwebhookconfiguration",
+              "plural": "validatingwebhookconfigurations"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apiextensions.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "CustomResourceDefinition",
+              "namespaced": false,
+              "singular": "customresourcedefinition",
+              "plural": "customresourcedefinitions"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CustomResourceDefinition",
+              "namespaced": false,
+              "singular": "customresourcedefinition",
+              "plural": "customresourcedefinitions"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "scheduling.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "PriorityClass",
+              "namespaced": false,
+              "singular": "priorityclass",
+              "plural": "priorityclasses"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "PriorityClass",
+              "namespaced": false,
+              "singular": "priorityclass",
+              "plural": "priorityclasses"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "coordination.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "Lease",
+              "namespaced": true,
+              "singular": "lease",
+              "plural": "leases"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "Lease",
+              "namespaced": true,
+              "singular": "lease",
+              "plural": "leases"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "node.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "RuntimeClass",
+              "namespaced": false,
+              "singular": "runtimeclass",
+              "plural": "runtimeclasses"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "RuntimeClass",
+              "namespaced": false,
+              "singular": "runtimeclass",
+              "plural": "runtimeclasses"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "discovery.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "EndpointSlice",
+              "namespaced": true,
+              "singular": "endpointslice",
+              "plural": "endpointslices"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "EndpointSlice",
+              "namespaced": true,
+              "singular": "endpointslice",
+              "plural": "endpointslices"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flowcontrol.apiserver.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "FlowSchema",
+              "namespaced": false,
+              "singular": "flowschema",
+              "plural": "flowschemas"
+            },
+            {
+              "kind": "PriorityLevelConfiguration",
+              "namespaced": false,
+              "singular": "prioritylevelconfiguration",
+              "plural": "prioritylevelconfigurations"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
