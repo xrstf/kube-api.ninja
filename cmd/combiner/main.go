@@ -128,6 +128,8 @@ func mergeAPIVersionOverviews(dest *types.VersionOverview, versioninfo *types.AP
 	// copy the version
 	dest.Version = versioninfo.Version
 
+	dest.Releases = sets.List(sets.New(dest.Releases...).Insert(release))
+
 	// a version without any resources
 	if len(versioninfo.Resources) == 0 {
 		return

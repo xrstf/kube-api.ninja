@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kubernetes API Timeline</title>
+  <style>
+    html {
+      background: rgb(35, 35, 41);
+      color: white;
+    }
+
+    .apigroup > .name,
+    .apiversion > .name,
+    .apiresource > .name,
+    td.release,
+    td.scope {
+      font-family: monospace;
+      line-height: 150%;
+    }
+
+    .apigroup > td, .apigroup > th, tfoot th {
+      border-top: 2px solid white;
+      padding-top: 2px;
+    }
+
+    .apigroup > .name,
+    .apiversion > .name,
+    .apiresource > .name {
+      border-right: 2px solid white;
+    }
+
+    .apigroup > .name {
+      text-align: left;
+    }
+
+    .apigroup > .release {
+      text-align: center;
+    }
+
+    .apiversion > td, .apiversion > th {
+      border-top: 1px solid rgb(132, 132, 132);
+    }
+
+    .apiversion > .name {
+      text-align: left;
+      padding-left: 20px;
+      font-size: 90%;
+    }
+
+    .apiversion > .release {
+      text-align: center;
+      font-size: 80%;
+    }
+
+    .apiversion > .release.exists {
+      background: yellow;
+      color: black;
+    }
+
+    .apiversion > .release.exists.preferred {
+      background: green;
+    }
+
+    .apiresource > .name {
+      text-align: left;
+      padding-left: 40px;
+      font-size: 80%;
+    }
+
+    .apiresource > .scope {
+      text-align: center;
+      font-size: 80%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kubernetes API Timeline</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>API vs. Kubernetes Release</th>
+        {{ range .Releases }}
+        <th class="release">{{ . }}</th>
+        {{ end }}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{ range $apiGroup := .Database.APIGroups }}
+      <tr class="apigroup">
+        <th class="name">{{ $apiGroup.Name }}</th>
+        {{ range $rel := $.Releases }}
+        <!-- <td class="release">{{ getPreferredVersion $apiGroup $rel }}</td> -->
+        <td>&nbsp;</td>
+        {{ end }}
+      </tr>
+
+      {{ range $apiVersion := $apiGroup.APIVersions }}
+      <tr class="apiversion">
+        <th class="name">{{ $apiVersion.Version }}</th>
+        {{ range $rel := $.Releases }}
+        {{ $exists := sliceContains $apiVersion.Releases $rel }}
+        {{ $preferred := isPreferredVersion $apiGroup $apiVersion $rel }}
+        <td class="release{{ if $exists }} exists{{ end }}{{ if $preferred }} preferred{{ end }}">{{ if $preferred }}☑{{ else }}&nbsp;{{ end }}</td>
+        {{ end }}
+      </tr>
+
+      {{ range $apiResource := $apiVersion.Resources }}
+      <tr class="apiresource">
+        <th class="name">{{ $apiResource.Kind }}</th>
+        {{ range $rel := $.Releases }}
+        {{ $scope := index $apiResource.Scopes $rel }}
+        {{ $exists := not (eq $scope "") }}
+        <td class="release scope{{ if $exists }} exists{{ end }}{{ if $scope }} scope-{{ $scope }}{{ end }}">
+          {{ if $exists }}
+            {{ if eq $scope "Cluster" }}c{{ else }}n{{ end }}
+          {{ else }}
+            &nbsp;
+          {{ end }}
+        </td>
+        {{ end }}
+      </tr>
+      {{ end }} {{/* end of API resource loop */}}
+      {{ end }} {{/* end of API version loop */}}
+      {{ end }} {{/* end of API group loop */}}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th>&nbsp;</th>
+        {{ range .Releases }}
+        <th>{{ . }}</th>
+        {{ end }}
+      </tr>
+    </tfoot>
+  </table>
+</body>
+</html>

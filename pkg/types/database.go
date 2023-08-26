@@ -40,6 +40,7 @@ type GroupOverview struct {
 
 type VersionOverview struct {
 	Version   string             `json:"version"` // e.g. "v1beta1"
+	Releases  []string           `json:"releases"`
 	Resources []ResourceOverview `json:"resources"`
 }
 

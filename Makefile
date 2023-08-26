@@ -19,6 +19,7 @@ default: build
 build:
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/dumper
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/combiner
+	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/render
 
 .PHONY: test
 test:
@@ -33,17 +34,24 @@ lint:
 	golangci-lint run ./...
 
 .PHONY: full-rebuild
-full-rebuild: make clean build dump-all
-	_build/combiner > data/database.json
-
-.PHONY: dump-all
-dump-all: clean build
-	./hack/dump-kind-clusters.sh
+full-rebuild: make clean build dump-all combine-db
 
 .PHONY: dump
 dump: clean build
 	_build/dumper
 
+.PHONY: dump-all
+dump-all: clean build
+	./hack/dump-kind-clusters.sh
+
 .PHONY: combine
 combine: clean build
 	_build/combiner
+
+.PHONY: combine-db
+combine-db: clean build
+	_build/combiner > data/database.json
+
+.PHONY: render
+render: clean build
+	_build/render > index.html

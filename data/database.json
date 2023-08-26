@@ -14,6 +14,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "Binding",
@@ -424,6 +433,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "APIService",
@@ -452,6 +470,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "APIService",
@@ -482,6 +503,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "ControllerRevision",
@@ -616,6 +646,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "Event",
@@ -644,6 +683,12 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24"
+          ],
           "resources": [
             {
               "kind": "Event",
@@ -680,6 +725,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "TokenReview",
@@ -708,6 +762,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "TokenReview",
@@ -738,6 +795,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "LocalSubjectAccessReview",
@@ -835,6 +901,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "LocalSubjectAccessReview",
@@ -898,6 +967,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "HorizontalPodAutoscaler",
@@ -926,6 +1004,12 @@
         },
         {
           "version": "v2beta1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24"
+          ],
           "resources": [
             {
               "kind": "HorizontalPodAutoscaler",
@@ -948,6 +1032,13 @@
         },
         {
           "version": "v2beta2",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25"
+          ],
           "resources": [
             {
               "kind": "HorizontalPodAutoscaler",
@@ -972,6 +1063,13 @@
         },
         {
           "version": "v2",
+          "releases": [
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "HorizontalPodAutoscaler",
@@ -1010,6 +1108,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "CronJob",
@@ -1061,6 +1168,12 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24"
+          ],
           "resources": [
             {
               "kind": "CronJob",
@@ -1097,6 +1210,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "CertificateSigningRequest",
@@ -1125,6 +1247,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "CertificateSigningRequest",
@@ -1155,6 +1280,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "IngressClass",
@@ -1229,6 +1363,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "IngressClass",
@@ -1264,6 +1401,9 @@
       "apiVersions": [
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "Ingress",
@@ -1294,6 +1434,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "PodDisruptionBudget",
@@ -1322,6 +1471,12 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24"
+          ],
           "resources": [
             {
               "kind": "PodDisruptionBudget",
@@ -1375,6 +1530,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "ClusterRoleBinding",
@@ -1472,6 +1636,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "ClusterRoleBinding",
@@ -1535,6 +1702,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "CSIDriver",
@@ -1649,6 +1825,14 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26"
+          ],
           "resources": [
             {
               "kind": "CSIDriver",
@@ -1733,6 +1917,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "MutatingWebhookConfiguration",
@@ -1784,6 +1977,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "MutatingWebhookConfiguration",
@@ -1825,6 +2021,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "CustomResourceDefinition",
@@ -1853,6 +2058,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "CustomResourceDefinition",
@@ -1883,6 +2091,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "PriorityClass",
@@ -1911,6 +2128,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "PriorityClass",
@@ -1941,6 +2161,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "Lease",
@@ -1969,6 +2198,9 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21"
+          ],
           "resources": [
             {
               "kind": "Lease",
@@ -1999,6 +2231,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "RuntimeClass",
@@ -2027,6 +2268,12 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24"
+          ],
           "resources": [
             {
               "kind": "RuntimeClass",
@@ -2063,6 +2310,15 @@
       "apiVersions": [
         {
           "version": "v1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "EndpointSlice",
@@ -2091,6 +2347,12 @@
         },
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24"
+          ],
           "resources": [
             {
               "kind": "EndpointSlice",
@@ -2127,6 +2389,13 @@
       "apiVersions": [
         {
           "version": "v1beta1",
+          "releases": [
+            "1.21",
+            "1.22",
+            "1.23",
+            "1.24",
+            "1.25"
+          ],
           "resources": [
             {
               "kind": "FlowSchema",
@@ -2170,6 +2439,13 @@
         },
         {
           "version": "v1beta2",
+          "releases": [
+            "1.23",
+            "1.24",
+            "1.25",
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "FlowSchema",
@@ -2213,6 +2489,10 @@
         },
         {
           "version": "v1beta3",
+          "releases": [
+            "1.26",
+            "1.27"
+          ],
           "resources": [
             {
               "kind": "FlowSchema",
