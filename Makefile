@@ -18,7 +18,6 @@ default: build
 .PHONY: build
 build:
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/dumper
-	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/combiner
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/render
 
 .PHONY: test
@@ -34,7 +33,7 @@ lint:
 	golangci-lint run ./...
 
 .PHONY: full-rebuild
-full-rebuild: make clean build dump-all combine-db
+full-rebuild: make clean build dump-all
 
 .PHONY: dump
 dump: clean build
@@ -54,4 +53,4 @@ combine-db: clean build
 
 .PHONY: render
 render: clean build
-	_build/render > index.html
+	_build/render

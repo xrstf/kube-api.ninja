@@ -1,58 +1,22 @@
 // SPDX-FileCopyrightText: 2023 Christoph Mewes
 // SPDX-License-Identifier: MIT
 
-package main
+package merger
 
 import (
-	"encoding/json"
-	"log"
-	"os"
-	"path/filepath"
-
 	"go.xrstf.de/kubernetes-apis/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-func main() {
-	releaseFiles, err := filepath.Glob("data/release-*.json")
-	if err != nil {
-		log.Fatalf("Failed to find release files: %v", err)
-	}
-
+func MergeKubernetesReleases(releases []types.KubernetesRelease) types.APIOverview {
 	overview := types.APIOverview{}
 
-	for _, releaseFile := range releaseFiles {
-		releaseInfo, err := loadReleaseFile(releaseFile)
-		if err != nil {
-			log.Fatalf("Failed to load release file %q: %v", releaseFile, err)
-		}
-
-		mergeReleaseIntoOverview(&overview, releaseInfo)
+	for _, release := range releases {
+		// data is copied into the overview, so it's okay to have the loop re-use the same variable
+		mergeReleaseIntoOverview(&overview, &release)
 	}
 
-	encoder := json.NewEncoder(os.Stdout)
-	encoder.SetIndent("", "  ")
-
-	if err := encoder.Encode(overview); err != nil {
-		log.Fatalf("Failed to JSON encode overview: %v", err)
-	}
-}
-
-func loadReleaseFile(filename string) (*types.KubernetesRelease, error) {
-	f, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	decoder := json.NewDecoder(f)
-
-	rel := &types.KubernetesRelease{}
-	if err := decoder.Decode(rel); err != nil {
-		return nil, err
-	}
-
-	return rel, nil
+	return overview
 }
 
 func mergeReleaseIntoOverview(overview *types.APIOverview, release *types.KubernetesRelease) {

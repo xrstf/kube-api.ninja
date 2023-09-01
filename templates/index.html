@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Kubernetes API Timeline</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <style>
+    .apigroup > .name,
+    .apiversion > .name,
+    .apiresource > .name,
+    td.release,
+    td.scope {
+      font-family: monospace;
+      line-height: 150%;
+    }
+
+    /* .apigroup > td, .apigroup > th, tfoot th {
+      border-top: 2px solid white;
+      padding-top: 2px;
+    } */
+
+    /* .apigroup > .name,
+    .apiversion > .name,
+    .apiresource > .name {
+      border-right: 2px solid white;
+    } */
+
+    .apigroup > .name {
+      text-align: left;
+    }
+
+    .apigroup > .release {
+      text-align: center;
+    }
+
+    /* .apiversion > td, .apiversion > th {
+      border-top: 1px solid rgb(132, 132, 132);
+    } */
+
+    .apiversion > .name {
+      text-align: left;
+      font-weight: normal;
+      padding-left: 20px;
+      font-size: 90%;
+    }
+
+    .apiversion > .release {
+      text-align: center;
+      font-size: 80%;
+    }
+
+    .apiversion > .release.exists {
+      background: #ffc107;
+      color: black;
+    }
+
+    .apiversion > .release.exists.preferred {
+      background: #198754;
+    }
+
+    .apiresource > .name {
+      text-align: left;
+      padding-left: 40px;
+      font-size: 80%;
+    }
+
+    .apiresource > .scope {
+      text-align: center;
+      font-size: 80%;
+    }
+
+    /* combat bootstrap's large padding */
+    .table tbody td, .table tbody th {
+      padding: .2rem .2rem;
+    }
+
+    /* hide api resources by default */
+    tr.apiresource {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+   <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <div class="container-fluid">
+         <a class="navbar-brand" href="#">Kubernetes API Timeline</a>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+               <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+
+   <main class="container">
+
+  <table class="table release-megatable">
+    <thead>
+      <tr>
+        <th>API vs. Kubernetes Release</th>
+        {{ range $idx, $name := .Releases }}
+        <th class="release"><a tabindex="{{ $idx }}" class="btn btn-info" role="button" data-bs-toggle="popover">{{ $name }}</a></th>
+        {{ end }}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{ range $apiGroupIdx, $apiGroup := .Database.APIGroups }}
+      <tr class="apigroup" data-apigroupid="{{ $apiGroupIdx }}">
+        <th class="name">{{ $apiGroup.Name }}</th>
+        {{ range $rel := $.Releases }}
+        <!-- <td class="release">{{ getPreferredVersion $apiGroup $rel }}</td> -->
+        <td>&nbsp;</td>
+        {{ end }}
+      </tr>
+
+      {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
+      <tr class="apiversion" data-apigroupid="{{ $apiGroupIdx }}" data-apiversion="{{ $apiVersion.Version }}">
+        <th class="name">{{ $apiVersion.Version }}</th>
+        {{ range $rel := $.Releases }}
+        {{ $exists := sliceContains $apiVersion.Releases $rel }}
+        {{ $preferred := isPreferredVersion $apiGroup $apiVersion $rel }}
+        <td class="release{{ if $exists }} exists{{ end }}{{ if $preferred }} preferred{{ end }}">{{ if $preferred }}☑{{ else }}&nbsp;{{ end }}</td>
+        {{ end }}
+      </tr>
+
+      {{ range $apiResource := $apiVersion.Resources }}
+      <tr class="apiresource" data-apigroupid="{{ $apiGroupIdx }}" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
+        <th class="name">{{ $apiResource.Kind }}</th>
+        {{ range $rel := $.Releases }}
+        {{ $scope := index $apiResource.Scopes $rel }}
+        {{ $exists := not (eq $scope "") }}
+        <td class="release scope{{ if $exists }} exists{{ end }}{{ if $scope }} scope-{{ $scope }}{{ end }}">
+          {{ if $exists }}
+            {{ if eq $scope "Cluster" }}c{{ else }}n{{ end }}
+          {{ else }}
+            &nbsp;
+          {{ end }}
+        </td>
+        {{ end }}
+      </tr>
+      {{ end }} {{/* end of API resource loop */}}
+      {{ end }} {{/* end of API version loop */}}
+      {{ end }} {{/* end of API group loop */}}
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th>&nbsp;</th>
+        {{ range $idx, $name := .Releases }}
+        <th class="release"><a tabindex="100{{ $idx }}" class="btn btn-info" role="button" data-bs-toggle="popover">{{ $name }}</a></th>
+        {{ end }}
+      </tr>
+    </tfoot>
+  </table>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+   integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+   crossorigin="anonymous"></script>
+<script>
+   function foobarx() {
+      return "<ul>\
+      <li><a href=\"foo\">Documentation</a></li>\
+      <li><a href=\"foo\">Changelog</a></li>\
+      <li><a href=\"foo\">Git Branch</a></li>\
+      </ul>";
+   }
+
+   const popoverTriggerList = document.querySelectorAll('thead th.release [data-bs-toggle="popover"]')
+   const popoverList = [...popoverTriggerList].map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl, {
+         html: true,
+         content: foobarx,
+         placement: 'bottom',
+         trigger: 'focus',
+      });
+   })
+
+const popoverTriggerList2 = document.querySelectorAll('tfoot th.release [data-bs-toggle="popover"]')
+const popoverList2 = [...popoverTriggerList2].map(function (popoverTriggerEl) {
+   return new bootstrap.Popover(popoverTriggerEl, {
+      html: true,
+      content: foobarx,
+      placement: 'top',
+      trigger: 'focus',
+   });
+})
+
+</script>
+</body>
+
+</html>

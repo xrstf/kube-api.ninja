@@ -63,7 +63,7 @@ func main() {
 		log.Fatalf("Failed to build discovery client: %v", err)
 	}
 
-	data, err := dumper.DumpClusterData(discoveryClient)
+	releaseData, err := dumper.DumpClusterData(discoveryClient)
 	if err != nil {
 		log.Fatalf("Failed to dump cluster info: %v", err)
 	}
@@ -71,7 +71,7 @@ func main() {
 	encoder := json.NewEncoder(os.Stdout)
 	encoder.SetIndent("", "  ")
 
-	if err := encoder.Encode(data); err != nil {
+	if err := encoder.Encode(releaseData); err != nil {
 		log.Fatalf("Failed to JSON encode result: %v", err)
 	}
 }
