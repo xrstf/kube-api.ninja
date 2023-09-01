@@ -4,16 +4,53 @@
 package merger
 
 import (
+	"regexp"
+	"sort"
+
 	"go.xrstf.de/kubernetes-apis/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/apimachinery/pkg/util/version"
 )
 
+var stableVersion = regexp.MustCompile(`^v[0-9]+$`)
+
+// zetaVersion turns a version like "v1" into "v1zeta",
+// which will make comparing it to alphas and betas easier.
+func zetaVersion(v string) string {
+	if stableVersion.MatchString(v) {
+		return v + "zeta"
+	}
+	return v
+}
+
 func MergeKubernetesReleases(releases []types.KubernetesRelease) types.APIOverview {
-	overview := types.APIOverview{}
+	overview := types.APIOverview{
+		Releases: []string{},
+	}
+
+	// sort releases to keep things consistent
+	sort.Slice(releases, func(i, j int) bool {
+		a := version.MustParseGeneric(releases[i].Version)
+		b := version.MustParseGeneric(releases[j].Version)
+
+		return a.LessThan(b)
+	})
 
 	for _, release := range releases {
 		// data is copied into the overview, so it's okay to have the loop re-use the same variable
 		mergeReleaseIntoOverview(&overview, &release)
+	}
+
+	// sort versions for each API group in descending order (latest first)
+	for idx, apiGroup := range overview.APIGroups {
+		sort.Slice(apiGroup.APIVersions, func(i, j int) bool {
+			a := zetaVersion(apiGroup.APIVersions[i].Version)
+			b := zetaVersion(apiGroup.APIVersions[j].Version)
+
+			return a > b
+		})
+
+		overview.APIGroups[idx] = apiGroup
 	}
 
 	return overview
@@ -25,15 +62,22 @@ func mergeReleaseIntoOverview(overview *types.APIOverview, release *types.Kubern
 		return
 	}
 
+	overview.Releases = append(overview.Releases, release.Release)
+
 	if overview.APIGroups == nil {
 		overview.APIGroups = []types.GroupOverview{}
 	}
 
 	for _, apiGroup := range release.APIGroups {
+		apiGroupName := apiGroup.Name
+		if apiGroupName == "" {
+			apiGroupName = "core"
+		}
+
 		// find a possibly pre-existing group info from a previous release
 		var existingGroupOverview *types.GroupOverview
 		for j, g := range overview.APIGroups {
-			if apiGroup.Name == g.Name {
+			if apiGroupName == g.Name {
 				existingGroupOverview = &overview.APIGroups[j]
 				break
 			}
@@ -45,13 +89,13 @@ func mergeReleaseIntoOverview(overview *types.APIOverview, release *types.Kubern
 			existingGroupOverview = &overview.APIGroups[len(overview.APIGroups)-1]
 		}
 
-		mergeAPIGroupOverviews(existingGroupOverview, &apiGroup, release.Release)
+		mergeAPIGroupOverviews(existingGroupOverview, &apiGroup, apiGroupName, release.Release)
 	}
 }
 
-func mergeAPIGroupOverviews(dest *types.GroupOverview, groupinfo *types.APIGroup, release string) {
+func mergeAPIGroupOverviews(dest *types.GroupOverview, groupinfo *types.APIGroup, groupName string, release string) {
 	// copy the name
-	dest.Name = groupinfo.Name
+	dest.Name = groupName
 
 	// remember the preferred version of this group for this release
 	if dest.PreferredVersions == nil {

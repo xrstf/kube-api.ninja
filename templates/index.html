@@ -61,14 +61,18 @@
       background: #198754;
     }
 
+    .release {
+      text-align: center;
+    }
+
     .apiresource > .name {
       text-align: left;
+      font-weight: normal;
       padding-left: 40px;
       font-size: 80%;
     }
 
-    .apiresource > .scope {
-      text-align: center;
+    .apiresource > .release {
       font-size: 80%;
     }
 
@@ -77,10 +81,80 @@
       padding: .2rem .2rem;
     }
 
+    /* inject our own colors into the badges */
+    td.release {
+      padding: .2rem 0 !important;
+    }
+
+    td.release > span {
+      display: inline-block;
+      width: 100%;
+      font-weight: normal;
+    }
+
+    td.a10y-middle > span {
+      border-radius: 0 !important;
+    }
+
+    td.a10y-begin > span {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
+
+    td.a10y-end > span {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
+
+    /* hide cell text */
+    .apiversion td.release span,
+    .apiresource td.release span {
+      text-indent: -9999px;
+    }
+
+    /* for API groups there is only exists/missing */
+    .apigroup td.release.a10y-exists span {
+      background-color: #198754;
+    }
+
+    /* for API versions there is exists/preferred/missing */
+    .apiversion td.release.a10y-exists span {
+      background-color: #ffc107;
+      color: black;
+    }
+
+    .apiversion td.release.a10y-preferred span {
+      background-color: #198754;
+      color: white;
+    }
+
+    /* for API resources there is also exists/preferred/missing */
+    .apiresource td.release.a10y-exists span {
+      background-color: #ffc107;
+      color: black;
+    }
+
+    .apiresource td.release.a10y-preferred span {
+      background-color: #198754;
+      color: white;
+    }
+
     /* hide api resources by default */
     tr.apiresource {
       display: none;
     }
+
+    tr.apiversion {
+      display: none;
+    }
+
+    tr[data-apigroup="events.k8s.io"] {
+      display: table-row;
+    }
+
+tr[data-apigroup="autoscaling"] {
+  display: table-row;
+}
   </style>
 </head>
 
@@ -114,57 +188,60 @@
     <thead>
       <tr>
         <th>API vs. Kubernetes Release</th>
-        {{ range $idx, $name := .Releases }}
-        <th class="release"><a tabindex="{{ $idx }}" class="btn btn-info" role="button" data-bs-toggle="popover">{{ $name }}</a></th>
+        {{ range $idx, $name := .Overview.Releases }}
+          <th class="release">
+            <a tabindex="{{ $idx }}" class="btn btn-info" role="button" data-bs-toggle="popover">{{ $name }}</a>
+          </th>
         {{ end }}
       </tr>
     </thead>
 
     <tbody>
-      {{ range $apiGroupIdx, $apiGroup := .Database.APIGroups }}
-      <tr class="apigroup" data-apigroupid="{{ $apiGroupIdx }}">
-        <th class="name">{{ $apiGroup.Name }}</th>
-        {{ range $rel := $.Releases }}
-        <!-- <td class="release">{{ getPreferredVersion $apiGroup $rel }}</td> -->
-        <td>&nbsp;</td>
-        {{ end }}
-      </tr>
-
-      {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
-      <tr class="apiversion" data-apigroupid="{{ $apiGroupIdx }}" data-apiversion="{{ $apiVersion.Version }}">
-        <th class="name">{{ $apiVersion.Version }}</th>
-        {{ range $rel := $.Releases }}
-        {{ $exists := sliceContains $apiVersion.Releases $rel }}
-        {{ $preferred := isPreferredVersion $apiGroup $apiVersion $rel }}
-        <td class="release{{ if $exists }} exists{{ end }}{{ if $preferred }} preferred{{ end }}">{{ if $preferred }}☑{{ else }}&nbsp;{{ end }}</td>
-        {{ end }}
-      </tr>
-
-      {{ range $apiResource := $apiVersion.Resources }}
-      <tr class="apiresource" data-apigroupid="{{ $apiGroupIdx }}" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
-        <th class="name">{{ $apiResource.Kind }}</th>
-        {{ range $rel := $.Releases }}
-        {{ $scope := index $apiResource.Scopes $rel }}
-        {{ $exists := not (eq $scope "") }}
-        <td class="release scope{{ if $exists }} exists{{ end }}{{ if $scope }} scope-{{ $scope }}{{ end }}">
-          {{ if $exists }}
-            {{ if eq $scope "Cluster" }}c{{ else }}n{{ end }}
-          {{ else }}
-            &nbsp;
+      {{ range $apiGroup := .Overview.APIGroups }}
+        <!-- row for the API group -->
+        <tr class="apigroup" data-apigroup="{{ $apiGroup.Name }}">
+          <th class="name">{{ $apiGroup.Name }}</th>
+          {{ range $rel := $.Overview.Releases }}
+            <td class="{{ getAPIGroupReleaseClass $.Overview $apiGroup $rel }}">
+              <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel }}</span>
+            </td>
+            <!-- <td>&nbsp;</td> -->
           {{ end }}
-        </td>
-        {{ end }}
-      </tr>
-      {{ end }} {{/* end of API resource loop */}}
-      {{ end }} {{/* end of API version loop */}}
+        </tr>
+
+        {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
+          <!-- row for the API version -->
+          <tr class="apiversion" data-apigroup="{{ $apiGroup.Name }}" data-apiversion="{{ $apiVersion.Version }}">
+            <th class="name">{{ $apiVersion.Version }}</th>
+            {{ range $rel := $.Overview.Releases }}
+              <td class="{{ getAPIVersionReleaseClass $.Overview $apiGroup $apiVersion $rel }}">
+                <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Overview $apiGroup $apiVersion $rel }}</span>
+              </td>
+            {{ end }}
+          </tr>
+
+          {{ range $apiResource := $apiVersion.Resources }}
+            <!-- row for an API resource -->
+            <tr class="apiresource" data-apigroup="{{ $apiGroup.Name }}" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
+              <th class="name">{{ $apiResource.Kind }}</th>
+              {{ range $rel := $.Overview.Releases }}
+                {{ $scope := index $apiResource.Scopes $rel }}
+                {{ $exists := not (eq $scope "") }}
+                <td class="{{ getAPIResourceReleaseClass $.Overview $apiGroup $apiVersion $apiResource $rel }}">
+                  <span class="badge text-bg">{{ getAPIResourceReleaseContent $.Overview $apiGroup $apiVersion $apiResource $rel }}</span>
+                </td>
+              {{ end }}
+            </tr>
+          {{ end }} {{/* end of API resource loop */}}
+        {{ end }} {{/* end of API version loop */}}
       {{ end }} {{/* end of API group loop */}}
     </tbody>
 
     <tfoot>
       <tr>
         <th>&nbsp;</th>
-        {{ range $idx, $name := .Releases }}
-        <th class="release"><a tabindex="100{{ $idx }}" class="btn btn-info" role="button" data-bs-toggle="popover">{{ $name }}</a></th>
+        {{ range $idx, $name := .Overview.Releases }}
+          <th class="release"><a tabindex="{{ add $idx 100 }}" class="btn btn-info" role="button" data-bs-toggle="popover">{{ $name }}</a></th>
         {{ end }}
       </tr>
     </tfoot>

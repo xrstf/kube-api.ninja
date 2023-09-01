@@ -9,27 +9,13 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"slices"
 
 	"go.xrstf.de/kubernetes-apis/pkg/merger"
 	"go.xrstf.de/kubernetes-apis/pkg/types"
-	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 const (
 	outputDirectory = "public"
-)
-
-var (
-	templateFuncs = template.FuncMap{
-		"sliceContains": slices.Contains[[]string],
-		"getPreferredVersion": func(apiGroup *types.GroupOverview, release string) string {
-			return apiGroup.PreferredVersions[release]
-		},
-		"isPreferredVersion": func(apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, release string) bool {
-			return apiGroup.PreferredVersions[release] == apiVersion.Version
-		},
-	}
 )
 
 func main() {
@@ -85,8 +71,7 @@ func loadReleaseFile(filename string) (*types.KubernetesRelease, error) {
 }
 
 type indexData struct {
-	Database *types.APIOverview
-	Releases []string
+	Overview *types.APIOverview
 }
 
 func renderIndex(directory string, tpl *template.Template, apiOverview *types.APIOverview) error {
@@ -96,10 +81,7 @@ func renderIndex(directory string, tpl *template.Template, apiOverview *types.AP
 	}
 	defer f.Close()
 
-	allReleases := sets.List(sets.KeySet(apiOverview.APIGroups[0].PreferredVersions))
-
 	return tpl.ExecuteTemplate(f, "index.html", indexData{
-		Database: apiOverview,
-		Releases: allReleases,
+		Overview: apiOverview,
 	})
 }
