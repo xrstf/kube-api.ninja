@@ -2,16 +2,15 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>Kubernetes API Timeline</title>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kubernetes API Timeline</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <style>
-    .apigroup > .name,
-    .apiversion > .name,
-    .apiresource > .name,
-    td.release,
+    .apigroup>.name,
+    .apiversion>.name,
+    .apigroup td.release,
     td.scope {
       font-family: monospace;
       line-height: 150%;
@@ -28,11 +27,11 @@
       border-right: 2px solid white;
     } */
 
-    .apigroup > .name {
+    .apigroup>.name {
       text-align: left;
     }
 
-    .apigroup > .release {
+    .apigroup>.release {
       text-align: center;
     }
 
@@ -40,24 +39,26 @@
       border-top: 1px solid rgb(132, 132, 132);
     } */
 
-    .apiversion > .name {
-      text-align: left;
-      font-weight: normal;
-      padding-left: 20px;
+    .apiversion {
       font-size: 90%;
     }
 
-    .apiversion > .release {
-      text-align: center;
-      font-size: 80%;
+    .apiversion>.name {
+      text-align: left;
+      font-weight: normal;
+      padding-left: 20px;
     }
 
-    .apiversion > .release.exists {
+    .apiversion>.release {
+      text-align: center;
+    }
+
+    .apiversion>.release.exists {
       background: #ffc107;
       color: black;
     }
 
-    .apiversion > .release.exists.preferred {
+    .apiversion>.release.exists.preferred {
       background: #198754;
     }
 
@@ -65,19 +66,19 @@
       text-align: center;
     }
 
-    .apiresource > .name {
+    .apiresource {
+      font-size: 90%;
+    }
+
+    .apiresource>.name {
       text-align: left;
       font-weight: normal;
       padding-left: 40px;
-      font-size: 80%;
-    }
-
-    .apiresource > .release {
-      font-size: 80%;
     }
 
     /* combat bootstrap's large padding */
-    .table tbody td, .table tbody th {
+    .table tbody td,
+    .table tbody th {
       padding: .2rem .2rem;
     }
 
@@ -86,27 +87,27 @@
       padding: .2rem 0 !important;
     }
 
-    td.release > span {
+    td.release>span {
       display: inline-block;
       width: 100%;
       font-weight: normal;
     }
 
-    td.a10y-middle > span {
+    td.a10y-middle>span {
       border-radius: 0 !important;
     }
 
-    td.a10y-begin > span {
+    td.a10y-begin>span {
       border-top-right-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
     }
 
-    td.a10y-end > span {
+    td.a10y-end>span {
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
     }
 
-    /* hide cell text */
+    /* hide cell text for api resources (looks noisy) and apiversion (preferred-status is visible by colors) */
     .apiversion td.release span,
     .apiresource td.release span {
       text-indent: -9999px;
@@ -139,148 +140,283 @@
       color: white;
     }
 
-    /* hide api resources by default */
-    tr.apiresource {
+    a.toggle, a.docs {
+      color: rgb(178, 178, 178);
+      font-weight: normal;
+      text-decoration: none;
+    }
+
+    /* if an APIGroup is collapsed, hide all rows except for the group's row in it */
+    tbody.collapsed tr.apiversion,
+    tbody.collapsed tr.apiresource {
       display: none;
     }
 
-    tr.apiversion {
+    /* if an APIVersion is collapsed, the hiddenness will be applied via JavaScript */
+
+    /* if an APIResource is hidden, hide it */
+    .apiresource.hidden {
       display: none;
     }
 
-    tr[data-apigroup="events.k8s.io"] {
-      display: table-row;
+    /* page footer */
+    footer {
+      font-size: 75%;
     }
 
-tr[data-apigroup="autoscaling"] {
-  display: table-row;
-}
+    footer .border-top {
+      padding-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
   </style>
 </head>
 
 <body>
-   <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-      <div class="container-fluid">
-         <a class="navbar-brand" href="#">Kubernetes API Timeline</a>
-         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-         </button>
-         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-               <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Home</a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-               </li>
-            </ul>
-         </div>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Kubernetes API Timeline</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
       </div>
-   </nav>
+    </div>
+  </nav>
 
-   <main class="container-fluid">
+  <!-- the main page container -->
+  <main class="container-fluid">
 
-  <table class="table release-megatable">
-    <thead>
-      <tr>
-        <th>API vs. Kubernetes Release</th>
-        {{ range $idx, $name := .Overview.Releases }}
-          <th class="release">
-            <a tabindex="{{ $idx }}" class="btn btn-info" role="button" data-bs-toggle="popover">{{ $name }}</a>
-          </th>
-        {{ end }}
-      </tr>
-    </thead>
+    <!-- This 2 column div contains the mega table; it's two columns so that the right side table -->
+    <!-- can be a responsive table and get horizontal scrolling while keeping the left column fixed. -->
+    <div class="release-megatable">
+      <div class="row g-0">
+        <!-- left column: API group, version and resource names -->
+        <div class="col-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2">
+          <table class="table legend-table">
+            <thead>
+              <tr>
+                <th colspan="2">API vs. Kubernetes Release</th>
+              </tr>
+            </thead>
+            {{ range $apiGroup := .Overview.APIGroups }}
+            <tbody data-apigroup="{{ $apiGroup.Name }}" class="collapsed">
+              <!-- row for the API group -->
+              <tr class="apigroup">
+                <th class="name">{{ $apiGroup.Name }}</th>
+                <th class="icons"><a href="#" class="toggle" title="expand/collapse this API group">⊕</a></th>
+              </tr>
 
-    <tbody>
-      {{ range $apiGroup := .Overview.APIGroups }}
-        <!-- row for the API group -->
-        <tr class="apigroup" data-apigroup="{{ $apiGroup.Name }}">
-          <th class="name">{{ $apiGroup.Name }}</th>
-          {{ range $rel := $.Overview.Releases }}
-            <td class="{{ getAPIGroupReleaseClass $.Overview $apiGroup $rel }}">
-              <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel }}</span>
-            </td>
-            <!-- <td>&nbsp;</td> -->
-          {{ end }}
-        </tr>
+              {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
+              <!-- row for the API version -->
+              <tr class="apiversion collapsed" data-apiversion="{{ $apiVersion.Version }}">
+                <th class="name">{{ $apiVersion.Version }}</th>
+                <th class="icons"><a href="#" class="toggle" title="expand/collapse this API version">⊕</a></th>
+              </tr>
 
-        {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
-          <!-- row for the API version -->
-          <tr class="apiversion" data-apigroup="{{ $apiGroup.Name }}" data-apiversion="{{ $apiVersion.Version }}">
-            <th class="name">{{ $apiVersion.Version }}</th>
-            {{ range $rel := $.Overview.Releases }}
-              <td class="{{ getAPIVersionReleaseClass $.Overview $apiGroup $apiVersion $rel }}">
-                <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Overview $apiGroup $apiVersion $rel }}</span>
-              </td>
+              {{ range $apiResource := $apiVersion.Resources }}
+              <!-- row for an API resource -->
+              <tr class="apiresource" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
+                <th class="name">{{ $apiResource.Kind }}</th>
+                <th class="icons"><a href="#" class="docs" title="view documentation for most recent Kubernetes release">⛿</a></th>
+              </tr>
+              {{ end }}
+              {{ end }}
+            </tbody>
             {{ end }}
-          </tr>
+            <tfoot>
+              <tr>
+                <th colspan="2">&nbsp;</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-          {{ range $apiResource := $apiVersion.Resources }}
-            <!-- row for an API resource -->
-            <tr class="apiresource" data-apigroup="{{ $apiGroup.Name }}" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
-              <th class="name">{{ $apiResource.Kind }}</th>
-              {{ range $rel := $.Overview.Releases }}
-                {{ $scope := index $apiResource.Scopes $rel }}
-                {{ $exists := not (eq $scope "") }}
+        <!-- right column: the main body of the megatable -->
+        <div class="col-6 col-md-7 col-lg-8 col-xl-9 col-xxl-10 table-responsive">
+          <table class="table overview-table">
+            <thead>
+              <tr>
+                {{ range $idx, $name := .Overview.Releases }}
+                <th class="release">
+                  <a tabindex="{{ $idx }}" role="button" data-bs-toggle="popover" data-release="{{ $name }}">{{ $name }}</a>
+                </th>
+                {{ end }}
+              </tr>
+            </thead>
+
+            {{ range $apiGroup := .Overview.APIGroups }}
+            <tbody data-apigroup="{{ $apiGroup.Name }}" class="collapsed">
+              <!-- row for the API group -->
+              <tr class="apigroup">
+                {{ range $rel := $.Overview.Releases }}
+                <td class="{{ getAPIGroupReleaseClass $.Overview $apiGroup $rel }}">
+                  <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel }}</span>
+                </td>
+                <!-- <td>&nbsp;</td> -->
+                {{ end }}
+              </tr>
+
+              {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
+              <!-- row for the API version -->
+              <tr class="apiversion collapsed" data-apiversion="{{ $apiVersion.Version }}">
+                {{ range $rel := $.Overview.Releases }}
+                <td class="{{ getAPIVersionReleaseClass $.Overview $apiGroup $apiVersion $rel }}">
+                  <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Overview $apiGroup $apiVersion $rel }}</span>
+                </td>
+                {{ end }}
+              </tr>
+
+              {{ range $apiResource := $apiVersion.Resources }}
+              <!-- row for an API resource -->
+              <tr class="apiresource" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
+                {{ range $rel := $.Overview.Releases }}
                 <td class="{{ getAPIResourceReleaseClass $.Overview $apiGroup $apiVersion $apiResource $rel }}">
                   <span class="badge text-bg">{{ getAPIResourceReleaseContent $.Overview $apiGroup $apiVersion $apiResource $rel }}</span>
                 </td>
-              {{ end }}
-            </tr>
-          {{ end }} {{/* end of API resource loop */}}
-        {{ end }} {{/* end of API version loop */}}
-      {{ end }} {{/* end of API group loop */}}
-    </tbody>
+                {{ end }}
+              </tr>
+              {{ end }} {{/* end of API resource loop */}}
+              {{ end }} {{/* end of API version loop */}}
+            </tbody>
+            {{ end }} {{/* end of API group loop */}}
 
-    <tfoot>
-      <tr>
-        <th>&nbsp;</th>
-        {{ range $idx, $name := .Overview.Releases }}
-          <th class="release"><a tabindex="{{ add $idx 100 }}" class="btn btn-info" role="button" data-bs-toggle="popover">{{ $name }}</a></th>
-        {{ end }}
-      </tr>
-    </tfoot>
-  </table>
-</main>
+            <tfoot>
+              <tr>
+                {{ range $idx, $name := .Overview.Releases }}
+                <th class="release">
+                  <a tabindex="{{ add $idx 100 }}" role="button" data-release="{{ $name }}" data-bs-toggle="popover">{{ $name }}</a>
+                </th>
+                {{ end }}
+              </tr>
+            </tfoot>
+          </table>
+        </div> <!-- end of right column -->
+      </div> <!-- end of megatable row -->
+    </div> <!-- end of 2 column megatable -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-   integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-   crossorigin="anonymous"></script>
-<script>
-   function foobarx() {
+
+  <footer>
+    <p class="text-center text-body-secondary border-top">
+      Distributed under CC BY 4.0
+    </p>
+    <p class="text-center text-body-secondary">
+      Kubernetes® is a registered trademark of The Linux Foundation®. All rights reserved.<br>
+      This website has no relation with and is not endorsed by The Linux Foundation.
+    </p>
+  </footer>
+  </main> <!-- main content done -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <script>
+    function foobarx() {
       return "<ul>\
       <li><a href=\"foo\">Documentation</a></li>\
       <li><a href=\"foo\">Changelog</a></li>\
       <li><a href=\"foo\">Git Branch</a></li>\
       </ul>";
-   }
+    }
 
-   const popoverTriggerList = document.querySelectorAll('thead th.release [data-bs-toggle="popover"]')
-   const popoverList = [...popoverTriggerList].map(function (popoverTriggerEl) {
+    const popoverTriggerList = document.querySelectorAll('thead th.release [data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(function (popoverTriggerEl) {
       return new bootstrap.Popover(popoverTriggerEl, {
-         html: true,
-         content: foobarx,
-         placement: 'bottom',
-         trigger: 'focus',
+        html:      true,
+        content:   foobarx,
+        placement: 'bottom',
+        trigger:   'focus',
       });
-   })
+    });
 
-const popoverTriggerList2 = document.querySelectorAll('tfoot th.release [data-bs-toggle="popover"]')
-const popoverList2 = [...popoverTriggerList2].map(function (popoverTriggerEl) {
-   return new bootstrap.Popover(popoverTriggerEl, {
-      html: true,
-      content: foobarx,
-      placement: 'top',
-      trigger: 'focus',
-   });
-})
+    const popoverTriggerList2 = document.querySelectorAll('tfoot th.release [data-bs-toggle="popover"]')
+    const popoverList2 = [...popoverTriggerList2].map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl, {
+        html:      true,
+        content:   foobarx,
+        placement: 'top',
+        trigger:   'focus',
+      });
+    });
 
-</script>
+    // tbodies cannot be nested, so besides 1 tbody per APIGroup, there is no
+    // further nesting in the megatable; but APIResources should still logically
+    // be grouped below APIVersions, so to simulate this, we have to manually
+    // apply the "hidden" class for all APIResources which have their APIVersion
+    // collapsed;
+    // This "hidden" class has then also be kept in-sync with the collapsed status.
+    function updateAPIResourcesVisibility(apiversionRow) {
+      let isCollapsed     = apiversionRow.classList.contains("collapsed");
+      let apiVersion      = apiversionRow.dataset.apiversion;
+      let apiGroupBody    = apiversionRow.closest('tbody');
+      let apiResourceRows = apiGroupBody.querySelectorAll('tr.apiresource[data-apiversion="' + apiVersion + '"]');
+
+      apiResourceRows.forEach(function(row) {
+        row.classList.toggle("hidden", isCollapsed);
+      });
+    }
+
+    // initial setup
+    document.querySelectorAll('tr.apiversion').forEach(updateAPIResourcesVisibility);
+
+    // clicking in one table has to affect the other one, too
+    let overviewTable = document.querySelector('table.overview-table');
+
+    // toggle visibility of APIVersions for an APIGroup
+    document.querySelectorAll('tr.apigroup a.toggle').forEach(function(node) {
+      node.addEventListener("click", function(e) {
+        let apigroupRow  = this.closest('tr');
+        let apigroupBody = apigroupRow.closest('tbody');
+        let apigroup     = apigroupBody.dataset.apigroup;
+
+        // toggle visibility in legend table
+        apigroupBody.classList.toggle("collapsed");
+
+        // toggle it in the overview table as well
+        overviewTable.querySelector('tbody[data-apigroup="' + apigroup + '"]').classList.toggle("collapsed");
+
+        // update icon
+        this.innerText = apigroupBody.classList.contains("collapsed") ? '⊕' : '⊙';
+
+        e.preventDefault();
+      });
+    });
+
+    // toggle visibility of APIResources for an APIVersion
+    document.querySelectorAll('tr.apiversion a.toggle').forEach(function(node) {
+      node.addEventListener("click", function(e) {
+        let apiversionRow = this.closest('tr');
+        let apiversion    = apiversionRow.dataset.apiversion;
+        let apigroupBody  = apiversionRow.closest('tbody');
+        let apigroup      = apigroupBody.dataset.apigroup;
+
+        // toggle visibility in legend table
+        apiversionRow.classList.toggle("collapsed");
+        updateAPIResourcesVisibility(apiversionRow);
+
+        // toggle it in the overview table as well
+        let overviewVersionRow = overviewTable.querySelector('tbody[data-apigroup="' + apigroup + '"] tr.apiversion[data-apiversion="' + apiversion + '"]');
+        overviewVersionRow.classList.toggle("collapsed");
+        updateAPIResourcesVisibility(overviewVersionRow);
+
+        // update icon
+        this.innerText = apiversionRow.classList.contains("collapsed") ? '⊕' : '⊙';
+
+        e.preventDefault();
+      });
+    });
+  </script>
 </body>
 
 </html>

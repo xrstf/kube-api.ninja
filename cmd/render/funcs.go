@@ -116,25 +116,25 @@ func getAPIVersionReleaseClass(apiOverview *types.APIOverview, apiGroup *types.G
 	return strings.Join(classes, " ")
 }
 
-func getAPIVersionReleaseContent(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, release string) string {
+func getAPIVersionReleaseContent(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, release string) template.HTML {
 	if !apiVersion.HasRelease(release) {
-		return "–"
+		return template.HTML("&nbsp;")
 	}
 
 	if apiGroup.PreferredVersions[release] == apiVersion.Version {
-		return "preferred"
+		return "✪"
 	}
 
-	return "avalable"
+	return template.HTML("&nbsp;")
 }
 
 func getAPIResourceReleaseClass(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, apiResource *types.ResourceOverview, release string) string {
-	classes := []string{"release", "scope-" + strings.ToLower(apiResource.Scopes[release])}
+	classes := []string{"release"}
 
 	if !apiResource.HasRelease(release) {
 		classes = append(classes, "a10y-missing")
 	} else {
-		classes = append(classes, "a10y-exists")
+		classes = append(classes, "a10y-exists", "scope-"+strings.ToLower(apiResource.Scopes[release]))
 
 		// is this version the preferred version in this release?
 
@@ -169,10 +169,20 @@ func getAPIResourceReleaseClass(apiOverview *types.APIOverview, apiGroup *types.
 	return strings.Join(classes, " ")
 }
 
-func getAPIResourceReleaseContent(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, apiResource *types.ResourceOverview, release string) string {
+func getAPIResourceReleaseContent(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, apiResource *types.ResourceOverview, release string) template.HTML {
 	if !apiResource.HasRelease(release) {
-		return "–"
+		return template.HTML("&nbsp;")
 	}
 
-	return apiResource.Scopes[release]
+	// TODO: Only show this per-cell if the scope of the resource actually changed during the lifetime of a single APIVersion
+	// (which is extremely unlikely for upstream API groups).
+
+	switch apiResource.Scopes[release] {
+	case "Namespaced":
+		return "namespaced"
+	case "Cluster":
+		return "cluster-wide"
+	default:
+		return template.HTML("&nbsp;")
+	}
 }
