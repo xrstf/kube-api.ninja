@@ -15,6 +15,11 @@
       line-height: 150%;
     }
 
+    thead .release a {
+      border-bottom: 1px dashed #616a74;
+      cursor: help;
+    }
+
     .hidden {
       display: none;
     }
@@ -128,6 +133,7 @@
     /* for API groups there is exists/stable/issing */
     .apigroup td.release.a10y-exists span {
       background-color: #198754;
+      color: #bffce0;
     }
 
     .apigroup td.release.a10y-exists.maturity-prerelease span {
@@ -332,34 +338,56 @@
     </p>
   </footer>
 
+  <div class="hidden">
+    <div class="release-popover-template">
+      <div class="container">
+        <div class="row">
+          <div class="col">Released:</div>
+          <div class="col release-date"></div>
+        </div>
+        <div class="row">
+          <div class="col">Latest:</div>
+          <div class="col latest-version"></div>
+        </div>
+        <div class="row">
+          <div class="col">End of Life:</div>
+          <div class="col eol-date"></div>
+        </div>
+      </div>
+
+      <ul class="release-links">
+        <li><a href="#" class="release-documentation" target="_blank">📖 Documentation</a></li>
+        <li><a href="#" class="release-changelog" target="_blank">G Changelog</a></li>
+        <li><a href="#" class="release-gitbranch" target="_blank">G Git Branch</a></li>
+      </ul>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
     crossorigin="anonymous"></script>
   <script>
-    function foobarx() {
-      return "<ul>\
-      <li><a href=\"foo\">Documentation</a></li>\
-      <li><a href=\"foo\">Changelog</a></li>\
-      <li><a href=\"foo\">Git Branch</a></li>\
-      </ul>";
+    function showReleaseInfoPopover(link) {
+      let cell = link.closest('th');
+      let release = cell.dataset.release;
+      let template = document.querySelector('.release-popover-template').cloneNode(true);
+
+      template.querySelector('.release-date').innerText = cell.dataset.releaseDate;
+      template.querySelector('.latest-version').innerText = cell.dataset.latestVersion;
+      template.querySelector('.eol-date').innerText = cell.dataset.eolDate;
+
+      template.querySelector('.release-changelog').href = `https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-${release}.md`;
+      template.querySelector('.release-gitbranch').href = `https://github.com/kubernetes/kubernetes/tree/release-${release}`;
+
+      return template.innerHTML;
     }
 
     const popoverTriggerList = document.querySelectorAll('thead th.release [data-bs-toggle="popover"]')
     const popoverList = [...popoverTriggerList].map(function (popoverTriggerEl) {
       return new bootstrap.Popover(popoverTriggerEl, {
         html:      true,
-        content:   foobarx,
+        content:   showReleaseInfoPopover,
         placement: 'bottom',
-        trigger:   'focus',
-      });
-    });
-
-    const popoverTriggerList2 = document.querySelectorAll('tfoot th.release [data-bs-toggle="popover"]')
-    const popoverList2 = [...popoverTriggerList2].map(function (popoverTriggerEl) {
-      return new bootstrap.Popover(popoverTriggerEl, {
-        html:      true,
-        content:   foobarx,
-        placement: 'top',
         trigger:   'focus',
       });
     });

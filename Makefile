@@ -55,3 +55,10 @@ combine-db: clean build
 .PHONY: render
 render: clean build
 	_build/render
+
+.PHONY: deploy
+deploy:
+	cp public/index.html public/kube-apis.html
+	scp public/kube-apis.html xrstf.de:infrastructure/websites/xrstf.de/www/
+	rm public/kube-apis.html
+
