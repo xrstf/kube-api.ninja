@@ -58,16 +58,16 @@
               "plural": "nodes"
             },
             {
-              "kind": "PersistentVolumeClaim",
-              "namespaced": true,
-              "singular": "persistentvolumeclaim",
-              "plural": "persistentvolumeclaims"
-            },
-            {
               "kind": "PersistentVolume",
               "namespaced": false,
               "singular": "persistentvolume",
               "plural": "persistentvolumes"
+            },
+            {
+              "kind": "PersistentVolumeClaim",
+              "namespaced": true,
+              "singular": "persistentvolumeclaim",
+              "plural": "persistentvolumeclaims"
             },
             {
               "kind": "Pod",
@@ -100,16 +100,84 @@
               "plural": "secrets"
             },
             {
-              "kind": "ServiceAccount",
-              "namespaced": true,
-              "singular": "serviceaccount",
-              "plural": "serviceaccounts"
-            },
-            {
               "kind": "Service",
               "namespaced": true,
               "singular": "service",
               "plural": "services"
+            },
+            {
+              "kind": "ServiceAccount",
+              "namespaced": true,
+              "singular": "serviceaccount",
+              "plural": "serviceaccounts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admissionregistration.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "MutatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "mutatingwebhookconfiguration",
+              "plural": "mutatingwebhookconfigurations"
+            },
+            {
+              "kind": "ValidatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "validatingwebhookconfiguration",
+              "plural": "validatingwebhookconfigurations"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "MutatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "mutatingwebhookconfiguration",
+              "plural": "mutatingwebhookconfigurations"
+            },
+            {
+              "kind": "ValidatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "validatingwebhookconfiguration",
+              "plural": "validatingwebhookconfigurations"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apiextensions.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "CustomResourceDefinition",
+              "namespaced": false,
+              "singular": "customresourcedefinition",
+              "plural": "customresourcedefinitions"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CustomResourceDefinition",
+              "namespaced": false,
+              "singular": "customresourcedefinition",
+              "plural": "customresourcedefinitions"
             }
           ]
         }
@@ -138,23 +206,6 @@
               "namespaced": false,
               "singular": "apiservice",
               "plural": "apiservices"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "extensions",
-      "preferredVersion": "v1beta1",
-      "apiVersions": [
-        {
-          "version": "v1beta1",
-          "resources": [
-            {
-              "kind": "Ingress",
-              "namespaced": true,
-              "singular": "ingress",
-              "plural": "ingresses"
             }
           ]
         }
@@ -196,23 +247,6 @@
               "namespaced": true,
               "singular": "statefulset",
               "plural": "statefulsets"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "events.k8s.io",
-      "preferredVersion": "v1beta1",
-      "apiVersions": [
-        {
-          "version": "v1beta1",
-          "resources": [
-            {
-              "kind": "Event",
-              "namespaced": true,
-              "singular": "event",
-              "plural": "events"
             }
           ]
         }
@@ -395,6 +429,68 @@
       ]
     },
     {
+      "name": "coordination.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "Lease",
+              "namespaced": true,
+              "singular": "lease",
+              "plural": "leases"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "Lease",
+              "namespaced": true,
+              "singular": "lease",
+              "plural": "leases"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "events.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "Event",
+              "namespaced": true,
+              "singular": "event",
+              "plural": "events"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extensions",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "Ingress",
+              "namespaced": true,
+              "singular": "ingress",
+              "plural": "ingresses"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "networking.k8s.io",
       "preferredVersion": "v1",
       "apiVersions": [
@@ -417,6 +513,23 @@
               "namespaced": true,
               "singular": "ingress",
               "plural": "ingresses"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "node.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "RuntimeClass",
+              "namespaced": false,
+              "singular": "runtimeclass",
+              "plural": "runtimeclasses"
             }
           ]
         }
@@ -453,28 +566,28 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "ClusterRoleBinding",
-              "namespaced": false,
-              "singular": "clusterrolebinding",
-              "plural": "clusterrolebindings"
-            },
-            {
               "kind": "ClusterRole",
               "namespaced": false,
               "singular": "clusterrole",
               "plural": "clusterroles"
             },
             {
-              "kind": "RoleBinding",
-              "namespaced": true,
-              "singular": "rolebinding",
-              "plural": "rolebindings"
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings"
             },
             {
               "kind": "Role",
               "namespaced": true,
               "singular": "role",
               "plural": "roles"
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings"
             }
           ]
         },
@@ -482,28 +595,56 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "ClusterRoleBinding",
-              "namespaced": false,
-              "singular": "clusterrolebinding",
-              "plural": "clusterrolebindings"
-            },
-            {
               "kind": "ClusterRole",
               "namespaced": false,
               "singular": "clusterrole",
               "plural": "clusterroles"
             },
             {
-              "kind": "RoleBinding",
-              "namespaced": true,
-              "singular": "rolebinding",
-              "plural": "rolebindings"
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings"
             },
             {
               "kind": "Role",
               "namespaced": true,
               "singular": "role",
               "plural": "roles"
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "scheduling.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "PriorityClass",
+              "namespaced": false,
+              "singular": "priorityclass",
+              "plural": "priorityclasses"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "PriorityClass",
+              "namespaced": false,
+              "singular": "priorityclass",
+              "plural": "priorityclasses"
             }
           ]
         }
@@ -556,147 +697,6 @@
               "namespaced": false,
               "singular": "volumeattachment",
               "plural": "volumeattachments"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "admissionregistration.k8s.io",
-      "preferredVersion": "v1",
-      "apiVersions": [
-        {
-          "version": "v1",
-          "resources": [
-            {
-              "kind": "MutatingWebhookConfiguration",
-              "namespaced": false,
-              "singular": "mutatingwebhookconfiguration",
-              "plural": "mutatingwebhookconfigurations"
-            },
-            {
-              "kind": "ValidatingWebhookConfiguration",
-              "namespaced": false,
-              "singular": "validatingwebhookconfiguration",
-              "plural": "validatingwebhookconfigurations"
-            }
-          ]
-        },
-        {
-          "version": "v1beta1",
-          "resources": [
-            {
-              "kind": "MutatingWebhookConfiguration",
-              "namespaced": false,
-              "singular": "mutatingwebhookconfiguration",
-              "plural": "mutatingwebhookconfigurations"
-            },
-            {
-              "kind": "ValidatingWebhookConfiguration",
-              "namespaced": false,
-              "singular": "validatingwebhookconfiguration",
-              "plural": "validatingwebhookconfigurations"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "apiextensions.k8s.io",
-      "preferredVersion": "v1",
-      "apiVersions": [
-        {
-          "version": "v1",
-          "resources": [
-            {
-              "kind": "CustomResourceDefinition",
-              "namespaced": false,
-              "singular": "customresourcedefinition",
-              "plural": "customresourcedefinitions"
-            }
-          ]
-        },
-        {
-          "version": "v1beta1",
-          "resources": [
-            {
-              "kind": "CustomResourceDefinition",
-              "namespaced": false,
-              "singular": "customresourcedefinition",
-              "plural": "customresourcedefinitions"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "scheduling.k8s.io",
-      "preferredVersion": "v1",
-      "apiVersions": [
-        {
-          "version": "v1",
-          "resources": [
-            {
-              "kind": "PriorityClass",
-              "namespaced": false,
-              "singular": "priorityclass",
-              "plural": "priorityclasses"
-            }
-          ]
-        },
-        {
-          "version": "v1beta1",
-          "resources": [
-            {
-              "kind": "PriorityClass",
-              "namespaced": false,
-              "singular": "priorityclass",
-              "plural": "priorityclasses"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "coordination.k8s.io",
-      "preferredVersion": "v1",
-      "apiVersions": [
-        {
-          "version": "v1",
-          "resources": [
-            {
-              "kind": "Lease",
-              "namespaced": true,
-              "singular": "lease",
-              "plural": "leases"
-            }
-          ]
-        },
-        {
-          "version": "v1beta1",
-          "resources": [
-            {
-              "kind": "Lease",
-              "namespaced": true,
-              "singular": "lease",
-              "plural": "leases"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "node.k8s.io",
-      "preferredVersion": "v1beta1",
-      "apiVersions": [
-        {
-          "version": "v1beta1",
-          "resources": [
-            {
-              "kind": "RuntimeClass",
-              "namespaced": false,
-              "singular": "runtimeclass",
-              "plural": "runtimeclasses"
             }
           ]
         }

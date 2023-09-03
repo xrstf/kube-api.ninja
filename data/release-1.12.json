@@ -1,6 +1,6 @@
 {
-  "version": "1.25.11",
-  "release": "1.25",
+  "version": "1.12.10",
+  "release": "1.12",
   "apiGroups": [
     {
       "name": "",
@@ -117,10 +117,10 @@
     },
     {
       "name": "admissionregistration.k8s.io",
-      "preferredVersion": "v1",
+      "preferredVersion": "v1beta1",
       "apiVersions": [
         {
-          "version": "v1",
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "MutatingWebhookConfiguration",
@@ -140,10 +140,10 @@
     },
     {
       "name": "apiextensions.k8s.io",
-      "preferredVersion": "v1",
+      "preferredVersion": "v1beta1",
       "apiVersions": [
         {
-          "version": "v1",
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "CustomResourceDefinition",
@@ -161,6 +161,17 @@
       "apiVersions": [
         {
           "version": "v1",
+          "resources": [
+            {
+              "kind": "APIService",
+              "namespaced": false,
+              "singular": "apiservice",
+              "plural": "apiservices"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "APIService",
@@ -210,6 +221,64 @@
               "plural": "statefulsets"
             }
           ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "ControllerRevision",
+              "namespaced": true,
+              "singular": "controllerrevision",
+              "plural": "controllerrevisions"
+            },
+            {
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments"
+            },
+            {
+              "kind": "StatefulSet",
+              "namespaced": true,
+              "singular": "statefulset",
+              "plural": "statefulsets"
+            }
+          ]
+        },
+        {
+          "version": "v1beta2",
+          "resources": [
+            {
+              "kind": "ControllerRevision",
+              "namespaced": true,
+              "singular": "controllerrevision",
+              "plural": "controllerrevisions"
+            },
+            {
+              "kind": "DaemonSet",
+              "namespaced": true,
+              "singular": "daemonset",
+              "plural": "daemonsets"
+            },
+            {
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments"
+            },
+            {
+              "kind": "ReplicaSet",
+              "namespaced": true,
+              "singular": "replicaset",
+              "plural": "replicasets"
+            },
+            {
+              "kind": "StatefulSet",
+              "namespaced": true,
+              "singular": "statefulset",
+              "plural": "statefulsets"
+            }
+          ]
         }
       ]
     },
@@ -219,6 +288,17 @@
       "apiVersions": [
         {
           "version": "v1",
+          "resources": [
+            {
+              "kind": "TokenReview",
+              "namespaced": false,
+              "singular": "tokenreview",
+              "plural": "tokenreviews"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "TokenReview",
@@ -262,12 +342,41 @@
               "plural": "subjectaccessreviews"
             }
           ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "LocalSubjectAccessReview",
+              "namespaced": true,
+              "singular": "localsubjectaccessreview",
+              "plural": "localsubjectaccessreviews"
+            },
+            {
+              "kind": "SelfSubjectAccessReview",
+              "namespaced": false,
+              "singular": "selfsubjectaccessreview",
+              "plural": "selfsubjectaccessreviews"
+            },
+            {
+              "kind": "SelfSubjectRulesReview",
+              "namespaced": false,
+              "singular": "selfsubjectrulesreview",
+              "plural": "selfsubjectrulesreviews"
+            },
+            {
+              "kind": "SubjectAccessReview",
+              "namespaced": false,
+              "singular": "subjectaccessreview",
+              "plural": "subjectaccessreviews"
+            }
+          ]
         }
       ]
     },
     {
       "name": "autoscaling",
-      "preferredVersion": "v2",
+      "preferredVersion": "v1",
       "apiVersions": [
         {
           "version": "v1",
@@ -281,7 +390,7 @@
           ]
         },
         {
-          "version": "v2",
+          "version": "v2beta1",
           "resources": [
             {
               "kind": "HorizontalPodAutoscaler",
@@ -312,16 +421,21 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "CronJob",
-              "namespaced": true,
-              "singular": "cronjob",
-              "plural": "cronjobs"
-            },
-            {
               "kind": "Job",
               "namespaced": true,
               "singular": "job",
               "plural": "jobs"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CronJob",
+              "namespaced": true,
+              "singular": "cronjob",
+              "plural": "cronjobs"
             }
           ]
         }
@@ -329,10 +443,10 @@
     },
     {
       "name": "certificates.k8s.io",
-      "preferredVersion": "v1",
+      "preferredVersion": "v1beta1",
       "apiVersions": [
         {
-          "version": "v1",
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "CertificateSigningRequest",
@@ -346,10 +460,10 @@
     },
     {
       "name": "coordination.k8s.io",
-      "preferredVersion": "v1",
+      "preferredVersion": "v1beta1",
       "apiVersions": [
         {
-          "version": "v1",
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "Lease",
@@ -362,28 +476,11 @@
       ]
     },
     {
-      "name": "discovery.k8s.io",
-      "preferredVersion": "v1",
-      "apiVersions": [
-        {
-          "version": "v1",
-          "resources": [
-            {
-              "kind": "EndpointSlice",
-              "namespaced": true,
-              "singular": "endpointslice",
-              "plural": "endpointslices"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name": "events.k8s.io",
-      "preferredVersion": "v1",
+      "preferredVersion": "v1beta1",
       "apiVersions": [
         {
-          "version": "v1",
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "Event",
@@ -396,40 +493,53 @@
       ]
     },
     {
-      "name": "flowcontrol.apiserver.k8s.io",
-      "preferredVersion": "v1beta2",
+      "name": "extensions",
+      "preferredVersion": "v1beta1",
       "apiVersions": [
         {
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "FlowSchema",
-              "namespaced": false,
-              "singular": "flowschema",
-              "plural": "flowschemas"
+              "kind": "DaemonSet",
+              "namespaced": true,
+              "singular": "daemonset",
+              "plural": "daemonsets"
             },
             {
-              "kind": "PriorityLevelConfiguration",
-              "namespaced": false,
-              "singular": "prioritylevelconfiguration",
-              "plural": "prioritylevelconfigurations"
-            }
-          ]
-        },
-        {
-          "version": "v1beta2",
-          "resources": [
-            {
-              "kind": "FlowSchema",
-              "namespaced": false,
-              "singular": "flowschema",
-              "plural": "flowschemas"
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments"
             },
             {
-              "kind": "PriorityLevelConfiguration",
+              "kind": "Ingress",
+              "namespaced": true,
+              "singular": "ingress",
+              "plural": "ingresses"
+            },
+            {
+              "kind": "NetworkPolicy",
+              "namespaced": true,
+              "singular": "networkpolicy",
+              "plural": "networkpolicies"
+            },
+            {
+              "kind": "PodSecurityPolicy",
               "namespaced": false,
-              "singular": "prioritylevelconfiguration",
-              "plural": "prioritylevelconfigurations"
+              "singular": "podsecuritypolicy",
+              "plural": "podsecuritypolicies"
+            },
+            {
+              "kind": "ReplicaSet",
+              "namespaced": true,
+              "singular": "replicaset",
+              "plural": "replicasets"
+            },
+            {
+              "kind": "ReplicationControllerDummy",
+              "namespaced": true,
+              "singular": "replicationcontrollerdummy",
+              "plural": "replicationcontrollers"
             }
           ]
         }
@@ -443,18 +553,6 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "Ingress",
-              "namespaced": true,
-              "singular": "ingress",
-              "plural": "ingresses"
-            },
-            {
-              "kind": "IngressClass",
-              "namespaced": false,
-              "singular": "ingressclass",
-              "plural": "ingressclasses"
-            },
-            {
               "kind": "NetworkPolicy",
               "namespaced": true,
               "singular": "networkpolicy",
@@ -465,34 +563,23 @@
       ]
     },
     {
-      "name": "node.k8s.io",
-      "preferredVersion": "v1",
-      "apiVersions": [
-        {
-          "version": "v1",
-          "resources": [
-            {
-              "kind": "RuntimeClass",
-              "namespaced": false,
-              "singular": "runtimeclass",
-              "plural": "runtimeclasses"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name": "policy",
-      "preferredVersion": "v1",
+      "preferredVersion": "v1beta1",
       "apiVersions": [
         {
-          "version": "v1",
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "PodDisruptionBudget",
               "namespaced": true,
               "singular": "poddisruptionbudget",
               "plural": "poddisruptionbudgets"
+            },
+            {
+              "kind": "PodSecurityPolicy",
+              "namespaced": false,
+              "singular": "podsecuritypolicy",
+              "plural": "podsecuritypolicies"
             }
           ]
         }
@@ -530,15 +617,44 @@
               "plural": "rolebindings"
             }
           ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "ClusterRole",
+              "namespaced": false,
+              "singular": "clusterrole",
+              "plural": "clusterroles"
+            },
+            {
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings"
+            },
+            {
+              "kind": "Role",
+              "namespaced": true,
+              "singular": "role",
+              "plural": "roles"
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings"
+            }
+          ]
         }
       ]
     },
     {
       "name": "scheduling.k8s.io",
-      "preferredVersion": "v1",
+      "preferredVersion": "v1beta1",
       "apiVersions": [
         {
-          "version": "v1",
+          "version": "v1beta1",
           "resources": [
             {
               "kind": "PriorityClass",
@@ -558,23 +674,16 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "CSIDriver",
+              "kind": "StorageClass",
               "namespaced": false,
-              "singular": "csidriver",
-              "plural": "csidrivers"
-            },
-            {
-              "kind": "CSINode",
-              "namespaced": false,
-              "singular": "csinode",
-              "plural": "csinodes"
-            },
-            {
-              "kind": "CSIStorageCapacity",
-              "namespaced": true,
-              "singular": "csistoragecapacity",
-              "plural": "csistoragecapacities"
-            },
+              "singular": "storageclass",
+              "plural": "storageclasses"
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
             {
               "kind": "StorageClass",
               "namespaced": false,
@@ -586,17 +695,6 @@
               "namespaced": false,
               "singular": "volumeattachment",
               "plural": "volumeattachments"
-            }
-          ]
-        },
-        {
-          "version": "v1beta1",
-          "resources": [
-            {
-              "kind": "CSIStorageCapacity",
-              "namespaced": true,
-              "singular": "csistoragecapacity",
-              "plural": "csistoragecapacities"
             }
           ]
         }
