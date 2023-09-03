@@ -11,16 +11,34 @@ export KUBECONFIG="$(realpath kubeconfig)"
 
 clusterName=kubernetes-apis
 
-for release in 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 1.25 1.26 1.27 1.28; do
+downloadKind() {
+  local kubernetesRelease="$1"
+  local arch="$(go env GOARCH)"
+
+  local kindVersion
+  kindVersion="$(jq --arg rel "$release" -r '.[$rel].kind' hack/kind-configs.json)"
+
+  local filename="_build/kind-$kindVersion"
+  if [ ! -f "$filename" ]; then
+    wget -O "$filename" "https://github.com/kubernetes-sigs/kind/releases/download/v$kindVersion/kind-linux-$arch"
+    chmod +x "$filename"
+  fi
+
+  echo "$filename"
+}
+
+for release in 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 1.25 1.26 1.27 1.28; do
   echo "Dumping APIs for Kubernetes $release …"
 
-  image="$(jq --arg rel "$release" -r '.[$rel]' hack/kind-images.json)"
+  kind="$(downloadKind "$release")"
 
-  kind create cluster \
+  image="$(jq --arg rel "$release" -r '.[$rel].image' hack/kind-configs.json)"
+
+  $kind create cluster \
     --image "$image" \
     --name "$clusterName"
 
   _build/dumper > "data/release-$release.json"
 
-  kind delete cluster --name "$clusterName"
+  $kind delete cluster --name "$clusterName"
 done
