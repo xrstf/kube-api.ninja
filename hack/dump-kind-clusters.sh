@@ -20,7 +20,7 @@ downloadKind() {
 
   local filename="_build/kind-$kindVersion"
   if [ ! -f "$filename" ]; then
-    wget -O "$filename" "https://github.com/kubernetes-sigs/kind/releases/download/v$kindVersion/kind-linux-$arch"
+    wget --output-document "$filename" "https://github.com/kubernetes-sigs/kind/releases/download/v$kindVersion/kind-linux-$arch"
     chmod +x "$filename"
   fi
 
