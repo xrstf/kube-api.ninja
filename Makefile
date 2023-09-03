@@ -18,6 +18,7 @@ default: build
 .PHONY: build
 build:
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/dumper
+	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/swaggerdumper
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/render
 
 .PHONY: test

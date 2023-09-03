@@ -68,6 +68,8 @@ func main() {
 		log.Fatalf("Failed to dump cluster info: %v", err)
 	}
 
+	releaseData.Sort()
+
 	encoder := json.NewEncoder(os.Stdout)
 	encoder.SetIndent("", "  ")
 

@@ -3,11 +3,24 @@
 
 package types
 
+import "sort"
+
 type KubernetesRelease struct {
 	Version string `json:"version"`
 	Release string `json:"release"`
 
 	APIGroups []APIGroup `json:"apiGroups"`
+}
+
+func (r *KubernetesRelease) Sort() {
+	for k, group := range r.APIGroups {
+		group.Sort()
+		r.APIGroups[k] = group
+	}
+
+	sort.Slice(r.APIGroups, func(i, j int) bool {
+		return r.APIGroups[i].Name < r.APIGroups[j].Name
+	})
 }
 
 type APIGroup struct {
@@ -16,9 +29,26 @@ type APIGroup struct {
 	APIVersions      []APIVersion `json:"apiVersions"`
 }
 
+func (g *APIGroup) Sort() {
+	for k, version := range g.APIVersions {
+		version.Sort()
+		g.APIVersions[k] = version
+	}
+
+	sort.Slice(g.APIVersions, func(i, j int) bool {
+		return g.APIVersions[i].Version < g.APIVersions[j].Version
+	})
+}
+
 type APIVersion struct {
 	Version   string     `json:"version"` // e.g. "v1beta1"
 	Resources []Resource `json:"resources"`
+}
+
+func (v *APIVersion) Sort() {
+	sort.Slice(v.Resources, func(i, j int) bool {
+		return v.Resources[i].Kind < v.Resources[j].Kind
+	})
 }
 
 type Resource struct {
