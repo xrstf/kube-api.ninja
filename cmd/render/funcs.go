@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"go.xrstf.de/kubernetes-apis/pkg/types"
+	"go.xrstf.de/kubernetes-apis/pkg/version"
 )
 
 var (
@@ -44,6 +45,13 @@ func getAPIGroupReleaseClass(apiOverview *types.APIOverview, apiGroup *types.Gro
 		classes = append(classes, "a10y-missing")
 	} else {
 		classes = append(classes, "a10y-exists")
+
+		v, _ := version.ParseAPIVersion(preferred)
+		if v.Prerelease() {
+			classes = append(classes, "maturity-prerelease")
+		} else {
+			classes = append(classes, "maturity-stable")
+		}
 
 		// there is a preferred version for this API group in this Kubernetes release;
 		// figure out if this is the first or last release to offer this API group at all

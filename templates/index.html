@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,32 +11,30 @@
     .apiversion>.name,
     .apigroup td.release,
     td.scope {
-      font-family: monospace;
+      /* font-family: monospace; */
       line-height: 150%;
     }
 
-    /* .apigroup > td, .apigroup > th, tfoot th {
-      border-top: 2px solid white;
-      padding-top: 2px;
-    } */
+    .hidden {
+      display: none;
+    }
 
-    /* .apigroup > .name,
-    .apiversion > .name,
-    .apiresource > .name {
-      border-right: 2px solid white;
-    } */
+    /* make enough room to fit the fixed footer into the layout */
+    .site-container {
+      margin-bottom: 100px;
+    }
 
     .apigroup>.name {
       text-align: left;
+      padding-left: 5px;
+
+      /* make sure the icons do not slip into a new line */
+      white-space: nowrap;
     }
 
     .apigroup>.release {
       text-align: center;
     }
-
-    /* .apiversion > td, .apiversion > th {
-      border-top: 1px solid rgb(132, 132, 132);
-    } */
 
     .apiversion {
       font-size: 90%;
@@ -74,6 +71,9 @@
       text-align: left;
       font-weight: normal;
       padding-left: 40px;
+
+      /* make sure the icons do not slip into a new line */
+      white-space: nowrap;
     }
 
     /* combat bootstrap's large padding */
@@ -82,7 +82,12 @@
       padding: .2rem .2rem;
     }
 
-    /* inject our own colors into the badges */
+    /* fix missing table borders in Firefox */
+    /* thanks to https://stackoverflow.com/a/58319944 */
+    .table tbody th {
+      background-clip: padding-box;
+    }
+
     td.release {
       padding: .2rem 0 !important;
     }
@@ -120,9 +125,13 @@
       text-indent: -9999px;
     }
 
-    /* for API groups there is only exists/missing */
+    /* for API groups there is exists/stable/issing */
     .apigroup td.release.a10y-exists span {
       background-color: #198754;
+    }
+
+    .apigroup td.release.a10y-exists.maturity-prerelease span {
+      background-color: #1c5f42;
     }
 
     /* for API versions there is exists/preferred/missing */
@@ -153,6 +162,18 @@
       text-decoration: none;
     }
 
+    .apiresource .icons {
+      /* make the icons for resources a bit less prominent to reduce visual clutter */
+      opacity: 0.5;
+
+      /* move icons a bit away from the text */
+      padding-left: 5px;
+    }
+
+    .apiresource:hover .icons {
+      opacity: 1;
+    }
+
     /* if an APIGroup is collapsed, hide all rows except for the group's row in it */
     tbody.collapsed tr.apiversion,
     tbody.collapsed tr.apiresource {
@@ -160,20 +181,39 @@
     }
 
     /* if an APIVersion is collapsed, the hiddenness will be applied via JavaScript */
-
-    /* if an APIResource is hidden, hide it */
-    .apiresource.hidden {
-      display: none;
-    }
+    /* if an APIResource is hidden, hide it (there is already a .hidden rule) */
 
     /* page footer */
     footer {
       font-size: 75%;
+
+      /* make the footer independent from the megatable, so scrolling horizontally works better */
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+
+      /* make sure the footer is hidden behind the table when scrolling */
+      z-index: -1;
     }
 
     footer .border-top {
       padding-top: 1rem;
       margin-bottom: 0.5rem;
+    }
+
+    /* make the header row stick to the top of the screen when scrolling */
+    /* note that this would interfere with bootstrap's table-responsive */
+    .release-megatable thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    /* and make the left column stick to the side of the screen */
+    .release-megatable thead th,
+    .release-megatable tbody th.name {
+      position: sticky;
+      left: 0;
     }
   </style>
 </head>
@@ -203,116 +243,70 @@
   </nav>
 
   <!-- the main page container -->
-  <main class="container-fluid">
+  <main class="site-container">
 
     <!-- This 2 column div contains the mega table; it's two columns so that the right side table -->
     <!-- can be a responsive table and get horizontal scrolling while keeping the left column fixed. -->
-    <div class="release-megatable">
-      <div class="row g-0">
-        <!-- left column: API group, version and resource names -->
-        <div class="col-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2">
-          <table class="table legend-table">
-            <thead>
-              <tr>
-                <th colspan="2">API vs. Kubernetes Release</th>
-              </tr>
-            </thead>
-            {{ range $apiGroup := .Overview.APIGroups }}
-            <tbody data-apigroup="{{ $apiGroup.Name }}" class="collapsed">
-              <!-- row for the API group -->
-              <tr class="apigroup">
-                <th class="name">{{ $apiGroup.Name }}</th>
-                <th class="icons"><a href="#" class="toggle" title="expand/collapse this API group">⊕</a></th>
-              </tr>
+    <table class="table release-megatable">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          {{ range $idx, $name := .Overview.Releases }}
+          <th class="release">
+            <a tabindex="{{ $idx }}" role="button" data-bs-toggle="popover" data-release="{{ $name }}">{{ $name }}</a>
+          </th>
+          {{ end }}
+        </tr>
+      </thead>
 
-              {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
-              <!-- row for the API version -->
-              <tr class="apiversion collapsed" data-apiversion="{{ $apiVersion.Version }}">
-                <th class="name">{{ $apiVersion.Version }}</th>
-                <th class="icons"><a href="#" class="toggle" title="expand/collapse this API version">⊕</a></th>
-              </tr>
+      {{ range $apiGroup := .Overview.APIGroups }}
+      <tbody data-apigroup="{{ $apiGroup.Name }}" class="collapsed">
+        <!-- row for the API group -->
+        <tr class="apigroup">
+          <th class="name">
+            {{ $apiGroup.Name }}
+            <span class="icons"><small><a href="#" class="toggle" title="expand/collapse this API group">⊕</a></small></span>
+          </th>
+          {{ range $rel := $.Overview.Releases }}
+          <td class="{{ getAPIGroupReleaseClass $.Overview $apiGroup $rel }}">
+            <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel }}</span>
+          </td>
+          {{ end }}
+        </tr>
 
-              {{ range $apiResource := $apiVersion.Resources }}
-              <!-- row for an API resource -->
-              <tr class="apiresource" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
-                <th class="name">{{ $apiResource.Kind }}</th>
-                <th class="icons"><a href="#" class="docs" title="view documentation for most recent Kubernetes release">⛿</a></th>
-              </tr>
-              {{ end }}
-              {{ end }}
-            </tbody>
-            {{ end }}
-            <tfoot>
-              <tr>
-                <th colspan="2">&nbsp;</th>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+        {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
+        <!-- row for the API version -->
+        <tr class="apiversion collapsed" data-apiversion="{{ $apiVersion.Version }}">
+          <th class="name">
+            <span class="hidden">{{ $apiGroup.Name }}/</span>{{ $apiVersion.Version }}
+            <span class="icons"><small><a href="#" class="toggle" title="expand/collapse this API version">⊕</a></small></span>
+          </th>
+          {{ range $rel := $.Overview.Releases }}
+          <td class="{{ getAPIVersionReleaseClass $.Overview $apiGroup $apiVersion $rel }}">
+            <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Overview $apiGroup $apiVersion $rel }}</span>
+          </td>
+          {{ end }}
+        </tr>
 
-        <!-- right column: the main body of the megatable -->
-        <div class="col-6 col-md-7 col-lg-8 col-xl-9 col-xxl-10 table-responsive">
-          <table class="table overview-table">
-            <thead>
-              <tr>
-                {{ range $idx, $name := .Overview.Releases }}
-                <th class="release">
-                  <a tabindex="{{ $idx }}" role="button" data-bs-toggle="popover" data-release="{{ $name }}">{{ $name }}</a>
-                </th>
-                {{ end }}
-              </tr>
-            </thead>
-
-            {{ range $apiGroup := .Overview.APIGroups }}
-            <tbody data-apigroup="{{ $apiGroup.Name }}" class="collapsed">
-              <!-- row for the API group -->
-              <tr class="apigroup">
-                {{ range $rel := $.Overview.Releases }}
-                <td class="{{ getAPIGroupReleaseClass $.Overview $apiGroup $rel }}">
-                  <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel }}</span>
-                </td>
-                <!-- <td>&nbsp;</td> -->
-                {{ end }}
-              </tr>
-
-              {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
-              <!-- row for the API version -->
-              <tr class="apiversion collapsed" data-apiversion="{{ $apiVersion.Version }}">
-                {{ range $rel := $.Overview.Releases }}
-                <td class="{{ getAPIVersionReleaseClass $.Overview $apiGroup $apiVersion $rel }}">
-                  <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Overview $apiGroup $apiVersion $rel }}</span>
-                </td>
-                {{ end }}
-              </tr>
-
-              {{ range $apiResource := $apiVersion.Resources }}
-              <!-- row for an API resource -->
-              <tr class="apiresource" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
-                {{ range $rel := $.Overview.Releases }}
-                <td class="{{ getAPIResourceReleaseClass $.Overview $apiGroup $apiVersion $apiResource $rel }}">
-                  <span class="badge text-bg">{{ getAPIResourceReleaseContent $.Overview $apiGroup $apiVersion $apiResource $rel }}</span>
-                </td>
-                {{ end }}
-              </tr>
-              {{ end }} {{/* end of API resource loop */}}
-              {{ end }} {{/* end of API version loop */}}
-            </tbody>
-            {{ end }} {{/* end of API group loop */}}
-
-            <tfoot>
-              <tr>
-                {{ range $idx, $name := .Overview.Releases }}
-                <th class="release">
-                  <a tabindex="{{ add $idx 100 }}" role="button" data-release="{{ $name }}" data-bs-toggle="popover">{{ $name }}</a>
-                </th>
-                {{ end }}
-              </tr>
-            </tfoot>
-          </table>
-        </div> <!-- end of right column -->
-      </div> <!-- end of megatable row -->
-    </div> <!-- end of 2 column megatable -->
-
+        {{ range $apiResource := $apiVersion.Resources }}
+        <!-- row for an API resource -->
+        <tr class="apiresource" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
+          <th class="name">
+            {{ $apiResource.Kind }}
+            <span class="icons"><small><a href="#" class="docs" title="view documentation for most recent Kubernetes release">⛿</a></small></span>
+          </th>
+          {{ range $rel := $.Overview.Releases }}
+          <td class="{{ getAPIResourceReleaseClass $.Overview $apiGroup $apiVersion $apiResource $rel }}">
+            <span class="badge text-bg">{{ getAPIResourceReleaseContent $.Overview $apiGroup $apiVersion $apiResource $rel }}</span>
+          </td>
+          {{ end }}
+        </tr>
+        {{ end }}
+        {{ end }}
+      </tbody>
+      {{ end }}
+    </table>
+  </main> <!-- main content done -->
 
   <footer>
     <p class="text-center text-body-secondary border-top">
@@ -323,7 +317,6 @@
       This website has no relation with and is not endorsed by The Linux Foundation.
     </p>
   </footer>
-  </main> <!-- main content done -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
@@ -377,9 +370,6 @@
     // initial setup
     document.querySelectorAll('tr.apiversion').forEach(updateAPIResourcesVisibility);
 
-    // clicking in one table has to affect the other one, too
-    let overviewTable = document.querySelector('table.overview-table');
-
     // toggle visibility of APIVersions for an APIGroup
     document.querySelectorAll('tr.apigroup a.toggle').forEach(function(node) {
       node.addEventListener("click", function(e) {
@@ -389,9 +379,6 @@
 
         // toggle visibility in legend table
         apigroupBody.classList.toggle("collapsed");
-
-        // toggle it in the overview table as well
-        overviewTable.querySelector('tbody[data-apigroup="' + apigroup + '"]').classList.toggle("collapsed");
 
         // update icon
         this.innerText = apigroupBody.classList.contains("collapsed") ? '⊕' : '⊙';
@@ -411,11 +398,6 @@
         // toggle visibility in legend table
         apiversionRow.classList.toggle("collapsed");
         updateAPIResourcesVisibility(apiversionRow);
-
-        // toggle it in the overview table as well
-        let overviewVersionRow = overviewTable.querySelector('tbody[data-apigroup="' + apigroup + '"] tr.apiversion[data-apiversion="' + apiversion + '"]');
-        overviewVersionRow.classList.toggle("collapsed");
-        updateAPIResourcesVisibility(overviewVersionRow);
 
         // update icon
         this.innerText = apiversionRow.classList.contains("collapsed") ? '⊕' : '⊙';
