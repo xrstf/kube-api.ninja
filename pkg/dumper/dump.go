@@ -11,8 +11,8 @@ import (
 	"k8s.io/client-go/discovery"
 )
 
-func DumpClusterData(client *discovery.DiscoveryClient) (*types.KubernetesRelease, error) {
-	result := &types.KubernetesRelease{}
+func DumpClusterData(client *discovery.DiscoveryClient) (*types.KubernetesAPI, error) {
+	result := &types.KubernetesAPI{}
 
 	server, err := client.ServerVersion()
 	if err != nil {

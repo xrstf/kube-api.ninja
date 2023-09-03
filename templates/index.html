@@ -215,6 +215,14 @@
       position: sticky;
       left: 0;
     }
+
+    /* mark currently supported Kubernetes releases */
+    td.release-supported, th.release-supported {
+      background: #1c5f4275;
+    }
+    td.oldest-release-supported, th.oldest-release-supported {
+      border-left: 1px solid #495057;
+    }
   </style>
 </head>
 
@@ -251,15 +259,21 @@
       <thead>
         <tr>
           <th>&nbsp;</th>
-          {{ range $idx, $name := .Overview.Releases }}
-          <th class="release">
-            <a tabindex="{{ $idx }}" role="button" data-bs-toggle="popover" data-release="{{ $name }}">{{ $name }}</a>
+          {{ range $idx, $rel := .Timeline.Releases }}
+          <th
+            class="{{ getReleaseHeaderClass $.Timeline $rel }}"
+            data-release="{{ $rel.Version }}"
+            data-latest-version="{{ $rel.LatestVersion }}"
+            data-release-date="{{ $rel.ReleaseDate.Format "2006-01-02" }}"
+            data-eol-date="{{ with $rel.EndOfLifeDate }}{{ .Format "2006-01-02" }}{{ end }}"
+          >
+            <a tabindex="{{ $idx }}" role="button" data-bs-toggle="popover" data-release="{{ $rel.Version }}">{{ $rel.Version }}</a>
           </th>
           {{ end }}
         </tr>
       </thead>
 
-      {{ range $apiGroup := .Overview.APIGroups }}
+      {{ range $apiGroup := .Timeline.APIGroups }}
       <tbody data-apigroup="{{ $apiGroup.Name }}" class="collapsed">
         <!-- row for the API group -->
         <tr class="apigroup">
@@ -267,9 +281,9 @@
             {{ $apiGroup.Name }}
             <span class="icons"><small><a href="#" class="toggle" title="expand/collapse this API group">⊕</a></small></span>
           </th>
-          {{ range $rel := $.Overview.Releases }}
-          <td class="{{ getAPIGroupReleaseClass $.Overview $apiGroup $rel }}">
-            <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel }}</span>
+          {{ range $rel := $.Timeline.Releases }}
+          <td class="{{ getAPIGroupReleaseClass $.Timeline $apiGroup $rel }}">
+            <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel.Version }}</span>
           </td>
           {{ end }}
         </tr>
@@ -281,9 +295,9 @@
             <span class="hidden">{{ $apiGroup.Name }}/</span>{{ $apiVersion.Version }}
             <span class="icons"><small><a href="#" class="toggle" title="expand/collapse this API version">⊕</a></small></span>
           </th>
-          {{ range $rel := $.Overview.Releases }}
-          <td class="{{ getAPIVersionReleaseClass $.Overview $apiGroup $apiVersion $rel }}">
-            <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Overview $apiGroup $apiVersion $rel }}</span>
+          {{ range $rel := $.Timeline.Releases }}
+          <td class="{{ getAPIVersionReleaseClass $.Timeline $apiGroup $apiVersion $rel }}">
+            <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Timeline $apiGroup $apiVersion $rel }}</span>
           </td>
           {{ end }}
         </tr>
@@ -295,9 +309,9 @@
             {{ $apiResource.Kind }}
             <span class="icons"><small><a href="#" class="docs" title="view documentation for most recent Kubernetes release">⛿</a></small></span>
           </th>
-          {{ range $rel := $.Overview.Releases }}
-          <td class="{{ getAPIResourceReleaseClass $.Overview $apiGroup $apiVersion $apiResource $rel }}">
-            <span class="badge text-bg">{{ getAPIResourceReleaseContent $.Overview $apiGroup $apiVersion $apiResource $rel }}</span>
+          {{ range $rel := $.Timeline.Releases }}
+          <td class="{{ getAPIResourceReleaseClass $.Timeline $apiGroup $apiVersion $apiResource $rel }}">
+            <span class="badge text-bg">{{ getAPIResourceReleaseContent $.Timeline $apiGroup $apiVersion $apiResource $rel }}</span>
           </td>
           {{ end }}
         </tr>

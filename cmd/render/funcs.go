@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"go.xrstf.de/kubernetes-apis/pkg/types"
+	"go.xrstf.de/kubernetes-apis/pkg/timeline"
 	"go.xrstf.de/kubernetes-apis/pkg/version"
 )
 
@@ -18,6 +18,7 @@ var (
 		"add": func(a, b int) int {
 			return a + b
 		},
+		"getReleaseHeaderClass":        getReleaseHeaderClass,
 		"getAPIGroupReleaseClass":      getAPIGroupReleaseClass,
 		"getAPIVersionReleaseClass":    getAPIVersionReleaseClass,
 		"getAPIVersionReleaseContent":  getAPIVersionReleaseContent,
@@ -37,10 +38,49 @@ func jumpMinorRelease(s string, minorSteps int) string {
 	return fmt.Sprintf("%s.%d", parts[0], minor+minorSteps)
 }
 
-func getAPIGroupReleaseClass(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, release string) string {
-	classes := []string{"release"}
+func getReleaseHeaderClassNames(tl *timeline.Timeline, release *timeline.ReleaseMetadata) []string {
+	classes := []string{}
 
-	preferred := apiGroup.PreferredVersion(release)
+	if release.Supported {
+		classes = append(classes, "release-supported")
+
+		// is this the oldest supported release?
+		isOldest := false
+
+		for _, metadata := range tl.Releases {
+			if metadata.Supported {
+				isOldest = metadata.Version == release.Version
+				break
+			}
+		}
+
+		if isOldest {
+			classes = append(classes, "oldest-release-supported")
+		}
+
+	} else {
+		classes = append(classes, "release-unsupported")
+	}
+
+	return classes
+}
+
+func getReleaseHeaderClass(tl *timeline.Timeline, release *timeline.ReleaseMetadata) string {
+	classes := append(getReleaseHeaderClassNames(tl, release), "release")
+
+	return strings.Join(classes, " ")
+}
+
+func getAPIGroupReleaseClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, release *timeline.ReleaseMetadata) string {
+	classes := append(getReleaseHeaderClassNames(tl, release), "release")
+
+	if release.Supported {
+		classes = append(classes, "supported")
+	} else {
+		classes = append(classes, "unsupported")
+	}
+
+	preferred := apiGroup.PreferredVersion(release.Version)
 	if preferred == "" {
 		classes = append(classes, "a10y-missing")
 	} else {
@@ -60,14 +100,14 @@ func getAPIGroupReleaseClass(apiOverview *types.APIOverview, apiGroup *types.Gro
 
 		edge := false
 
-		if prevRelease := jumpMinorRelease(release, -1); apiOverview.HasRelease(prevRelease) {
+		if prevRelease := jumpMinorRelease(release.Version, -1); tl.HasRelease(prevRelease) {
 			if apiGroup.PreferredVersion(prevRelease) == "" {
 				classes = append(classes, "a10y-begin")
 				edge = true
 			}
 		}
 
-		if nextRelease := jumpMinorRelease(release, +1); apiOverview.HasRelease(nextRelease) {
+		if nextRelease := jumpMinorRelease(release.Version, +1); tl.HasRelease(nextRelease) {
 			if apiGroup.PreferredVersion(nextRelease) == "" {
 				classes = append(classes, "a10y-end")
 				edge = true
@@ -83,17 +123,23 @@ func getAPIGroupReleaseClass(apiOverview *types.APIOverview, apiGroup *types.Gro
 	return strings.Join(classes, " ")
 }
 
-func getAPIVersionReleaseClass(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, release string) string {
-	classes := []string{"release"}
+func getAPIVersionReleaseClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, release *timeline.ReleaseMetadata) string {
+	classes := append(getReleaseHeaderClassNames(tl, release), "release")
 
-	if !apiVersion.HasRelease(release) {
+	if release.Supported {
+		classes = append(classes, "supported")
+	} else {
+		classes = append(classes, "unsupported")
+	}
+
+	if !apiVersion.HasRelease(release.Version) {
 		classes = append(classes, "a10y-missing")
 	} else {
 		classes = append(classes, "a10y-exists")
 
 		// is this version the preferred version in this release?
 
-		if apiGroup.PreferredVersions[release] == apiVersion.Version {
+		if apiGroup.PreferredVersions[release.Version] == apiVersion.Version {
 			classes = append(classes, "a10y-preferred")
 		}
 
@@ -101,14 +147,14 @@ func getAPIVersionReleaseClass(apiOverview *types.APIOverview, apiGroup *types.G
 
 		edge := false
 
-		if prevRelease := jumpMinorRelease(release, -1); apiOverview.HasRelease(prevRelease) {
+		if prevRelease := jumpMinorRelease(release.Version, -1); tl.HasRelease(prevRelease) {
 			if !apiVersion.HasRelease(prevRelease) {
 				classes = append(classes, "a10y-begin")
 				edge = true
 			}
 		}
 
-		if nextRelease := jumpMinorRelease(release, +1); apiOverview.HasRelease(nextRelease) {
+		if nextRelease := jumpMinorRelease(release.Version, +1); tl.HasRelease(nextRelease) {
 			if !apiVersion.HasRelease(nextRelease) {
 				classes = append(classes, "a10y-end")
 				edge = true
@@ -124,29 +170,35 @@ func getAPIVersionReleaseClass(apiOverview *types.APIOverview, apiGroup *types.G
 	return strings.Join(classes, " ")
 }
 
-func getAPIVersionReleaseContent(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, release string) template.HTML {
-	if !apiVersion.HasRelease(release) {
+func getAPIVersionReleaseContent(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, release *timeline.ReleaseMetadata) template.HTML {
+	if !apiVersion.HasRelease(release.Version) {
 		return template.HTML("&nbsp;")
 	}
 
-	if apiGroup.PreferredVersions[release] == apiVersion.Version {
+	if apiGroup.PreferredVersions[release.Version] == apiVersion.Version {
 		return "✪"
 	}
 
 	return template.HTML("&nbsp;")
 }
 
-func getAPIResourceReleaseClass(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, apiResource *types.ResourceOverview, release string) string {
-	classes := []string{"release"}
+func getAPIResourceReleaseClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, apiResource *timeline.APIResource, release *timeline.ReleaseMetadata) string {
+	classes := append(getReleaseHeaderClassNames(tl, release), "release")
 
-	if !apiResource.HasRelease(release) {
+	if release.Supported {
+		classes = append(classes, "supported")
+	} else {
+		classes = append(classes, "unsupported")
+	}
+
+	if !apiResource.HasRelease(release.Version) {
 		classes = append(classes, "a10y-missing")
 	} else {
-		classes = append(classes, "a10y-exists", "scope-"+strings.ToLower(apiResource.Scopes[release]))
+		classes = append(classes, "a10y-exists", "scope-"+strings.ToLower(apiResource.Scopes[release.Version]))
 
 		// is this version the preferred version in this release?
 
-		if apiGroup.PreferredVersions[release] == apiVersion.Version {
+		if apiGroup.PreferredVersions[release.Version] == apiVersion.Version {
 			classes = append(classes, "a10y-preferred")
 		}
 
@@ -154,14 +206,14 @@ func getAPIResourceReleaseClass(apiOverview *types.APIOverview, apiGroup *types.
 
 		edge := false
 
-		if prevRelease := jumpMinorRelease(release, -1); apiOverview.HasRelease(prevRelease) {
+		if prevRelease := jumpMinorRelease(release.Version, -1); tl.HasRelease(prevRelease) {
 			if !apiResource.HasRelease(prevRelease) {
 				classes = append(classes, "a10y-begin")
 				edge = true
 			}
 		}
 
-		if nextRelease := jumpMinorRelease(release, +1); apiOverview.HasRelease(nextRelease) {
+		if nextRelease := jumpMinorRelease(release.Version, +1); tl.HasRelease(nextRelease) {
 			if !apiResource.HasRelease(nextRelease) {
 				classes = append(classes, "a10y-end")
 				edge = true
@@ -177,15 +229,15 @@ func getAPIResourceReleaseClass(apiOverview *types.APIOverview, apiGroup *types.
 	return strings.Join(classes, " ")
 }
 
-func getAPIResourceReleaseContent(apiOverview *types.APIOverview, apiGroup *types.GroupOverview, apiVersion *types.VersionOverview, apiResource *types.ResourceOverview, release string) template.HTML {
-	if !apiResource.HasRelease(release) {
+func getAPIResourceReleaseContent(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, apiResource *timeline.APIResource, release *timeline.ReleaseMetadata) template.HTML {
+	if !apiResource.HasRelease(release.Version) {
 		return template.HTML("&nbsp;")
 	}
 
 	// TODO: Only show this per-cell if the scope of the resource actually changed during the lifetime of a single APIVersion
 	// (which is extremely unlikely for upstream API groups).
 
-	switch apiResource.Scopes[release] {
+	switch apiResource.Scopes[release.Version] {
 	case "Namespaced":
 		return "namespaced"
 	case "Cluster":

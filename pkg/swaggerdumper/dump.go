@@ -51,7 +51,7 @@ var (
 	apisResourcePath = regexp.MustCompile(`/apis/[^/]+/[^/]+/([^/]+)$`)
 )
 
-func DumpSwaggerSpec(filename string, kubernetesVersion string) (*types.KubernetesRelease, error) {
+func DumpSwaggerSpec(filename string, kubernetesVersion string) (*types.KubernetesAPI, error) {
 	kubeVersion, err := version.ParseSemver(kubernetesVersion)
 	if err != nil {
 		return nil, fmt.Errorf("invalid Kubernetes version: %w", err)
@@ -65,7 +65,7 @@ func DumpSwaggerSpec(filename string, kubernetesVersion string) (*types.Kubernet
 	}
 	defer f.Close()
 
-	result := &types.KubernetesRelease{
+	result := &types.KubernetesAPI{
 		Version:   kubeVersion.String(),
 		Release:   kubeVersion.MajorMinor(),
 		APIGroups: []types.APIGroup{},

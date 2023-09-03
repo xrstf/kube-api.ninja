@@ -4,14 +4,14 @@
 package main
 
 import (
-	"encoding/json"
 	"html/template"
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
-	"go.xrstf.de/kubernetes-apis/pkg/merger"
-	"go.xrstf.de/kubernetes-apis/pkg/types"
+	"go.xrstf.de/kubernetes-apis/pkg/database"
+	"go.xrstf.de/kubernetes-apis/pkg/timeline"
 )
 
 const (
@@ -19,22 +19,32 @@ const (
 )
 
 func main() {
-	releaseFiles, err := filepath.Glob("data/swagger/release-*.json")
+	now := time.Now().UTC()
+
+	db, err := database.NewReleaseDatabase("data")
 	if err != nil {
-		log.Fatalf("Failed to find release files: %v", err)
+		log.Fatalf("Failed to open database: %v", err)
 	}
 
-	releases := []types.KubernetesRelease{}
-	for _, releaseFile := range releaseFiles {
-		releaseInfo, err := loadReleaseFile(releaseFile)
+	releaseNames, err := db.Releases()
+	if err != nil {
+		log.Fatalf("Failed to list available releases: %v", err)
+	}
+
+	releases := []*database.KubernetesRelease{}
+	for _, releaseName := range releaseNames {
+		release, err := db.Release(releaseName)
 		if err != nil {
-			log.Fatalf("Failed to load release file %q: %v", releaseFile, err)
+			log.Fatalf("Failed to load release %q: %v", releaseName, err)
 		}
 
-		releases = append(releases, *releaseInfo)
+		releases = append(releases, release)
 	}
 
-	overview := merger.MergeKubernetesReleases(releases)
+	timelineObj, err := timeline.CreateTimeline(releases, now)
+	if err != nil {
+		log.Fatalf("Failed to create timeline: %v", err)
+	}
 
 	templates, err := template.New("kubernetes-apis").Funcs(templateFuncs).ParseGlob("templates/*.html")
 	if err != nil {
@@ -46,35 +56,18 @@ func main() {
 	}
 
 	log.Println("Rendering index.html…")
-	if err := renderIndex(outputDirectory, templates, &overview); err != nil {
+	if err := renderIndex(outputDirectory, templates, timelineObj); err != nil {
 		log.Fatalf("Failed to render index.html: %v", err)
 	}
 
 	log.Println("Done.")
 }
 
-func loadReleaseFile(filename string) (*types.KubernetesRelease, error) {
-	f, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	decoder := json.NewDecoder(f)
-
-	rel := &types.KubernetesRelease{}
-	if err := decoder.Decode(rel); err != nil {
-		return nil, err
-	}
-
-	return rel, nil
-}
-
 type indexData struct {
-	Overview *types.APIOverview
+	Timeline *timeline.Timeline
 }
 
-func renderIndex(directory string, tpl *template.Template, apiOverview *types.APIOverview) error {
+func renderIndex(directory string, tpl *template.Template, timelineObj *timeline.Timeline) error {
 	f, err := os.Create(filepath.Join(directory, "index.html"))
 	if err != nil {
 		return err
@@ -82,6 +75,6 @@ func renderIndex(directory string, tpl *template.Template, apiOverview *types.AP
 	defer f.Close()
 
 	return tpl.ExecuteTemplate(f, "index.html", indexData{
-		Overview: apiOverview,
+		Timeline: timelineObj,
 	})
 }
