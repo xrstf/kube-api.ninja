@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"go.xrstf.de/kubernetes-apis/pkg/types"
-	"k8s.io/apimachinery/pkg/util/version"
+	"go.xrstf.de/kubernetes-apis/pkg/version"
 )
 
 // define just enough of swagger's spec to parse what we need :)
@@ -52,7 +52,7 @@ var (
 )
 
 func DumpSwaggerSpec(filename string, kubernetesVersion string) (*types.KubernetesRelease, error) {
-	version, err := version.ParseSemantic(kubernetesVersion)
+	kubeVersion, err := version.ParseSemver(kubernetesVersion)
 	if err != nil {
 		return nil, fmt.Errorf("invalid Kubernetes version: %w", err)
 	}
@@ -66,8 +66,8 @@ func DumpSwaggerSpec(filename string, kubernetesVersion string) (*types.Kubernet
 	defer f.Close()
 
 	result := &types.KubernetesRelease{
-		Version:   version.String(),
-		Release:   fmt.Sprintf("%d.%d", version.Major(), version.Minor()),
+		Version:   kubeVersion.String(),
+		Release:   kubeVersion.MajorMinor(),
 		APIGroups: []types.APIGroup{},
 	}
 
@@ -89,6 +89,23 @@ func DumpSwaggerSpec(filename string, kubernetesVersion string) (*types.Kubernet
 		}
 
 		result.APIGroups = append(result.APIGroups, dumpAPIGroup(logger.With("group", match[1]), &spec, match[1]))
+	}
+
+	// compute preferred version for each API group
+
+	for i, group := range result.APIGroups {
+		apiVersions := []string{}
+
+		for _, v := range group.APIVersions {
+			apiVersions = append(apiVersions, v.Version)
+		}
+
+		preferred, err := version.PreferredAPIVersion(apiVersions)
+		if err != nil {
+			panic(err)
+		}
+
+		result.APIGroups[i].PreferredVersion = preferred.String()
 	}
 
 	return result, nil

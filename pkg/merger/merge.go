@@ -4,24 +4,12 @@
 package merger
 
 import (
-	"regexp"
 	"sort"
 
 	"go.xrstf.de/kubernetes-apis/pkg/types"
+	"go.xrstf.de/kubernetes-apis/pkg/version"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/apimachinery/pkg/util/version"
 )
-
-var stableVersion = regexp.MustCompile(`^v[0-9]+$`)
-
-// zetaVersion turns a version like "v1" into "v1zeta",
-// which will make comparing it to alphas and betas easier.
-func zetaVersion(v string) string {
-	if stableVersion.MatchString(v) {
-		return v + "zeta"
-	}
-	return v
-}
 
 func MergeKubernetesReleases(releases []types.KubernetesRelease) types.APIOverview {
 	overview := types.APIOverview{
@@ -30,8 +18,8 @@ func MergeKubernetesReleases(releases []types.KubernetesRelease) types.APIOvervi
 
 	// sort releases to keep things consistent
 	sort.Slice(releases, func(i, j int) bool {
-		a := version.MustParseGeneric(releases[i].Version)
-		b := version.MustParseGeneric(releases[j].Version)
+		a, _ := version.ParseSemver(releases[i].Version)
+		b, _ := version.ParseSemver(releases[j].Version)
 
 		return a.LessThan(b)
 	})
@@ -44,10 +32,7 @@ func MergeKubernetesReleases(releases []types.KubernetesRelease) types.APIOvervi
 	// sort versions for each API group in descending order (latest first)
 	for idx, apiGroup := range overview.APIGroups {
 		sort.Slice(apiGroup.APIVersions, func(i, j int) bool {
-			a := zetaVersion(apiGroup.APIVersions[i].Version)
-			b := zetaVersion(apiGroup.APIVersions[j].Version)
-
-			return a > b
+			return version.CompareAPIVersions(apiGroup.APIVersions[j].Version, apiGroup.APIVersions[i].Version)
 		})
 
 		overview.APIGroups[idx] = apiGroup

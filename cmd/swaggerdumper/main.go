@@ -12,8 +12,7 @@ import (
 	"os"
 
 	"go.xrstf.de/kubernetes-apis/pkg/swaggerdumper"
-	"k8s.io/apimachinery/pkg/util/version"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
+	"go.xrstf.de/kubernetes-apis/pkg/version"
 )
 
 type appOptions struct {
@@ -35,7 +34,7 @@ func (opts *appOptions) Validate() error {
 		return errors.New("no -kubernetes-version specified")
 	}
 
-	if _, err := version.ParseSemantic(opts.kubernetesVersion); err != nil {
+	if _, err := version.ParseSemver(opts.kubernetesVersion); err != nil {
 		return fmt.Errorf("invalid Kubernetes version: %w", err)
 	}
 
