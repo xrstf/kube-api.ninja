@@ -19,7 +19,7 @@ const (
 )
 
 func main() {
-	releaseFiles, err := filepath.Glob("data/release-*.json")
+	releaseFiles, err := filepath.Glob("data/swagger/release-*.json")
 	if err != nil {
 		log.Fatalf("Failed to find release files: %v", err)
 	}
