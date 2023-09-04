@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"go.xrstf.de/kubernetes-apis/pkg/types"
-	"go.xrstf.de/kubernetes-apis/pkg/version"
+	"go.xrstf.de/kube-api.ninja/pkg/types"
+	"go.xrstf.de/kube-api.ninja/pkg/version"
 )
 
 type KubernetesRelease struct {

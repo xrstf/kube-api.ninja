@@ -12,8 +12,8 @@ import (
 	"regexp"
 	"strings"
 
-	"go.xrstf.de/kubernetes-apis/pkg/types"
-	"go.xrstf.de/kubernetes-apis/pkg/version"
+	"go.xrstf.de/kube-api.ninja/pkg/types"
+	"go.xrstf.de/kube-api.ninja/pkg/version"
 )
 
 // define just enough of swagger's spec to parse what we need :)

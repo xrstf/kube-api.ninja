@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"go.xrstf.de/kubernetes-apis/pkg/timeline"
-	"go.xrstf.de/kubernetes-apis/pkg/version"
+	"go.xrstf.de/kube-api.ninja/pkg/timeline"
+	"go.xrstf.de/kube-api.ninja/pkg/version"
 )
 
 var (

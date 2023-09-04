@@ -1,4 +1,4 @@
-module go.xrstf.de/kubernetes-apis
+module go.xrstf.de/kube-api.ninja
 
 go 1.21.0
 

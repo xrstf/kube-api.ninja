@@ -8,9 +8,9 @@ import (
 	"sort"
 	"time"
 
-	"go.xrstf.de/kubernetes-apis/pkg/database"
-	"go.xrstf.de/kubernetes-apis/pkg/types"
-	"go.xrstf.de/kubernetes-apis/pkg/version"
+	"go.xrstf.de/kube-api.ninja/pkg/database"
+	"go.xrstf.de/kube-api.ninja/pkg/types"
+	"go.xrstf.de/kube-api.ninja/pkg/version"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 

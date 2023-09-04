@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"go.xrstf.de/kubernetes-apis/pkg/types"
+	"go.xrstf.de/kube-api.ninja/pkg/types"
 	"k8s.io/client-go/discovery"
 )
 

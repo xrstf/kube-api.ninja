@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"go.xrstf.de/kubernetes-apis/pkg/database"
-	"go.xrstf.de/kubernetes-apis/pkg/timeline"
+	"go.xrstf.de/kube-api.ninja/pkg/database"
+	"go.xrstf.de/kube-api.ninja/pkg/timeline"
 )
 
 const (

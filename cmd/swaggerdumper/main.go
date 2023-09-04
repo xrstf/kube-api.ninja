@@ -11,8 +11,8 @@ import (
 	"log"
 	"os"
 
-	"go.xrstf.de/kubernetes-apis/pkg/swaggerdumper"
-	"go.xrstf.de/kubernetes-apis/pkg/version"
+	"go.xrstf.de/kube-api.ninja/pkg/swaggerdumper"
+	"go.xrstf.de/kube-api.ninja/pkg/version"
 )
 
 type appOptions struct {
