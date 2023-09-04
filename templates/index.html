@@ -376,20 +376,61 @@
       template.querySelector('.latest-version').innerText = cell.dataset.latestVersion;
       template.querySelector('.eol-date').innerText = cell.dataset.eolDate;
 
+      template.querySelector('.release-documentation').href = `apidocs/${release}/`;
       template.querySelector('.release-changelog').href = `https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-${release}.md`;
       template.querySelector('.release-gitbranch').href = `https://github.com/kubernetes/kubernetes/tree/release-${release}`;
 
       return template.innerHTML;
     }
 
+    var visiblePopover = null;
+
     const popoverTriggerList = document.querySelectorAll('thead th.release [data-bs-toggle="popover"]')
     const popoverList = [...popoverTriggerList].map(function (popoverTriggerEl) {
-      return new bootstrap.Popover(popoverTriggerEl, {
+      let popper = new bootstrap.Popover(popoverTriggerEl, {
         html:      true,
         content:   showReleaseInfoPopover,
         placement: 'bottom',
-        trigger:   'focus',
+        trigger:   'manual',
       });
+
+      popoverTriggerEl.addEventListener('click', function(e) {
+        if (visiblePopover !== null) {
+          visiblePopover.hide();
+        }
+
+        popper.show();
+        visiblePopover = popper;
+
+        // hijack the click event
+        e.preventDefault();
+
+        // prevent the body's listener from immediately closing the popover again
+        e.stopPropagation();
+      });
+    });
+
+    // close popovers _only_ when clicking outside them
+    document.body.addEventListener('click', function(e) {
+      let target = e.target;
+
+      // no popover visible
+      if (visiblePopover === null) {
+        return;
+      }
+
+      // clicked on a popover trigger element, ignore
+      if (target.dataset.toggle === 'popover') {
+        return;
+      }
+
+      // clicked inside a popover
+      if (target.closest('.popover') !== null) {
+        return;
+      }
+
+      visiblePopover.hide();
+      visiblePopover = null;
     });
 
     // tbodies cannot be nested, so besides 1 tbody per APIGroup, there is no
