@@ -61,11 +61,12 @@ func (o *APIVersion) HasRelease(release string) bool {
 }
 
 type APIResource struct {
-	Kind     string
-	Singular string
-	Plural   string
-	Scopes   map[string]string
-	Releases []string
+	Kind        string
+	Singular    string
+	Plural      string
+	Scopes      map[string]string
+	Releases    []string
+	Description string
 }
 
 func (o *APIResource) HasRelease(release string) bool {

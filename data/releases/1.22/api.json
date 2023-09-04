@@ -13,97 +13,113 @@
               "kind": "ComponentStatus",
               "namespaced": false,
               "singular": "componentstatus",
-              "plural": "componentstatuses"
+              "plural": "componentstatuses",
+              "description": "ComponentStatus (and ComponentStatusList) holds the cluster validation info. Deprecated: This API is deprecated in v1.19+"
             },
             {
               "kind": "ConfigMap",
               "namespaced": true,
               "singular": "configmap",
-              "plural": "configmaps"
+              "plural": "configmaps",
+              "description": "ConfigMap holds configuration data for pods to consume."
             },
             {
               "kind": "Endpoints",
               "namespaced": true,
               "singular": "endpoints",
-              "plural": "endpoints"
+              "plural": "endpoints",
+              "description": "Endpoints is a collection of endpoints that implement the actual service. Example:\n  Name: \"mysvc\",\n  Subsets: [\n    {\n      Addresses: [{\"ip\": \"10.10.1.1\"}, {\"ip\": \"10.10.2.2\"}],\n      Ports: [{\"name\": \"a\", \"port\": 8675}, {\"name\": \"b\", \"port\": 309}]\n    },\n    {\n      Addresses: [{\"ip\": \"10.10.3.3\"}],\n      Ports: [{\"name\": \"a\", \"port\": 93}, {\"name\": \"b\", \"port\": 76}]\n    },\n ]"
             },
             {
               "kind": "Event",
               "namespaced": true,
               "singular": "event",
-              "plural": "events"
+              "plural": "events",
+              "description": "Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data."
             },
             {
               "kind": "LimitRange",
               "namespaced": true,
               "singular": "limitrange",
-              "plural": "limitranges"
+              "plural": "limitranges",
+              "description": "LimitRange sets resource usage limits for each kind of resource in a Namespace."
             },
             {
               "kind": "Namespace",
               "namespaced": false,
               "singular": "namespace",
-              "plural": "namespaces"
+              "plural": "namespaces",
+              "description": "Namespace provides a scope for Names. Use of multiple namespaces is optional."
             },
             {
               "kind": "Node",
               "namespaced": false,
               "singular": "node",
-              "plural": "nodes"
+              "plural": "nodes",
+              "description": "Node is a worker node in Kubernetes. Each node will have a unique identifier in the cache (i.e. in etcd)."
             },
             {
               "kind": "PersistentVolume",
               "namespaced": false,
               "singular": "persistentvolume",
-              "plural": "persistentvolumes"
+              "plural": "persistentvolumes",
+              "description": "PersistentVolume (PV) is a storage resource provisioned by an administrator. It is analogous to a node. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes"
             },
             {
               "kind": "PersistentVolumeClaim",
               "namespaced": true,
               "singular": "persistentvolumeclaim",
-              "plural": "persistentvolumeclaims"
+              "plural": "persistentvolumeclaims",
+              "description": "PersistentVolumeClaim is a user's request for and claim to a persistent volume"
             },
             {
               "kind": "Pod",
               "namespaced": true,
               "singular": "pod",
-              "plural": "pods"
+              "plural": "pods",
+              "description": "Pod is a collection of containers that can run on a host. This resource is created by clients and scheduled onto hosts."
             },
             {
               "kind": "PodTemplate",
               "namespaced": true,
               "singular": "podtemplate",
-              "plural": "podtemplates"
+              "plural": "podtemplates",
+              "description": "PodTemplate describes a template for creating copies of a predefined pod."
             },
             {
               "kind": "ReplicationController",
               "namespaced": true,
               "singular": "replicationcontroller",
-              "plural": "replicationcontrollers"
+              "plural": "replicationcontrollers",
+              "description": "ReplicationController represents the configuration of a replication controller."
             },
             {
               "kind": "ResourceQuota",
               "namespaced": true,
               "singular": "resourcequota",
-              "plural": "resourcequotas"
+              "plural": "resourcequotas",
+              "description": "ResourceQuota sets aggregate quota restrictions enforced per namespace"
             },
             {
               "kind": "Secret",
               "namespaced": true,
               "singular": "secret",
-              "plural": "secrets"
+              "plural": "secrets",
+              "description": "Secret holds secret data of a certain type. The total bytes of the values in the Data field must be less than MaxSecretSize bytes."
             },
             {
               "kind": "Service",
               "namespaced": true,
               "singular": "service",
-              "plural": "services"
+              "plural": "services",
+              "description": "Service is a named abstraction of software service (for example, mysql) consisting of local port (for example 3306) that the proxy listens on, and the selector that determines which pods will answer requests sent through the proxy."
             },
             {
               "kind": "ServiceAccount",
               "namespaced": true,
               "singular": "serviceaccount",
-              "plural": "serviceaccounts"
+              "plural": "serviceaccounts",
+              "description": "ServiceAccount binds together: * a name, understood by users, and perhaps by peripheral systems, for an identity * a principal that can be authenticated and authorized * a set of secrets"
             }
           ]
         }
@@ -120,13 +136,15 @@
               "kind": "MutatingWebhookConfiguration",
               "namespaced": false,
               "singular": "mutatingwebhookconfiguration",
-              "plural": "mutatingwebhookconfigurations"
+              "plural": "mutatingwebhookconfigurations",
+              "description": "MutatingWebhookConfiguration describes the configuration of and admission webhook that accept or reject and may change the object."
             },
             {
               "kind": "ValidatingWebhookConfiguration",
               "namespaced": false,
               "singular": "validatingwebhookconfiguration",
-              "plural": "validatingwebhookconfigurations"
+              "plural": "validatingwebhookconfigurations",
+              "description": "ValidatingWebhookConfiguration describes the configuration of and admission webhook that accept or reject and object without changing it."
             }
           ]
         }
@@ -143,7 +161,8 @@
               "kind": "CustomResourceDefinition",
               "namespaced": false,
               "singular": "customresourcedefinition",
-              "plural": "customresourcedefinitions"
+              "plural": "customresourcedefinitions",
+              "description": "CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format \u003c.spec.name\u003e.\u003c.spec.group\u003e."
             }
           ]
         }
@@ -160,7 +179,8 @@
               "kind": "APIService",
               "namespaced": false,
               "singular": "apiservice",
-              "plural": "apiservices"
+              "plural": "apiservices",
+              "description": "APIService represents a server for a particular GroupVersion. Name must be \"version.group\"."
             }
           ]
         }
@@ -177,31 +197,36 @@
               "kind": "ControllerRevision",
               "namespaced": true,
               "singular": "controllerrevision",
-              "plural": "controllerrevisions"
+              "plural": "controllerrevisions",
+              "description": "ControllerRevision implements an immutable snapshot of state data. Clients are responsible for serializing and deserializing the objects that contain their internal state. Once a ControllerRevision has been successfully created, it can not be updated. The API Server will fail validation of all requests that attempt to mutate the Data field. ControllerRevisions may, however, be deleted. Note that, due to its use by both the DaemonSet and StatefulSet controllers for update and rollback, this object is beta. However, it may be subject to name and representation changes in future releases, and clients should not depend on its stability. It is primarily for internal use by controllers."
             },
             {
               "kind": "DaemonSet",
               "namespaced": true,
               "singular": "daemonset",
-              "plural": "daemonsets"
+              "plural": "daemonsets",
+              "description": "DaemonSet represents the configuration of a daemon set."
             },
             {
               "kind": "Deployment",
               "namespaced": true,
               "singular": "deployment",
-              "plural": "deployments"
+              "plural": "deployments",
+              "description": "Deployment enables declarative updates for Pods and ReplicaSets."
             },
             {
               "kind": "ReplicaSet",
               "namespaced": true,
               "singular": "replicaset",
-              "plural": "replicasets"
+              "plural": "replicasets",
+              "description": "ReplicaSet ensures that a specified number of pod replicas are running at any given time."
             },
             {
               "kind": "StatefulSet",
               "namespaced": true,
               "singular": "statefulset",
-              "plural": "statefulsets"
+              "plural": "statefulsets",
+              "description": "StatefulSet represents a set of pods with consistent identities. Identities are defined as:\n - Network: A single stable DNS and hostname.\n - Storage: As many VolumeClaims as requested.\nThe StatefulSet guarantees that a given network identity will always map to the same storage identity."
             }
           ]
         }
@@ -218,7 +243,8 @@
               "kind": "TokenReview",
               "namespaced": false,
               "singular": "tokenreview",
-              "plural": "tokenreviews"
+              "plural": "tokenreviews",
+              "description": "TokenReview attempts to authenticate a token to a known user. Note: TokenReview requests may be cached by the webhook token authenticator plugin in the kube-apiserver."
             }
           ]
         }
@@ -235,19 +261,22 @@
               "kind": "SelfSubjectAccessReview",
               "namespaced": false,
               "singular": "selfsubjectaccessreview",
-              "plural": "selfsubjectaccessreviews"
+              "plural": "selfsubjectaccessreviews",
+              "description": "SelfSubjectAccessReview checks whether or the current user can perform an action.  Not filling in a spec.namespace means \"in all namespaces\".  Self is a special case, because users should always be able to check whether they can perform an action"
             },
             {
               "kind": "SelfSubjectRulesReview",
               "namespaced": false,
               "singular": "selfsubjectrulesreview",
-              "plural": "selfsubjectrulesreviews"
+              "plural": "selfsubjectrulesreviews",
+              "description": "SelfSubjectRulesReview enumerates the set of actions the current user can perform within a namespace. The returned list of actions may be incomplete depending on the server's authorization mode, and any errors experienced during the evaluation. SelfSubjectRulesReview should be used by UIs to show/hide actions, or to quickly let an end user reason about their permissions. It should NOT Be used by external systems to drive authorization decisions as this raises confused deputy, cache lifetime/revocation, and correctness concerns. SubjectAccessReview, and LocalAccessReview are the correct way to defer authorization decisions to the API server."
             },
             {
               "kind": "SubjectAccessReview",
               "namespaced": false,
               "singular": "subjectaccessreview",
-              "plural": "subjectaccessreviews"
+              "plural": "subjectaccessreviews",
+              "description": "SubjectAccessReview checks whether or not a user or group can perform an action."
             }
           ]
         }
@@ -264,7 +293,8 @@
               "kind": "HorizontalPodAutoscaler",
               "namespaced": true,
               "singular": "horizontalpodautoscaler",
-              "plural": "horizontalpodautoscalers"
+              "plural": "horizontalpodautoscalers",
+              "description": "configuration of a horizontal pod autoscaler."
             }
           ]
         },
@@ -275,7 +305,8 @@
               "kind": "HorizontalPodAutoscaler",
               "namespaced": true,
               "singular": "horizontalpodautoscaler",
-              "plural": "horizontalpodautoscalers"
+              "plural": "horizontalpodautoscalers",
+              "description": "HorizontalPodAutoscaler is the configuration for a horizontal pod autoscaler, which automatically manages the replica count of any resource implementing the scale subresource based on the metrics specified."
             }
           ]
         },
@@ -286,7 +317,8 @@
               "kind": "HorizontalPodAutoscaler",
               "namespaced": true,
               "singular": "horizontalpodautoscaler",
-              "plural": "horizontalpodautoscalers"
+              "plural": "horizontalpodautoscalers",
+              "description": "HorizontalPodAutoscaler is the configuration for a horizontal pod autoscaler, which automatically manages the replica count of any resource implementing the scale subresource based on the metrics specified."
             }
           ]
         }
@@ -303,13 +335,15 @@
               "kind": "CronJob",
               "namespaced": true,
               "singular": "cronjob",
-              "plural": "cronjobs"
+              "plural": "cronjobs",
+              "description": "CronJob represents the configuration of a single cron job."
             },
             {
               "kind": "Job",
               "namespaced": true,
               "singular": "job",
-              "plural": "jobs"
+              "plural": "jobs",
+              "description": "Job represents the configuration of a single job."
             }
           ]
         },
@@ -320,7 +354,8 @@
               "kind": "CronJob",
               "namespaced": true,
               "singular": "cronjob",
-              "plural": "cronjobs"
+              "plural": "cronjobs",
+              "description": "CronJob represents the configuration of a single cron job."
             }
           ]
         }
@@ -337,7 +372,8 @@
               "kind": "CertificateSigningRequest",
               "namespaced": false,
               "singular": "certificatesigningrequest",
-              "plural": "certificatesigningrequests"
+              "plural": "certificatesigningrequests",
+              "description": "CertificateSigningRequest objects provide a mechanism to obtain x509 certificates by submitting a certificate signing request, and having it asynchronously approved and issued.\n\nKubelets use this API to obtain:\n 1. client certificates to authenticate to kube-apiserver (with the \"kubernetes.io/kube-apiserver-client-kubelet\" signerName).\n 2. serving certificates for TLS endpoints kube-apiserver can connect to securely (with the \"kubernetes.io/kubelet-serving\" signerName).\n\nThis API can be used to request client certificates to authenticate to kube-apiserver (with the \"kubernetes.io/kube-apiserver-client\" signerName), or to obtain certificates from custom non-Kubernetes signers."
             }
           ]
         }
@@ -354,7 +390,8 @@
               "kind": "Lease",
               "namespaced": true,
               "singular": "lease",
-              "plural": "leases"
+              "plural": "leases",
+              "description": "Lease defines a lease concept."
             }
           ]
         }
@@ -371,7 +408,8 @@
               "kind": "EndpointSlice",
               "namespaced": true,
               "singular": "endpointslice",
-              "plural": "endpointslices"
+              "plural": "endpointslices",
+              "description": "EndpointSlice represents a subset of the endpoints that implement a service. For a given service there may be multiple EndpointSlice objects, selected by labels, which must be joined to produce the full set of endpoints."
             }
           ]
         },
@@ -382,7 +420,8 @@
               "kind": "EndpointSlice",
               "namespaced": true,
               "singular": "endpointslice",
-              "plural": "endpointslices"
+              "plural": "endpointslices",
+              "description": "EndpointSlice represents a subset of the endpoints that implement a service. For a given service there may be multiple EndpointSlice objects, selected by labels, which must be joined to produce the full set of endpoints."
             }
           ]
         }
@@ -399,7 +438,8 @@
               "kind": "Event",
               "namespaced": true,
               "singular": "event",
-              "plural": "events"
+              "plural": "events",
+              "description": "Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data."
             }
           ]
         },
@@ -410,7 +450,8 @@
               "kind": "Event",
               "namespaced": true,
               "singular": "event",
-              "plural": "events"
+              "plural": "events",
+              "description": "Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data."
             }
           ]
         }
@@ -427,13 +468,15 @@
               "kind": "FlowSchema",
               "namespaced": false,
               "singular": "flowschema",
-              "plural": "flowschemas"
+              "plural": "flowschemas",
+              "description": "FlowSchema defines the schema of a group of flows. Note that a flow is made up of a set of inbound API requests with similar attributes and is identified by a pair of strings: the name of the FlowSchema and a \"flow distinguisher\"."
             },
             {
               "kind": "PriorityLevelConfiguration",
               "namespaced": false,
               "singular": "prioritylevelconfiguration",
-              "plural": "prioritylevelconfigurations"
+              "plural": "prioritylevelconfigurations",
+              "description": "PriorityLevelConfiguration represents the configuration of a priority level."
             }
           ]
         }
@@ -450,7 +493,8 @@
               "kind": "StorageVersion",
               "namespaced": false,
               "singular": "storageversion",
-              "plural": "storageversions"
+              "plural": "storageversions",
+              "description": "\n Storage version of a specific resource."
             }
           ]
         }
@@ -467,19 +511,22 @@
               "kind": "Ingress",
               "namespaced": true,
               "singular": "ingress",
-              "plural": "ingresses"
+              "plural": "ingresses",
+              "description": "Ingress is a collection of rules that allow inbound connections to reach the endpoints defined by a backend. An Ingress can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc."
             },
             {
               "kind": "IngressClass",
               "namespaced": false,
               "singular": "ingressclass",
-              "plural": "ingressclasses"
+              "plural": "ingressclasses",
+              "description": "IngressClass represents the class of the Ingress, referenced by the Ingress Spec. The `ingressclass.kubernetes.io/is-default-class` annotation can be used to indicate that an IngressClass should be considered default. When a single IngressClass resource has this annotation set to true, new Ingress resources without a class specified will be assigned this default class."
             },
             {
               "kind": "NetworkPolicy",
               "namespaced": true,
               "singular": "networkpolicy",
-              "plural": "networkpolicies"
+              "plural": "networkpolicies",
+              "description": "NetworkPolicy describes what network traffic is allowed for a set of Pods"
             }
           ]
         }
@@ -496,7 +543,8 @@
               "kind": "RuntimeClass",
               "namespaced": false,
               "singular": "runtimeclass",
-              "plural": "runtimeclasses"
+              "plural": "runtimeclasses",
+              "description": "RuntimeClass defines a class of container runtime supported in the cluster. The RuntimeClass is used to determine which container runtime is used to run all containers in a pod. RuntimeClasses are manually defined by a user or cluster provisioner, and referenced in the PodSpec. The Kubelet is responsible for resolving the RuntimeClassName reference before running the pod.  For more details, see https://kubernetes.io/docs/concepts/containers/runtime-class/"
             }
           ]
         },
@@ -507,7 +555,8 @@
               "kind": "RuntimeClass",
               "namespaced": false,
               "singular": "runtimeclass",
-              "plural": "runtimeclasses"
+              "plural": "runtimeclasses",
+              "description": "RuntimeClass defines a class of container runtime supported in the cluster. The RuntimeClass is used to determine which container runtime is used to run all containers in a pod. RuntimeClasses are (currently) manually defined by a user or cluster provisioner, and referenced in the PodSpec. The Kubelet is responsible for resolving the RuntimeClassName reference before running the pod.  For more details, see https://git.k8s.io/enhancements/keps/sig-node/585-runtime-class"
             }
           ]
         },
@@ -518,7 +567,8 @@
               "kind": "RuntimeClass",
               "namespaced": false,
               "singular": "runtimeclass",
-              "plural": "runtimeclasses"
+              "plural": "runtimeclasses",
+              "description": "RuntimeClass defines a class of container runtime supported in the cluster. The RuntimeClass is used to determine which container runtime is used to run all containers in a pod. RuntimeClasses are (currently) manually defined by a user or cluster provisioner, and referenced in the PodSpec. The Kubelet is responsible for resolving the RuntimeClassName reference before running the pod.  For more details, see https://git.k8s.io/enhancements/keps/sig-node/585-runtime-class"
             }
           ]
         }
@@ -535,7 +585,8 @@
               "kind": "PodDisruptionBudget",
               "namespaced": true,
               "singular": "poddisruptionbudget",
-              "plural": "poddisruptionbudgets"
+              "plural": "poddisruptionbudgets",
+              "description": "PodDisruptionBudget is an object to define the max disruption that can be caused to a collection of pods"
             }
           ]
         },
@@ -546,13 +597,15 @@
               "kind": "PodDisruptionBudget",
               "namespaced": true,
               "singular": "poddisruptionbudget",
-              "plural": "poddisruptionbudgets"
+              "plural": "poddisruptionbudgets",
+              "description": "PodDisruptionBudget is an object to define the max disruption that can be caused to a collection of pods"
             },
             {
               "kind": "PodSecurityPolicy",
               "namespaced": false,
               "singular": "podsecuritypolicy",
-              "plural": "podsecuritypolicies"
+              "plural": "podsecuritypolicies",
+              "description": "PodSecurityPolicy governs the ability to make requests that affect the Security Context that will be applied to a pod and container. Deprecated in 1.21."
             }
           ]
         }
@@ -569,25 +622,29 @@
               "kind": "ClusterRole",
               "namespaced": false,
               "singular": "clusterrole",
-              "plural": "clusterroles"
+              "plural": "clusterroles",
+              "description": "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding."
             },
             {
               "kind": "ClusterRoleBinding",
               "namespaced": false,
               "singular": "clusterrolebinding",
-              "plural": "clusterrolebindings"
+              "plural": "clusterrolebindings",
+              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject."
             },
             {
               "kind": "Role",
               "namespaced": true,
               "singular": "role",
-              "plural": "roles"
+              "plural": "roles",
+              "description": "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding."
             },
             {
               "kind": "RoleBinding",
               "namespaced": true,
               "singular": "rolebinding",
-              "plural": "rolebindings"
+              "plural": "rolebindings",
+              "description": "RoleBinding references a role, but does not contain it.  It can reference a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in.  RoleBindings in a given namespace only have effect in that namespace."
             }
           ]
         },
@@ -598,25 +655,29 @@
               "kind": "ClusterRole",
               "namespaced": false,
               "singular": "clusterrole",
-              "plural": "clusterroles"
+              "plural": "clusterroles",
+              "description": "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding. Deprecated in v1.17 in favor of rbac.authorization.k8s.io/v1 ClusterRole, and will no longer be served in v1.22."
             },
             {
               "kind": "ClusterRoleBinding",
               "namespaced": false,
               "singular": "clusterrolebinding",
-              "plural": "clusterrolebindings"
+              "plural": "clusterrolebindings",
+              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject. Deprecated in v1.17 in favor of rbac.authorization.k8s.io/v1 ClusterRoleBinding, and will no longer be served in v1.22."
             },
             {
               "kind": "Role",
               "namespaced": true,
               "singular": "role",
-              "plural": "roles"
+              "plural": "roles",
+              "description": "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding. Deprecated in v1.17 in favor of rbac.authorization.k8s.io/v1 Role, and will no longer be served in v1.22."
             },
             {
               "kind": "RoleBinding",
               "namespaced": true,
               "singular": "rolebinding",
-              "plural": "rolebindings"
+              "plural": "rolebindings",
+              "description": "RoleBinding references a role, but does not contain it.  It can reference a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in.  RoleBindings in a given namespace only have effect in that namespace. Deprecated in v1.17 in favor of rbac.authorization.k8s.io/v1 RoleBinding, and will no longer be served in v1.22."
             }
           ]
         }
@@ -633,7 +694,8 @@
               "kind": "PriorityClass",
               "namespaced": false,
               "singular": "priorityclass",
-              "plural": "priorityclasses"
+              "plural": "priorityclasses",
+              "description": "PriorityClass defines mapping from a priority class name to the priority integer value. The value can be any valid integer."
             }
           ]
         },
@@ -644,7 +706,8 @@
               "kind": "PriorityClass",
               "namespaced": false,
               "singular": "priorityclass",
-              "plural": "priorityclasses"
+              "plural": "priorityclasses",
+              "description": "DEPRECATED - This group version of PriorityClass is deprecated by scheduling.k8s.io/v1/PriorityClass. PriorityClass defines mapping from a priority class name to the priority integer value. The value can be any valid integer."
             }
           ]
         }
@@ -661,25 +724,29 @@
               "kind": "CSIDriver",
               "namespaced": false,
               "singular": "csidriver",
-              "plural": "csidrivers"
+              "plural": "csidrivers",
+              "description": "CSIDriver captures information about a Container Storage Interface (CSI) volume driver deployed on the cluster. Kubernetes attach detach controller uses this object to determine whether attach is required. Kubelet uses this object to determine whether pod information needs to be passed on mount. CSIDriver objects are non-namespaced."
             },
             {
               "kind": "CSINode",
               "namespaced": false,
               "singular": "csinode",
-              "plural": "csinodes"
+              "plural": "csinodes",
+              "description": "CSINode holds information about all CSI drivers installed on a node. CSI drivers do not need to create the CSINode object directly. As long as they use the node-driver-registrar sidecar container, the kubelet will automatically populate the CSINode object for the CSI driver as part of kubelet plugin registration. CSINode has the same name as a node. If the object is missing, it means either there are no CSI Drivers available on the node, or the Kubelet version is low enough that it doesn't create this object. CSINode has an OwnerReference that points to the corresponding node object."
             },
             {
               "kind": "StorageClass",
               "namespaced": false,
               "singular": "storageclass",
-              "plural": "storageclasses"
+              "plural": "storageclasses",
+              "description": "StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.\n\nStorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name."
             },
             {
               "kind": "VolumeAttachment",
               "namespaced": false,
               "singular": "volumeattachment",
-              "plural": "volumeattachments"
+              "plural": "volumeattachments",
+              "description": "VolumeAttachment captures the intent to attach or detach the specified volume to/from the specified node.\n\nVolumeAttachment objects are non-namespaced."
             }
           ]
         },
@@ -690,13 +757,15 @@
               "kind": "CSIStorageCapacity",
               "namespaced": true,
               "singular": "csistoragecapacity",
-              "plural": "csistoragecapacities"
+              "plural": "csistoragecapacities",
+              "description": "CSIStorageCapacity stores the result of one CSI GetCapacity call. For a given StorageClass, this describes the available capacity in a particular topology segment.  This can be used when considering where to instantiate new PersistentVolumes.\n\nFor example this can express things like: - StorageClass \"standard\" has \"1234 GiB\" available in \"topology.kubernetes.io/zone=us-east1\" - StorageClass \"localssd\" has \"10 GiB\" available in \"kubernetes.io/hostname=knode-abc123\"\n\nThe following three cases all imply that no capacity is available for a certain combination: - no object exists with suitable topology and storage class name - such an object exists, but the capacity is unset - such an object exists, but the capacity is zero\n\nThe producer of these objects can decide which approach is more suitable.\n\nThey are consumed by the kube-scheduler if the CSIStorageCapacity beta feature gate is enabled there and a CSI driver opts into capacity-aware scheduling with CSIDriver.StorageCapacity."
             },
             {
               "kind": "VolumeAttachment",
               "namespaced": false,
               "singular": "volumeattachment",
-              "plural": "volumeattachments"
+              "plural": "volumeattachments",
+              "description": "VolumeAttachment captures the intent to attach or detach the specified volume to/from the specified node.\n\nVolumeAttachment objects are non-namespaced."
             }
           ]
         },
@@ -707,7 +776,8 @@
               "kind": "CSIStorageCapacity",
               "namespaced": true,
               "singular": "csistoragecapacity",
-              "plural": "csistoragecapacities"
+              "plural": "csistoragecapacities",
+              "description": "CSIStorageCapacity stores the result of one CSI GetCapacity call. For a given StorageClass, this describes the available capacity in a particular topology segment.  This can be used when considering where to instantiate new PersistentVolumes.\n\nFor example this can express things like: - StorageClass \"standard\" has \"1234 GiB\" available in \"topology.kubernetes.io/zone=us-east1\" - StorageClass \"localssd\" has \"10 GiB\" available in \"kubernetes.io/hostname=knode-abc123\"\n\nThe following three cases all imply that no capacity is available for a certain combination: - no object exists with suitable topology and storage class name - such an object exists, but the capacity is unset - such an object exists, but the capacity is zero\n\nThe producer of these objects can decide which approach is more suitable.\n\nThey are consumed by the kube-scheduler if the CSIStorageCapacity beta feature gate is enabled there and a CSI driver opts into capacity-aware scheduling with CSIDriver.StorageCapacity."
             }
           ]
         }

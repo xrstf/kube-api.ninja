@@ -52,10 +52,11 @@ func (v *APIVersion) Sort() {
 }
 
 type Resource struct {
-	Kind       string `json:"kind"`
-	Namespaced bool   `json:"namespaced"`
-	Singular   string `json:"singular"`
-	Plural     string `json:"plural"`
+	Kind        string `json:"kind"`
+	Namespaced  bool   `json:"namespaced"`
+	Singular    string `json:"singular"`
+	Plural      string `json:"plural"`
+	Description string `json:"description"`
 }
 
 type APIOverview struct {

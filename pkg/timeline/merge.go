@@ -185,6 +185,7 @@ func mergeAPIResourceOverviews(dest *APIResource, resourceinfo *types.Resource, 
 	dest.Kind = resourceinfo.Kind
 	dest.Plural = resourceinfo.Plural
 	dest.Singular = resourceinfo.Singular
+	dest.Description = resourceinfo.Description
 	dest.Releases = sets.List(sets.New(dest.Releases...).Insert(release))
 
 	// remember the scope, which _could_ technically change between versions and/or releases

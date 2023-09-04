@@ -312,7 +312,7 @@
         <!-- row for an API resource -->
         <tr class="apiresource" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
           <th class="name">
-            {{ $apiResource.Kind }}
+            <span title="{{ $apiResource.Description }}">{{ $apiResource.Kind }}</span>
             <span class="icons"><small><a href="#" class="docs" title="view documentation for most recent Kubernetes release">⛿</a></small></span>
           </th>
           {{ range $rel := $.Timeline.Releases }}

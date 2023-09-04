@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"path"
 	"regexp"
 	"strings"
 
@@ -35,6 +36,13 @@ type swaggerPathSpec struct {
 
 type swaggerPathMethodSpec struct {
 	KubernetesGVK swaggerGVK `json:"x-kubernetes-group-version-kind"`
+	Responses     struct {
+		OK struct {
+			Schema struct {
+				Ref string `json:"$ref"`
+			} `json:"schema"`
+		} `json:"200"`
+	} `json:"responses"`
 }
 
 type swaggerGVK struct {
@@ -210,10 +218,11 @@ func dumpCoreAPIVersion(logger *slog.Logger, spec *swaggerSpec, apiVersion strin
 		reslogger.Info("Found resource.")
 
 		res := types.Resource{
-			Kind:       methodSpec.KubernetesGVK.Kind,
-			Namespaced: namespaced,
-			Plural:     pluralName,
-			Singular:   strings.ToLower(methodSpec.KubernetesGVK.Kind),
+			Kind:        methodSpec.KubernetesGVK.Kind,
+			Namespaced:  namespaced,
+			Plural:      pluralName,
+			Singular:    strings.ToLower(methodSpec.KubernetesGVK.Kind),
+			Description: getResourceDescription(spec, methodSpec.Responses.OK.Schema.Ref),
 		}
 
 		g.Resources = append(g.Resources, res)
@@ -272,14 +281,29 @@ func dumpAPIVersion(logger *slog.Logger, spec *swaggerSpec, apiGroup string, api
 		reslogger.Info("Found resource.")
 
 		res := types.Resource{
-			Kind:       methodSpec.KubernetesGVK.Kind,
-			Namespaced: namespaced,
-			Plural:     pluralName,
-			Singular:   strings.ToLower(methodSpec.KubernetesGVK.Kind),
+			Kind:        methodSpec.KubernetesGVK.Kind,
+			Namespaced:  namespaced,
+			Plural:      pluralName,
+			Singular:    strings.ToLower(methodSpec.KubernetesGVK.Kind),
+			Description: getResourceDescription(spec, methodSpec.Responses.OK.Schema.Ref),
 		}
 
 		g.Resources = append(g.Resources, res)
 	}
 
 	return g
+}
+
+func getResourceDescription(spec *swaggerSpec, ref string) string {
+	// a ref looks like "#/definitions/io.k8s.api.core.v1.ReplicationControllerList"
+	key := path.Base(ref)
+
+	// during scanning we work with List requests, but want the description for each singular resource
+	key = strings.TrimSuffix(key, "List")
+
+	if definition, exists := spec.Definitions[key]; exists {
+		return definition.Description
+	}
+
+	return ""
 }

@@ -42,7 +42,7 @@ dump: clean build
 
 .PHONY: dump-all
 dump-all: clean build
-	./hack/dump-kind-clusters.sh
+	./hack/dump-swagger-specs.sh
 
 .PHONY: combine
 combine: clean build
