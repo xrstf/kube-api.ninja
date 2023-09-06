@@ -33,9 +33,10 @@ func (o *Timeline) HasRelease(release string) bool {
 }
 
 type APIGroup struct {
-	Name              string
-	PreferredVersions map[string]string // lists the prefered version per release
-	APIVersions       []APIVersion
+	Name               string
+	PreferredVersions  map[string]string // lists the prefered version per release
+	ReleasesOfInterest []string          // releases which have notable changes for this API group
+	APIVersions        []APIVersion
 }
 
 // helper functions for templating :grin:
@@ -45,9 +46,10 @@ func (o *APIGroup) PreferredVersion(release string) string {
 }
 
 type APIVersion struct {
-	Version   string // e.g. "v1beta1"
-	Releases  []string
-	Resources []APIResource
+	Version            string   // e.g. "v1beta1"
+	Releases           []string // releases which have this API version
+	ReleasesOfInterest []string // releases which have notable changes for this API version
+	Resources          []APIResource
 }
 
 func (o *APIVersion) HasRelease(release string) bool {
@@ -61,12 +63,13 @@ func (o *APIVersion) HasRelease(release string) bool {
 }
 
 type APIResource struct {
-	Kind        string
-	Singular    string
-	Plural      string
-	Scopes      map[string]string
-	Releases    []string
-	Description string
+	Kind               string
+	Singular           string
+	Plural             string
+	Scopes             map[string]string
+	Releases           []string // releases which have this resource
+	ReleasesOfInterest []string // releases which have notable changes for this resource
+	Description        string
 }
 
 func (o *APIResource) HasRelease(release string) bool {

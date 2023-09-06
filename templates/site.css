@@ -1,0 +1,284 @@
+.apigroup>.name,
+.apiversion>.name,
+.apigroup td.release,
+td.scope {
+  /* font-family: monospace; */
+  line-height: 150%;
+}
+
+thead .release a {
+  border-bottom: 1px dashed #616a74;
+  cursor: help;
+}
+
+.hidden {
+  display: none;
+}
+
+/* make enough room to fit the fixed footer into the layout */
+.site-container {
+  margin-bottom: 100px;
+}
+
+.apigroup>.name {
+  text-align: left;
+  padding-left: 5px;
+
+  /* make sure the icons do not slip into a new line */
+  white-space: nowrap;
+}
+
+.apigroup>.release {
+  text-align: center;
+}
+
+.apiversion {
+  font-size: 90%;
+}
+
+.apiversion>.name {
+  text-align: left;
+  font-weight: normal;
+  padding-left: 20px;
+}
+
+.apiversion>.release {
+  text-align: center;
+}
+
+.apiversion>.release.exists {
+  background: #ffc107;
+  color: black;
+}
+
+.apiversion>.release.exists.preferred {
+  background: #198754;
+}
+
+.release {
+  text-align: center;
+}
+
+.apiresource {
+  font-size: 90%;
+}
+
+.apiresource>.name {
+  text-align: left;
+  font-weight: normal;
+  padding-left: 40px;
+
+  /* make sure the icons do not slip into a new line */
+  white-space: nowrap;
+}
+
+/* combat bootstrap's large padding */
+.table tbody td,
+.table tbody th {
+  padding: .2rem .2rem;
+}
+
+/* fix missing table borders in Firefox */
+/* thanks to https://stackoverflow.com/a/58319944 */
+.table tbody th {
+  background-clip: padding-box;
+}
+
+td.release {
+  padding: .2rem 0 !important;
+}
+
+td.release>span {
+  display: inline-block;
+  width: 100%;
+  font-weight: normal;
+}
+
+td.a10y-middle>span {
+  border-radius: 0 !important;
+}
+
+td.a10y-begin>span {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+td.a10y-end>span {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+td.a10y-begin.a10y-end>span {
+  border-top-right-radius: 0.375rem !important;
+  border-bottom-right-radius: 0.375rem !important;
+  border-top-left-radius: 0.375rem !important;
+  border-bottom-left-radius: 0.375rem !important;
+}
+
+/* hide cell text for api resources (looks noisy) and apiversion (preferred-status is visible by colors) */
+.apiversion td.release span,
+.apiresource td.release span {
+  text-indent: -9999px;
+}
+
+/* for API groups there is exists/stable/issing */
+.apigroup td.release.a10y-exists span {
+  background-color: #198754;
+  color: #bffce0;
+}
+
+.apigroup td.release.a10y-exists.maturity-prerelease span {
+  background-color: #1c5f42;
+}
+
+/* for API versions there is exists/preferred/missing */
+.apiversion td.release.a10y-exists span {
+  background-color: #ffc107;
+  color: black;
+}
+
+.apiversion td.release.a10y-preferred span {
+  background-color: #198754;
+  color: white;
+}
+
+/* for API resources there is also exists/preferred/missing */
+.apiresource td.release.a10y-exists span {
+  background-color: #ffc107;
+  color: black;
+}
+
+.apiresource td.release.a10y-preferred span {
+  background-color: #198754;
+  color: white;
+}
+
+a.toggle, a.docs {
+  color: rgb(178, 178, 178);
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.apiresource .icons {
+  /* make the icons for resources a bit less prominent to reduce visual clutter */
+  opacity: 0.5;
+
+  /* move icons a bit away from the text */
+  padding-left: 5px;
+}
+
+.apiresource:hover .icons {
+  opacity: 1;
+}
+
+/* if an APIGroup is collapsed, hide all rows except for the group's row in it */
+tbody.collapsed tr.apiversion,
+tbody.collapsed tr.apiresource {
+  display: none;
+}
+
+/* if an APIVersion is collapsed, the hiddenness will be applied via JavaScript */
+/* if an APIResource is hidden, hide it (there is already a .hidden rule) */
+
+/* page footer */
+footer {
+  font-size: 75%;
+
+  /* make the footer independent from the megatable, so scrolling horizontally works better */
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+
+  /* make sure the footer is hidden behind the table when scrolling */
+  z-index: -1;
+}
+
+footer .border-top {
+  padding-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* make the header row stick to the top of the screen when scrolling */
+/* note that this would interfere with bootstrap's table-responsive */
+.release-megatable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* and make the left column stick to the side of the screen */
+.release-megatable thead th,
+.release-megatable tbody th.name {
+  position: sticky;
+  left: 0;
+}
+
+/* mark currently supported Kubernetes releases */
+td.release-supported, th.release-supported {
+  background: #1c5f4275;
+}
+td.oldest-release-supported, th.oldest-release-supported {
+  border-left: 1px solid #495057;
+}
+
+/* tighter layout */
+.release-links .list-group-item {
+  padding: 0.125rem 0.3rem 0.125rem 0.3rem;
+}
+
+/* mimic the look of an
+
+  definition:
+      list
+*/
+.dl-item .key {
+  font-size: 80%;
+}
+.dl-item .value {
+  text-align: right;
+}
+
+/*
+  additional CSS for the "release of interest" mode
+
+  In this mode, only the column of the release itself, plus
+  the 2 preceding releases should be shown. The rows should
+  be filtered down to those resources/versions/groups that
+  change significantly in the chosen release of interest.
+
+  Each resource/version/group row has 1 CSS class for each
+  release in which it changes (the group has the superset
+  of versions, which have the superset of resources).
+
+  When a release of interest (ROI) is selected, any user-collapsed
+  rows should be ignored entirely. All rows will then be
+  hidden and then, selectively with lots of generated CSS
+  the relevant rows will be shown again.
+*/
+
+.roi-mode tbody tr,
+.roi-mode .apigroup .icons,
+.roi-mode .apiversion .icons {
+  display: none;
+}
+
+/* for each release, generate a rule that will show the resources/versions/groups if they are affected */
+{{ range $.Timeline.Releases }}
+.roi-mode.show-{{ getROIClass .Version }} .apigroup.{{ getROIClass .Version }},
+.roi-mode.show-{{ getROIClass .Version }} .apiversion.{{ getROIClass .Version }},
+.roi-mode.show-{{ getROIClass .Version }} .apiresource.{{ getROIClass .Version }} {
+  display: table-row;
+}
+{{ end }}
+
+/* only show the selected ROI, plus the 2 preceding versions */
+.roi-mode thead th.release,
+.roi-mode tbody td.release {
+  display: none;
+}
+
+{{ range $release := $.Timeline.Releases }}
+{{ range $prev := getROIViewRange $.Timeline $release.Version 2 }}
+.roi-mode.show-{{ getROIClass $release.Version }} .release.rel-{{ getVersionClass $prev }} { display: table-cell; }
+{{- end }}
+{{- end }}

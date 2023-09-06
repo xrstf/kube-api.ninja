@@ -24,11 +24,19 @@ func CreateTimeline(releases []*database.KubernetesRelease, now time.Time) (*Tim
 		return releases[i].Semver().LessThan(releases[j].Semver())
 	})
 
+	// merge all releases together
 	for _, release := range releases {
 		// data is copied into the overview, so it's okay to have the loop re-use the same variable
 		if err := mergeReleaseIntoOverview(timeline, release, now); err != nil {
 			return nil, fmt.Errorf("failed to process release %s: %w", release.Version(), err)
 		}
+	}
+
+	// calculate "releases of interest":
+	//   a) an API resource disappears
+	//   b) a more mature version of an API group becomes available
+	if err := calculateReleasesOfInterest(timeline); err != nil {
+		return nil, fmt.Errorf("failed to calculate ROIs: %w", err)
 	}
 
 	// sort API groups alphabetically
@@ -227,4 +235,58 @@ func createReleaseMetadata(release *database.KubernetesRelease, now time.Time) (
 		EndOfLifeDate: endOfLife,
 		LatestVersion: latestVersion,
 	}, nil
+}
+
+func calculateReleasesOfInterest(tl *Timeline) error {
+	for i, apiGroup := range tl.APIGroups {
+		groupSuperset := sets.Set[string]{}
+
+		for j, apiVersion := range apiGroup.APIVersions {
+			versionSuperset := sets.Set[string]{}
+
+			for k, apiResource := range apiVersion.Resources {
+				notableReleases := getReleasesWithNotableChangesForResource(apiResource, tl.Releases)
+				if len(notableReleases) > 0 {
+					tl.APIGroups[i].APIVersions[j].Resources[k].ReleasesOfInterest = notableReleases
+					versionSuperset.Insert(notableReleases...)
+					// fmt.Printf("%s.%s.%s changes in %v\n", apiGroup.Name, apiVersion.Version, apiResource.Kind, notableReleases)
+				}
+			}
+
+			if versionSuperset.Len() > 0 {
+				tl.APIGroups[i].APIVersions[j].ReleasesOfInterest = sets.List(versionSuperset)
+				groupSuperset = groupSuperset.Union(versionSuperset)
+				// fmt.Printf("%s.%s changes in %v\n", apiGroup.Name, apiVersion.Version, sets.List(versionSuperset))
+			}
+		}
+
+		if groupSuperset.Len() > 0 {
+			tl.APIGroups[i].ReleasesOfInterest = sets.List(groupSuperset)
+			// fmt.Printf("%s changes in %v\n", apiGroup.Name, sets.List(groupSuperset))
+		}
+	}
+
+	return nil
+}
+
+func getReleasesWithNotableChangesForResource(res APIResource, releases []ReleaseMetadata) []string {
+	availableInReleases := sets.New(res.Releases...)
+	result := []string{}
+
+	var wasAvailable bool
+	for i, release := range releases {
+		// for the first known release, we cannot determine if
+		// there are breaking changes; this makes the loop quite neat
+		if i > 0 {
+			isAvailable := availableInReleases.Has(release.Version)
+
+			if wasAvailable && !isAvailable {
+				result = append(result, release.Version)
+			}
+		}
+
+		wasAvailable = availableInReleases.Has(release.Version)
+	}
+
+	return result
 }

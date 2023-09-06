@@ -46,7 +46,7 @@ func main() {
 		log.Fatalf("Failed to create timeline: %v", err)
 	}
 
-	templates, err := template.New("kubernetes-apis").Funcs(templateFuncs).ParseGlob("templates/*.html")
+	templates, err := template.New("kubernetes-apis").Funcs(templateFuncs).ParseGlob("templates/*")
 	if err != nil {
 		log.Fatalf("Failed to parse template: %v", err)
 	}
@@ -58,6 +58,11 @@ func main() {
 	log.Println("Rendering index.html…")
 	if err := renderIndex(outputDirectory, templates, timelineObj); err != nil {
 		log.Fatalf("Failed to render index.html: %v", err)
+	}
+
+	log.Println("Rendering site.css…")
+	if err := renderCSS(outputDirectory, templates, timelineObj); err != nil {
+		log.Fatalf("Failed to render site.css: %v", err)
 	}
 
 	log.Println("Done.")
@@ -75,6 +80,18 @@ func renderIndex(directory string, tpl *template.Template, timelineObj *timeline
 	defer f.Close()
 
 	return tpl.ExecuteTemplate(f, "index.html", indexData{
+		Timeline: timelineObj,
+	})
+}
+
+func renderCSS(directory string, tpl *template.Template, timelineObj *timeline.Timeline) error {
+	f, err := os.Create(filepath.Join(directory, "static", "css", "site.css"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return tpl.ExecuteTemplate(f, "site.css", indexData{
 		Timeline: timelineObj,
 	})
 }

@@ -18,10 +18,16 @@ var (
 		"add": func(a, b int) int {
 			return a + b
 		},
+		"getROIViewRange":              getROIViewRange,
+		"getVersionClass":              getVersionClass,
+		"getROIClass":                  getROIClass,
 		"getReleaseHeaderClass":        getReleaseHeaderClass,
+		"getAPIGroupClass":             getAPIGroupClass,
 		"getAPIGroupReleaseClass":      getAPIGroupReleaseClass,
+		"getAPIVersionClass":           getAPIVersionClass,
 		"getAPIVersionReleaseClass":    getAPIVersionReleaseClass,
 		"getAPIVersionReleaseContent":  getAPIVersionReleaseContent,
+		"getAPIResourceClass":          getAPIResourceClass,
 		"getAPIResourceReleaseClass":   getAPIResourceReleaseClass,
 		"getAPIResourceReleaseContent": getAPIResourceReleaseContent,
 	}
@@ -38,8 +44,34 @@ func jumpMinorRelease(s string, minorSteps int) string {
 	return fmt.Sprintf("%s.%d", parts[0], minor+minorSteps)
 }
 
+func getROIViewRange(tl *timeline.Timeline, needle string, num int) []string {
+	var subset []timeline.ReleaseMetadata
+
+	for i, rel := range tl.Releases {
+		if rel.Version == needle {
+			start := i - num
+			if start < 0 {
+				start = 0
+			}
+			subset = tl.Releases[start : i+1]
+			break
+		}
+	}
+
+	if len(subset) == 0 {
+		return nil
+	}
+
+	result := make([]string, len(subset))
+	for i, r := range subset {
+		result[i] = r.Version
+	}
+
+	return result
+}
+
 func getReleaseHeaderClassNames(tl *timeline.Timeline, release *timeline.ReleaseMetadata) []string {
-	classes := []string{}
+	classes := []string{"rel-" + getVersionClass(release.Version)}
 
 	if release.Supported {
 		classes = append(classes, "release-supported")
@@ -65,8 +97,26 @@ func getReleaseHeaderClassNames(tl *timeline.Timeline, release *timeline.Release
 	return classes
 }
 
+func getVersionClass(release string) string {
+	return strings.ReplaceAll(release, ".", "-")
+}
+
+func getROIClass(release string) string {
+	return fmt.Sprintf("roi-%s", getVersionClass(release))
+}
+
 func getReleaseHeaderClass(tl *timeline.Timeline, release *timeline.ReleaseMetadata) string {
 	classes := append(getReleaseHeaderClassNames(tl, release), "release")
+
+	return strings.Join(classes, " ")
+}
+
+func getAPIGroupClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup) string {
+	classes := []string{"apigroup"}
+
+	for _, release := range apiGroup.ReleasesOfInterest {
+		classes = append(classes, getROIClass(release))
+	}
 
 	return strings.Join(classes, " ")
 }
@@ -118,6 +168,16 @@ func getAPIGroupReleaseClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup,
 			// makes CSS easier
 			classes = append(classes, "a10y-middle")
 		}
+	}
+
+	return strings.Join(classes, " ")
+}
+
+func getAPIVersionClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion) string {
+	classes := []string{"apiversion"}
+
+	for _, release := range apiVersion.ReleasesOfInterest {
+		classes = append(classes, getROIClass(release))
 	}
 
 	return strings.Join(classes, " ")
@@ -180,6 +240,16 @@ func getAPIVersionReleaseContent(tl *timeline.Timeline, apiGroup *timeline.APIGr
 	}
 
 	return template.HTML("&nbsp;")
+}
+
+func getAPIResourceClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, apiResource *timeline.APIResource) string {
+	classes := []string{"apiresource"}
+
+	for _, release := range apiVersion.ReleasesOfInterest {
+		classes = append(classes, getROIClass(release))
+	}
+
+	return strings.Join(classes, " ")
 }
 
 func getAPIResourceReleaseClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, apiResource *timeline.APIResource, release *timeline.ReleaseMetadata) string {
