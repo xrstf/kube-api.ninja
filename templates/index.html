@@ -6,6 +6,9 @@
   <title>Kubernetes API Timeline</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link href="static/css/fontawesome-6.4.2/css/fontawesome.min.css" rel="stylesheet">
+  <link href="static/css/fontawesome-6.4.2/css/brands.min.css" rel="stylesheet">
+  <link href="static/css/fontawesome-6.4.2/css/solid.min.css" rel="stylesheet">
   <style>
     .apigroup>.name,
     .apiversion>.name,
@@ -229,6 +232,23 @@
     td.oldest-release-supported, th.oldest-release-supported {
       border-left: 1px solid #495057;
     }
+
+    /* tighter layout */
+    .release-links .list-group-item {
+      padding: 0.125rem 0.3rem 0.125rem 0.3rem;
+    }
+
+    /* mimic the look of an
+
+      definition:
+         list
+    */
+    .dl-item .key {
+      font-size: 80%;
+    }
+    .dl-item .value {
+      text-align: right;
+    }
   </style>
 </head>
 
@@ -340,25 +360,34 @@
 
   <div class="hidden">
     <div class="release-popover-template">
-      <div class="container">
-        <div class="row">
-          <div class="col">Released:</div>
-          <div class="col release-date"></div>
-        </div>
-        <div class="row">
-          <div class="col">Latest:</div>
-          <div class="col latest-version"></div>
-        </div>
-        <div class="row">
-          <div class="col">End of Life:</div>
-          <div class="col eol-date"></div>
-        </div>
-      </div>
-
-      <ul class="release-links">
-        <li><a href="#" class="release-documentation" target="_blank">📖 Documentation</a></li>
-        <li><a href="#" class="release-changelog" target="_blank">G Changelog</a></li>
-        <li><a href="#" class="release-gitbranch" target="_blank">G Git Branch</a></li>
+      <ul class="list-group list-group-flush release-links">
+        <li class="list-group-item">
+          <a class="release-documentation" target="_blank">
+            <i class="fa-solid fa-book"></i> Documentation
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a class="release-changelog" target="_blank">
+            <i class="fa-solid fa-clipboard-list"></i> Changelog
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a class="release-gitbranch" target="_blank">
+            <i class="fa-solid fa-github"></i> Git Branch
+          </a>
+        </li>
+        <li class="list-group-item dl-item">
+          <div class="key">Released:</div>
+          <div class="release-date value"></div>
+        </li>
+        <li class="list-group-item dl-item">
+          <div class="key">Latest Version:</div>
+          <div class="latest-version value"></div>
+        </li>
+        <li class="list-group-item dl-item">
+          <div class="key">End of Life:</div>
+          <div class="eol-date value"></div>
+        </li>
       </ul>
     </div>
   </div>
@@ -367,14 +396,65 @@
     integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
     crossorigin="anonymous"></script>
   <script>
+    // thank you https://stackoverflow.com/a/15289883
+    function dateDiffInDays(a, b) {
+      const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+      // Discard the time and time-zone information.
+      const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+      const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+      return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+    }
+
+    // very rough results are totally acceptable here, a day or two is not
+    // important, considering timezones
+    function dateDiffString(now, other) {
+      let diff = dateDiffInDays(now, other);
+      if (diff < 0) {
+        return '';
+      }
+
+      switch (diff) {
+        case 0:
+          return ' (today!)'
+        case 1:
+          return ' (tomorrow)'
+        default:
+          if (diff > 60) {
+            let months = Math.floor(diff / 30.5);
+            return ` (in ${months} months)`;
+          }
+
+          return ` (in ${diff} days)`
+      }
+    }
+
     function showReleaseInfoPopover(link) {
       let cell = link.closest('th');
       let release = cell.dataset.release;
       let template = document.querySelector('.release-popover-template').cloneNode(true);
+      let now = new Date();
 
-      template.querySelector('.release-date').innerText = cell.dataset.releaseDate;
-      template.querySelector('.latest-version').innerText = cell.dataset.latestVersion;
-      template.querySelector('.eol-date').innerText = cell.dataset.eolDate;
+      let releaseDate = 'TBD';
+      if (cell.dataset.releaseDate) {
+        let parsed = new Date(cell.dataset.releaseDate);
+        releaseDate = parsed.toDateString() + dateDiffString(now, parsed);
+      }
+
+      let eolDate = 'TBD';
+      if (cell.dataset.eolDate) {
+        let parsed = new Date(cell.dataset.eolDate);
+        eolDate = parsed.toDateString() + dateDiffString(now, parsed);
+      }
+
+      let latestVersion = '(unreleased)';
+      if (cell.dataset.latestVersion) {
+        latestVersion = cell.dataset.latestVersion;
+      }
+
+      template.querySelector('.release-date').innerText = releaseDate;
+      template.querySelector('.latest-version').innerText = latestVersion;
+      template.querySelector('.eol-date').innerText = eolDate;
 
       template.querySelector('.release-documentation').href = `apidocs/${release}/`;
       template.querySelector('.release-changelog').href = `https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-${release}.md`;
