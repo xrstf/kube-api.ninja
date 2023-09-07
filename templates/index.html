@@ -377,7 +377,7 @@
 
       megatable.classList.toggle('roi-mode', isSelected);
       megatable.classList.toggle('non-roi-mode', !isSelected);
-      megatable.classList.toggle('container', isSelected);
+      megatable.classList.toggle('container-xxl', isSelected);
 
       // disable the archive view switch for UI clarity
       if (isSelected) {
@@ -416,7 +416,7 @@
       megatable.classList.toggle('hide-archive', !archiveViewSwitch.checked);
 
       if (megatable.classList.contains('non-roi-mode')) {
-        megatable.classList.toggle('container', !archiveViewSwitch.checked);
+        megatable.classList.toggle('container-xxl', !archiveViewSwitch.checked);
       }
     }
 

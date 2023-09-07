@@ -271,6 +271,11 @@ td.oldest-release-supported, th.oldest-release-supported {
   display: none;
 }
 
+/* with so few columns, ROI tables need very little space */
+.table.roi-mode {
+  max-width: 800px;
+}
+
 /* for each release, generate a rule that will show the resources/versions/groups if they are affected */
 {{ range $.Timeline.Releases }}
 .roi-mode.show-{{ getROIClass .Version }} .apigroup.{{ getROIClass .Version }},

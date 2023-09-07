@@ -268,7 +268,7 @@ func getAPIResourceClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, api
 		classes = append(classes, "archived")
 	}
 
-	for _, release := range apiVersion.ReleasesOfInterest {
+	for _, release := range apiResource.ReleasesOfInterest {
 		classes = append(classes, getROIClass(release))
 	}
 
