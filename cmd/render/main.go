@@ -4,10 +4,12 @@
 package main
 
 import (
-	"html/template"
+	htmltpl "html/template"
 	"log"
 	"os"
 	"path/filepath"
+	"text/template"
+	texttpl "text/template"
 	"time"
 
 	"go.xrstf.de/kube-api.ninja/pkg/database"
@@ -47,23 +49,38 @@ func main() {
 		log.Fatalf("Failed to create timeline: %v", err)
 	}
 
-	templates, err := render.LoadTemplates()
+	htmlTemplates, err := render.LoadHTMLTemplates()
 	if err != nil {
-		log.Fatalf("Failed to parse template: %v", err)
+		log.Fatalf("Failed to parse HTML template: %v", err)
 	}
 
-	if err := os.MkdirAll(outputDirectory, 0755); err != nil {
-		log.Fatalf("Failed to create %s directory: %v", outputDirectory, err)
+	textTemplates, err := render.LoadTextTemplates()
+	if err != nil {
+		log.Fatalf("Failed to parse text template: %v", err)
+	}
+
+	for _, dir := range []string{
+		filepath.Join(outputDirectory, "static", "css"),
+		filepath.Join(outputDirectory, "static", "js"),
+	} {
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			log.Fatalf("Failed to create %s directory: %v", dir, err)
+		}
 	}
 
 	log.Println("Rendering index.html…")
-	if err := renderIndex(outputDirectory, templates, timelineObj); err != nil {
+	if err := renderIndex(outputDirectory, htmlTemplates, timelineObj); err != nil {
 		log.Fatalf("Failed to render index.html: %v", err)
 	}
 
 	log.Println("Rendering site.css…")
-	if err := renderCSS(outputDirectory, templates, timelineObj); err != nil {
+	if err := renderCSS(outputDirectory, textTemplates, timelineObj); err != nil {
 		log.Fatalf("Failed to render site.css: %v", err)
+	}
+
+	log.Println("Rendering site.js")
+	if err := renderJS(outputDirectory, textTemplates, timelineObj); err != nil {
+		log.Fatalf("Failed to render site.js: %v", err)
 	}
 
 	log.Println("Done.")
@@ -73,7 +90,7 @@ type indexData struct {
 	Timeline *timeline.Timeline
 }
 
-func renderIndex(directory string, tpl *template.Template, timelineObj *timeline.Timeline) error {
+func renderIndex(directory string, tpl *htmltpl.Template, timelineObj *timeline.Timeline) error {
 	f, err := os.Create(filepath.Join(directory, "index.html"))
 	if err != nil {
 		return err
@@ -85,7 +102,7 @@ func renderIndex(directory string, tpl *template.Template, timelineObj *timeline
 	})
 }
 
-func renderCSS(directory string, tpl *template.Template, timelineObj *timeline.Timeline) error {
+func renderCSS(directory string, tpl *texttpl.Template, timelineObj *timeline.Timeline) error {
 	f, err := os.Create(filepath.Join(directory, "static", "css", "site.css"))
 	if err != nil {
 		return err
@@ -93,6 +110,18 @@ func renderCSS(directory string, tpl *template.Template, timelineObj *timeline.T
 	defer f.Close()
 
 	return tpl.ExecuteTemplate(f, "site.css", indexData{
+		Timeline: timelineObj,
+	})
+}
+
+func renderJS(directory string, tpl *template.Template, timelineObj *timeline.Timeline) error {
+	f, err := os.Create(filepath.Join(directory, "static", "js", "site.js"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return tpl.ExecuteTemplate(f, "site.js", indexData{
 		Timeline: timelineObj,
 	})
 }

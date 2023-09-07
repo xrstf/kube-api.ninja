@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"go.xrstf.de/kube-api.ninja/pkg/types"
+
 	"k8s.io/client-go/discovery"
 )
 

@@ -11,6 +11,7 @@ import (
 	"go.xrstf.de/kube-api.ninja/pkg/database"
 	"go.xrstf.de/kube-api.ninja/pkg/types"
 	"go.xrstf.de/kube-api.ninja/pkg/version"
+
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 

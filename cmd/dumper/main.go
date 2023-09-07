@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"go.xrstf.de/kube-api.ninja/pkg/dumper"
+
 	"k8s.io/client-go/discovery"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
 	"k8s.io/client-go/tools/clientcmd"
