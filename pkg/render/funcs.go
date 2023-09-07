@@ -22,6 +22,7 @@ var (
 		"getVersionClass":              getVersionClass,
 		"getROIClass":                  getROIClass,
 		"getReleaseHeaderClass":        getReleaseHeaderClass,
+		"getAPIGroupBodyClass":         getAPIGroupBodyClass,
 		"getAPIGroupClass":             getAPIGroupClass,
 		"getAPIGroupReleaseClass":      getAPIGroupReleaseClass,
 		"getAPIVersionClass":           getAPIVersionClass,
@@ -115,6 +116,16 @@ func getReleaseHeaderClass(tl *timeline.Timeline, release *timeline.ReleaseMetad
 	return strings.Join(classes, " ")
 }
 
+func getAPIGroupBodyClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup) string {
+	classes := []string{}
+
+	if apiGroup.Archived {
+		classes = append(classes, "archived")
+	}
+
+	return strings.Join(classes, " ")
+}
+
 func getAPIGroupClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup) string {
 	classes := []string{"apigroup"}
 
@@ -179,6 +190,10 @@ func getAPIGroupReleaseClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup,
 
 func getAPIVersionClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion) string {
 	classes := []string{"apiversion"}
+
+	if apiVersion.Archived {
+		classes = append(classes, "archived")
+	}
 
 	for _, release := range apiVersion.ReleasesOfInterest {
 		classes = append(classes, getROIClass(release))
@@ -248,6 +263,10 @@ func getAPIVersionReleaseContent(tl *timeline.Timeline, apiGroup *timeline.APIGr
 
 func getAPIResourceClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, apiResource *timeline.APIResource) string {
 	classes := []string{"apiresource"}
+
+	if apiResource.Archived {
+		classes = append(classes, "archived")
+	}
 
 	for _, release := range apiVersion.ReleasesOfInterest {
 		classes = append(classes, getROIClass(release))

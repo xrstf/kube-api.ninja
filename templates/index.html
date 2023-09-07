@@ -76,7 +76,7 @@
 
       {{ range $apiGroup := .Timeline.APIGroups }}
       <!-- TODO: collapsed should be applied via JS -->
-      <tbody data-apigroup="{{ $apiGroup.Name }}" class="collapsed">
+      <tbody data-apigroup="{{ $apiGroup.Name }}" class="{{ getAPIGroupBodyClass $.Timeline $apiGroup }} collapsed">
         <!-- row for the API group -->
         <tr class="{{ getAPIGroupClass $.Timeline $apiGroup }}">
           <th class="name">
@@ -372,7 +372,6 @@
     }
 
     function updateROIState() {
-      console.log("updateROIState");
       let selectedRelease = selector.value;
       let isSelected = selectedRelease != '';
 
@@ -413,8 +412,8 @@
     let archiveViewSwitch = document.querySelector('#archiveViewSwitch');
 
     function updateArchiveViewState() {
-      console.log("updateArchiveViewState");
       megatable.classList.toggle('show-archive', archiveViewSwitch.checked);
+      megatable.classList.toggle('hide-archive', !archiveViewSwitch.checked);
 
       if (megatable.classList.contains('non-roi-mode')) {
         megatable.classList.toggle('container', !archiveViewSwitch.checked);

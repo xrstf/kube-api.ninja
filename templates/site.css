@@ -319,11 +319,19 @@ td.oldest-release-supported, th.oldest-release-supported {
   in ROI mode, ROI mode takes control over all column states
 */
 
+/* hide archived releases by default */
 #release-megatable.non-roi-mode th.release-archived,
 #release-megatable.non-roi-mode td.release-archived {
   display: none;
 }
 
+/* hide archived resources/versions/groups */
+#release-megatable.non-roi-mode.hide-archive tbody.archived,
+#release-megatable.non-roi-mode.hide-archive tr.archived {
+  display: none;
+}
+
+/* show them if requested */
 #release-megatable.non-roi-mode.show-archive th.release-archived,
 #release-megatable.non-roi-mode.show-archive td.release-archived {
   display: table-cell;

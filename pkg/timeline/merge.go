@@ -40,13 +40,8 @@ func CreateTimeline(releases []*database.KubernetesRelease, now time.Time) (*Tim
 	}
 
 	// mark old releases as archived
-	totalReleases := len(timeline.Releases)
-	archiveThresold := totalReleases - numRecentReleases
-
-	for i := range timeline.Releases {
-		if i < archiveThresold {
-			timeline.Releases[i].Archived = true
-		}
+	if err := calculateArchivalStatus(timeline); err != nil {
+		return nil, fmt.Errorf("failed to calculate archival status: %w", err)
 	}
 
 	// calculate "releases of interest":
@@ -312,4 +307,49 @@ func getReleasesWithNotableChangesForResource(res APIResource, releases []Releas
 	}
 
 	return result
+}
+
+func calculateArchivalStatus(tl *Timeline) error {
+	totalReleases := len(tl.Releases)
+	archiveThresold := totalReleases - numRecentReleases
+
+	// mark releases as archived
+	archivedRelases := sets.Set[string]{}
+	for i, rel := range tl.Releases {
+		if i < archiveThresold {
+			tl.Releases[i].Archived = true
+			archivedRelases.Insert(rel.Version)
+		}
+	}
+
+	// based on the list of archived releases, mark resources/versions/groups
+	// as archived if they only show up in archived releases
+	for i, apiGroup := range tl.APIGroups {
+		groupArchived := true
+
+		for j, apiVersion := range apiGroup.APIVersions {
+			versionArchived := true
+
+			for k, apiResource := range apiVersion.Resources {
+				// check if the release only appears in archived releases
+				present := sets.New(apiResource.Releases...)
+
+				if present.Difference(archivedRelases).Len() == 0 {
+					tl.APIGroups[i].APIVersions[j].Resources[k].Archived = true
+				} else {
+					versionArchived = false
+				}
+			}
+
+			tl.APIGroups[i].APIVersions[j].Archived = versionArchived
+
+			if !versionArchived {
+				groupArchived = false
+			}
+		}
+
+		tl.APIGroups[i].Archived = groupArchived
+	}
+
+	return nil
 }
