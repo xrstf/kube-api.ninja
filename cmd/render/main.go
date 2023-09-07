@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"go.xrstf.de/kube-api.ninja/pkg/database"
+	"go.xrstf.de/kube-api.ninja/pkg/render"
 	"go.xrstf.de/kube-api.ninja/pkg/timeline"
 )
 
@@ -46,7 +47,7 @@ func main() {
 		log.Fatalf("Failed to create timeline: %v", err)
 	}
 
-	templates, err := template.New("kubernetes-apis").Funcs(templateFuncs).ParseGlob("templates/*")
+	templates, err := render.LoadTemplates()
 	if err != nil {
 		log.Fatalf("Failed to parse template: %v", err)
 	}

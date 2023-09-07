@@ -12,6 +12,7 @@ type Timeline struct {
 
 type ReleaseMetadata struct {
 	Version       string
+	Released      bool
 	Supported     bool
 	ReleaseDate   time.Time
 	EndOfLifeDate *time.Time

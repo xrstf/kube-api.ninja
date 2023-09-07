@@ -60,6 +60,7 @@
           <th
             class="{{ getReleaseHeaderClass $.Timeline $rel }}"
             data-release="{{ $rel.Version }}"
+            data-released="{{ $rel.Released }}"
             data-latest-version="{{ $rel.LatestVersion }}"
             data-release-date="{{ $rel.ReleaseDate.Format "2006-01-02" }}"
             data-eol-date="{{ with $rel.EndOfLifeDate }}{{ .Format "2006-01-02" }}{{ end }}"
@@ -134,17 +135,17 @@
   <div class="hidden">
     <div class="release-popover-template">
       <ul class="list-group list-group-flush release-links">
-        <li class="list-group-item">
+        <li class="list-group-item after-release">
           <a class="release-documentation" target="_blank">
             <i class="fa-solid fa-book"></i> Documentation
           </a>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item after-release">
           <a class="release-changelog" target="_blank">
             <i class="fa-solid fa-clipboard-list"></i> Changelog
           </a>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item after-release">
           <a class="release-gitbranch" target="_blank">
             <i class="fa-solid fa-github"></i> Git Branch
           </a>
@@ -157,7 +158,7 @@
           <div class="key">Latest Version:</div>
           <div class="latest-version value"></div>
         </li>
-        <li class="list-group-item dl-item">
+        <li class="list-group-item dl-item after-release">
           <div class="key">End of Life:</div>
           <div class="eol-date value"></div>
         </li>
@@ -224,6 +225,13 @@
       if (cell.dataset.latestVersion) {
         latestVersion = cell.dataset.latestVersion;
       }
+
+      // Hide additional infos if the release isn't out yet;
+      // do not rely on the browser date, as some release information
+      // depends on buildtime data and so making it client-dependent
+      // would not magically make more data appear.
+      let container = template.querySelector('.release-links');
+      container.classList.toggle('unreleased', cell.dataset.released !== 'true');
 
       template.querySelector('.release-date').innerText = releaseDate;
       template.querySelector('.latest-version').innerText = latestVersion;

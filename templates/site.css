@@ -226,6 +226,11 @@ td.oldest-release-supported, th.oldest-release-supported {
   padding: 0.125rem 0.3rem 0.125rem 0.3rem;
 }
 
+/* for unreleased Kubernetes versions, hide some infos */
+.release-links.unreleased .after-release {
+  display: none;
+}
+
 /* mimic the look of an
 
   definition:

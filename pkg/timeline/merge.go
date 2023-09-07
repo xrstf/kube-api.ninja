@@ -226,10 +226,16 @@ func createReleaseMetadata(release *database.KubernetesRelease, now time.Time) (
 		return ReleaseMetadata{}, err
 	}
 
-	supported := endOfLife == nil || endOfLife.After(now)
+	eol := endOfLife != nil && now.After(*endOfLife)
+
+	// "!before" is not the same as "after"; on the release
+	// date itself, it should be marked as supported
+	released := !now.Before(releaseDate)
+	supported := released && !eol
 
 	return ReleaseMetadata{
 		Version:       release.Version(),
+		Released:      released,
 		Supported:     supported,
 		ReleaseDate:   releaseDate,
 		EndOfLifeDate: endOfLife,
