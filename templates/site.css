@@ -200,15 +200,15 @@ footer .border-top {
 
 /* make the header row stick to the top of the screen when scrolling */
 /* note that this would interfere with bootstrap's table-responsive */
-.release-megatable thead th {
+#release-megatable thead th {
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
 /* and make the left column stick to the side of the screen */
-.release-megatable thead th,
-.release-megatable tbody th.name {
+#release-megatable thead th,
+#release-megatable tbody th.name {
   position: sticky;
   left: 0;
 }
