@@ -58,7 +58,6 @@ render: clean build
 
 .PHONY: deploy
 deploy:
-	cp public/index.html public/kube-apis.html
-	scp public/kube-apis.html xrstf.de:infrastructure/websites/xrstf.de/www/
-	rm public/kube-apis.html
+	scp public/index.html kube-api.ninja:/srv/www/kube-api.ninja/www/
+	scp public/static/css/site.css kube-api.ninja:/srv/www/kube-api.ninja/www/static/css/
 

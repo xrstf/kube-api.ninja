@@ -11,13 +11,17 @@ thead .release a {
   cursor: help;
 }
 
+nav .form-switch {
+  margin-right: 1rem;
+}
+
 .hidden {
   display: none;
 }
 
 /* make enough room to fit the fixed footer into the layout */
 .site-container {
-  margin-bottom: 100px;
+  margin-bottom: 150px;
 }
 
 .apigroup>.name {
@@ -305,4 +309,22 @@ td.oldest-release-supported, th.oldest-release-supported {
 #release-megatable tfoot .no-notable-changes .infotext {
   text-align: center;
   font-weight: bold;
+}
+
+/*
+  archive mode
+
+  do not show old releases by default
+
+  in ROI mode, ROI mode takes control over all column states
+*/
+
+#release-megatable.non-roi-mode th.release-archived,
+#release-megatable.non-roi-mode td.release-archived {
+  display: none;
+}
+
+#release-megatable.non-roi-mode.show-archive th.release-archived,
+#release-megatable.non-roi-mode.show-archive td.release-archived {
+  display: table-cell;
 }

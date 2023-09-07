@@ -73,6 +73,10 @@ func getROIViewRange(tl *timeline.Timeline, needle string, num int) []string {
 func getReleaseHeaderClassNames(tl *timeline.Timeline, release *timeline.ReleaseMetadata) []string {
 	classes := []string{"rel-" + getVersionClass(release.Version)}
 
+	if release.Archived {
+		classes = append(classes, "release-archived")
+	}
+
 	if release.Supported {
 		classes = append(classes, "release-supported")
 

@@ -21,29 +21,32 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-          </li>
+          </li> -->
         </ul>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="archiveViewSwitch">
+          <label class="form-check-label" for="archiveViewSwitch">Show archived releases</label>
+        </div>
+        <form class="d-flex">
+          <select class="form-select" id="roi-selector">
+            <option value="">Show notable changes for…</option>
+            {{ range $idx, $rel := .Timeline.Releases }}
+            {{ if gt $idx 0 }}
+            <option value="{{ $rel.Version }}">Kubernetes {{ $rel.Version }}</option>
+            {{ end }}
+            {{ end }}
+          </select>
+        </form>
       </div>
-      <form class="d-flex" role="search">
-        Show notable changes for:
-        <select class="form-select" id="roi-selector">
-          <option value="">(select release)</option>
-          {{ range $idx, $rel := .Timeline.Releases }}
-          {{ if gt $idx 0 }}
-          <option value="{{ $rel.Version }}">Kubernetes {{ $rel.Version }}</option>
-          {{ end }}
-          {{ end }}
-        </select>
-      </form>
     </div>
   </nav>
 
@@ -52,7 +55,7 @@
 
     <!-- This 2 column div contains the mega table; it's two columns so that the right side table -->
     <!-- can be a responsive table and get horizontal scrolling while keeping the left column fixed. -->
-    <table class="table" id="release-megatable">
+    <table class="table non-roi-mode" id="release-megatable">
       <thead>
         <tr>
           <th>&nbsp;</th>
@@ -130,6 +133,7 @@
   </main> <!-- main content done -->
 
   <footer>
+    <div class="container">
     <p class="text-center text-body-secondary border-top">
       Distributed under CC BY 4.0
     </p>
@@ -137,6 +141,7 @@
       Kubernetes® is a registered trademark of The Linux Foundation®. All rights reserved.<br>
       This website has no relation with and is not endorsed by The Linux Foundation.
     </p>
+  </div>
   </footer>
 
   <div class="hidden">
@@ -367,10 +372,20 @@
     }
 
     function updateROIState() {
+      console.log("updateROIState");
       let selectedRelease = selector.value;
+      let isSelected = selectedRelease != '';
 
-      megatable.classList.toggle('roi-mode', selectedRelease != '');
-      megatable.classList.toggle('container', selectedRelease != '');
+      megatable.classList.toggle('roi-mode', isSelected);
+      megatable.classList.toggle('non-roi-mode', !isSelected);
+      megatable.classList.toggle('container', isSelected);
+
+      // disable the archive view switch for UI clarity
+      if (isSelected) {
+        archiveViewSwitch.setAttribute('disabled', 'disabled');
+      } else {
+        archiveViewSwitch.removeAttribute('disabled');
+      }
 
       // reset any other class
       releaseColumns.forEach(function(col) {
@@ -379,16 +394,38 @@
 
       // set the currently selected column
       let selectedRoiClass = roiClass(selectedRelease);
-      megatable.classList.add('show-' + selectedRoiClass);
+      if (isSelected) {
+        megatable.classList.add('show-' + selectedRoiClass);
+      }
 
       // if after all this no rows are visible, show a special row that
       // mentions no breaks
       let unremarkable = megatable.querySelectorAll('tbody tr.apigroup.' + selectedRoiClass).length === 0;
-      megatable.classList.toggle('unremarkable', unremarkable);
+      megatable.classList.toggle('unremarkable', isSelected && unremarkable);
+
+      // re-set columns from the archive view mode
+      updateArchiveViewState();
     }
 
     selector.addEventListener('change', updateROIState);
+
+    // handle archiveView switch being toggled
+    let archiveViewSwitch = document.querySelector('#archiveViewSwitch');
+
+    function updateArchiveViewState() {
+      console.log("updateArchiveViewState");
+      megatable.classList.toggle('show-archive', archiveViewSwitch.checked);
+
+      if (megatable.classList.contains('non-roi-mode')) {
+        megatable.classList.toggle('container', !archiveViewSwitch.checked);
+      }
+    }
+
+    archiveViewSwitch.addEventListener('change', updateArchiveViewState);
+
+    // initial setup
     updateROIState();
+    updateArchiveViewState();
   </script>
 </body>
 

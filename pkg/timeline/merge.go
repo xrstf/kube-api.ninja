@@ -14,6 +14,13 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
+const (
+	// The number of most recent releases we consider to show by default,
+	// all older releases are "archived"; this is 11 because we want to
+	// show e.g. 1.19..1.29, just because I think it looks nice.
+	numRecentReleases = 11
+)
+
 func CreateTimeline(releases []*database.KubernetesRelease, now time.Time) (*Timeline, error) {
 	timeline := &Timeline{
 		Releases: []ReleaseMetadata{},
@@ -29,6 +36,16 @@ func CreateTimeline(releases []*database.KubernetesRelease, now time.Time) (*Tim
 		// data is copied into the overview, so it's okay to have the loop re-use the same variable
 		if err := mergeReleaseIntoOverview(timeline, release, now); err != nil {
 			return nil, fmt.Errorf("failed to process release %s: %w", release.Version(), err)
+		}
+	}
+
+	// mark old releases as archived
+	totalReleases := len(timeline.Releases)
+	archiveThresold := totalReleases - numRecentReleases
+
+	for i := range timeline.Releases {
+		if i < archiveThresold {
+			timeline.Releases[i].Archived = true
 		}
 	}
 

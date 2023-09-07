@@ -14,6 +14,7 @@ type ReleaseMetadata struct {
 	Version       string
 	Released      bool
 	Supported     bool
+	Archived      bool
 	ReleaseDate   time.Time
 	EndOfLifeDate *time.Time
 	LatestVersion string
