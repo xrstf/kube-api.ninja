@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kubernetes API Timeline — About</title>
+  <link href="static/bootstrap-5.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/fontawesome-6.4.2/css/fontawesome.min.css" rel="stylesheet">
+  <link href="static/fontawesome-6.4.2/css/brands.min.css" rel="stylesheet">
+  <link href="static/fontawesome-6.4.2/css/regular.min.css" rel="stylesheet">
+  <link href="static/css/site.css" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Kubernetes API Timeline</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>What's this all about?</h2>
+    <p>
+      Have you ever been tasked with upgrading a Kubernetes cluster?<br>
+      Have you ever been given a Kube-aware piece of code and now have to figure out what to upgrade?
+    </p>
+    <p class="text-center"><strong>Then this website might be useful to you! <i class="fa-solid fa-face-smile-beam"></i></strong></p>
+
+    <h3>Frequently Asked Questions</h3>
+    <div class="accordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-what-even" aria-expanded="true" aria-controls="faq-what-even">
+            What even is Kubernetes?
+          </button>
+        </h2>
+        <div id="faq-what-even" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <p>Kubernetes describes itself like so:</p>
+            <blockquote class="blockquote">
+              <p>
+                Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized applications.
+                The open source project is hosted by the Cloud Native Computing Foundation (CNCF).
+              </p>
+            </blockquote>
+            <p>
+              An instance of Kubernetes is called a &quot;cluster&quot; and within such a cluster, resources are stored that describe
+              the desired state of the world. A resource could for example be a ConfigMap, which can contain arbitrary configuration
+              values that can then be consumed by applications in the cluster. All the resources available in a cluster are versioned
+              and grouped based on their purpose and are considered the API of a Kubernetes cluster.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-what-kubernetes" aria-controls="faq-what-kubernetes">
+            What are Kubernetes APIs?
+          </button>
+        </h2>
+        <div id="faq-what-kubernetes" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <p>
+              Kubernetes' cluster orchestration is based upon resources, which are defined in various
+              <strong>API groups</strong> (based on their purpose, like <code>apps</code>
+              for application management or <code>rbac.authorization.k8s.io</code> to manage
+              permissions inside a Kubernetes cluster). Resources are often viewed and interacted with
+              in the form of YAML and an example resource, a <code>ConfigMap</code>, could looke like this:
+            </p>
+
+            <pre>
+apiVersion: core/v1
+kind: ConfigMap
+metadata:
+  name: my-app-config
+data:
+  database: "sql://user:pass@182.18.265.99:123/"
+  theme: "dark"
+  environment: "production"
+            </pre>
+
+            <p>
+              To allow for these APIs to evolve over
+              time, each API group defines a set of <strong>API versions</strong>. These follow
+              a simple naming convention of <code>vN</code> followed by an optional maturity level
+              (for example <code>beta1</code>), so an API could evolve like
+              <code>v1alpha1</code> –&gt;
+              <code>v1beta1</code> –&gt;
+              <code>v1beta2</code> –&gt;
+              <code>v1</code> –&gt;
+              <code>v2alpha1</code>.<br>
+              Each API version then provides a set of <strong>Resources</strong>. The <code>apps/v1</code>
+              group version for example provides <code>Deployments</code> and <code>DaemonSets</code>,
+              whereas the <code>rbac.authorization.k8s.io/v1</code> group offers resources like
+              <code>ClusterRoles</code>.
+            </p>
+
+            <p>
+              The set of API groups and their versions and resources can be dynamically
+              queried in a Kubernetes cluster in a process called &quot;service discovery&quot;.
+              This can be done using the standard Kubernetes CLI tool <code>kubectl</code> and
+              running the command <code>kubectl api-resources</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-archived-releases" aria-controls="faq-archived-releases">
+            What are archived Kubernetes releases?
+          </button>
+        </h2>
+        <div id="faq-archived-releases" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <p>
+              &quot;Archived&quot; is a totally arbitrary distinction made solely for the purpose
+              of keeping the timeline to a consistent width. As new Kubernetes releases come out,
+              not all screen sizes would be able to keep up, so I had to make a cut somewhere.
+            </p>
+
+            <p>
+              Use the &quot;Show archived releases&quot; switch to show all Kubernetes releases
+              for which this site has gathered data.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-how-to-read" aria-controls="faq-how-to-read">
+            How do I read the timeline?
+          </button>
+        </h2>
+        <div id="faq-how-to-read" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <p>
+              The default view on kube-api.ninja will show a table
+              of the 10 most recent Kubernetes releases (one per
+              column). Older releases can be shown, but are only
+              listed for historical purpose (if you have to administer
+              a Kubernetes environment using an archived release,
+              may the sun always be shining on you).
+            </p>
+
+            <p>
+              The columns marked green represented releases that are
+              currently supported by the Kubernetes maintainers and
+              will receive updates and security fixes.
+            </p>
+
+            <p>
+              Each row represents an API group and shows with a green
+              bar in which Kubernetes releases the group is available.
+              An empty cell means that the API is not available in that
+              Kubernetes release.<br>
+              The text in the API group cells shows the <strong>preferred</strong>
+              version to use. Preferred is not necessarily the <em>latest</em>
+              version, but the most mature (for example if both <code>v1</code>
+              and <code>v2beta1</code> are available, <code>v1</code> is
+              preferred).
+            </p>
+
+            <p>
+              By clicking on an API group, the group can be expanded to
+              show all individual API versions for that group. The bars now
+              make use of multiple colors:
+            </p>
+
+            <ul>
+              <li>
+                A <span class="badge text-bg-success rounded-pill">green</span> bar
+                means that the API version is available and the preferred version
+                in that Kubernetes release.
+              </li>
+              <li>
+                A <span class="badge text-bg-warning rounded-pill">yellow</span> bar
+                means that the API version is available, but not preferred.
+              </li>
+              <li>
+                An empty cell means the API version is not available at all.
+              </li>
+            </ul>
+
+            <p>
+              Just as you can expand an API group to show its versions, you can ultimately
+              expand an API version to show the resources it offers. Note that during the
+              lifetime of an API version, resources can be added and in unstable versions,
+              resources can even be removed again.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-green-columns" aria-controls="faq-green-columns">
+            Why are some Kubernetes release columns green?
+          </button>
+        </h2>
+        <div id="faq-green-columns" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <p>
+              Release columns marked green represent those that are currently supported by the
+              Kubernetes maintainers. More information on the
+              <a href="https://kubernetes.io/releases/version-skew-policy/#supported-versions" target="_blank">support policy</a>
+              can be found on the Kubernetes website.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-api-naming" aria-controls="faq-api-naming">
+            Why are some APIs named differently?
+          </button>
+        </h2>
+        <div id="faq-api-naming" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <p>
+              For historical reasons, some Kubernetes APIs have names that
+              are not fully-qualified (like <code>apps</code>). For these groups
+              it is unlikely to ever change, but newly introduced API groups
+              will follow a stricter naming scheme.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-notable-changes" aria-controls="faq-notable-changes">
+            What does &quot;notable changes&quot; mean with the dropdown at the top?
+          </button>
+        </h2>
+        <div id="faq-notable-changes" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            <p>
+              There are two aspects that are considered notable:
+            </p>
+
+            <ol>
+              <li>
+                An API resource is removed. This is simply a breaking change
+                and it means cluster contents must be upgraded to not use the
+                removed resource before control plane upgrade is attempted.
+              </li>
+              <li>
+                A more mature API version becomes available, but only if this
+                new version offers at least one of the existing API resources.
+                For example if <code>apps.v1alpha1/DaemonSet</code> was available
+                in release 1.17 and 1.18 begins to offer <code>apps.v1beta1/DaemonSet</code>,
+                then this is a notable change in 1.18. However if the new <code>v1beta1</code>
+                would not offer <code>DaemonSets</code> (yet), the new version is not a notable
+                change, as it is not relevant when planning cluster upgrades.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="text-center text-body-secondary border-top">
+        Distributed under CC BY 4.0
+      </p>
+      <p class="text-center text-body-secondary">
+        Kubernetes® is a registered trademark of The Linux Foundation®. All rights reserved.<br>
+        This website has no relation with and is not endorsed by The Linux Foundation.
+      </p>
+    </div>
+  </footer>
+
+  <script src="static/bootstrap-5.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="static/js/site.js"></script>
+</body>
+</html>

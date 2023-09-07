@@ -59,5 +59,6 @@ render: clean build
 .PHONY: deploy
 deploy:
 	scp public/index.html kube-api.ninja:/srv/www/kube-api.ninja/www/
-	scp public/static/css/site.css kube-api.ninja:/srv/www/kube-api.ninja/www/static/css/
+	scp public/about.html kube-api.ninja:/srv/www/kube-api.ninja/www/
+	scp -r public/static/ kube-api.ninja:/srv/www/kube-api.ninja/www/
 

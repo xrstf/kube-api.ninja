@@ -73,6 +73,11 @@ func main() {
 		log.Fatalf("Failed to render index.html: %v", err)
 	}
 
+	log.Println("Rendering about.html…")
+	if err := renderAbout(outputDirectory, htmlTemplates, timelineObj); err != nil {
+		log.Fatalf("Failed to render about.html: %v", err)
+	}
+
 	log.Println("Rendering site.css…")
 	if err := renderCSS(outputDirectory, textTemplates, timelineObj); err != nil {
 		log.Fatalf("Failed to render site.css: %v", err)
@@ -86,7 +91,7 @@ func main() {
 	log.Println("Done.")
 }
 
-type indexData struct {
+type pageData struct {
 	Timeline *timeline.Timeline
 }
 
@@ -97,7 +102,19 @@ func renderIndex(directory string, tpl *htmltpl.Template, timelineObj *timeline.
 	}
 	defer f.Close()
 
-	return tpl.ExecuteTemplate(f, "index.html", indexData{
+	return tpl.ExecuteTemplate(f, "index.html", pageData{
+		Timeline: timelineObj,
+	})
+}
+
+func renderAbout(directory string, tpl *htmltpl.Template, timelineObj *timeline.Timeline) error {
+	f, err := os.Create(filepath.Join(directory, "about.html"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return tpl.ExecuteTemplate(f, "about.html", pageData{
 		Timeline: timelineObj,
 	})
 }
@@ -109,7 +126,7 @@ func renderCSS(directory string, tpl *texttpl.Template, timelineObj *timeline.Ti
 	}
 	defer f.Close()
 
-	return tpl.ExecuteTemplate(f, "site.css", indexData{
+	return tpl.ExecuteTemplate(f, "site.css", pageData{
 		Timeline: timelineObj,
 	})
 }
@@ -121,7 +138,7 @@ func renderJS(directory string, tpl *template.Template, timelineObj *timeline.Ti
 	}
 	defer f.Close()
 
-	return tpl.ExecuteTemplate(f, "site.js", indexData{
+	return tpl.ExecuteTemplate(f, "site.js", pageData{
 		Timeline: timelineObj,
 	})
 }
