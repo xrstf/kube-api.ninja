@@ -119,6 +119,13 @@
         {{ end }}
       </tbody>
       {{ end }}
+      <tfoot>
+        <tr class="no-notable-changes">
+          <th>&nbsp;</th>
+          <!-- colspan is always 3 because in ROI mode we show the release itself plus 2 preceding releases -->
+          <td colspan="{{ len .Timeline.Releases }}" class="infotext">There are no notable API changes in this release.<br><i class="fa-solid fa-face-smile-beam"></i></td>
+        </tr>
+      </tfoot>
     </table>
   </main> <!-- main content done -->
 
@@ -371,7 +378,13 @@
       });
 
       // set the currently selected column
-      megatable.classList.add('show-' + roiClass(selectedRelease));
+      let selectedRoiClass = roiClass(selectedRelease);
+      megatable.classList.add('show-' + selectedRoiClass);
+
+      // if after all this no rows are visible, show a special row that
+      // mentions no breaks
+      let unremarkable = megatable.querySelectorAll('tbody tr.apigroup.' + selectedRoiClass).length === 0;
+      megatable.classList.toggle('unremarkable', unremarkable);
     }
 
     selector.addEventListener('change', updateROIState);

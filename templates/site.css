@@ -287,3 +287,22 @@ td.oldest-release-supported, th.oldest-release-supported {
 .roi-mode.show-{{ getROIClass $release.Version }} .release.rel-{{ getVersionClass $prev }} { display: table-cell; }
 {{- end }}
 {{- end }}
+
+/* by default, the info row for when there are no notable changes, is hidden */
+#release-megatable tfoot tr {
+  display: none;
+}
+
+/* show the row if the release is unremarkable */
+#release-megatable.unremarkable tfoot tr {
+  display: table-row;
+}
+
+#release-megatable tfoot .no-notable-changes td {
+  background: #1c5f4275;
+}
+
+#release-megatable tfoot .no-notable-changes .infotext {
+  text-align: center;
+  font-weight: bold;
+}
