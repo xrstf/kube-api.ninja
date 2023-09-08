@@ -6,6 +6,10 @@ td.scope {
   line-height: 150%;
 }
 
+#logo {
+  vertical-align: sub;
+}
+
 thead .release a {
   border-bottom: 1px dashed #616a74;
   cursor: help;
@@ -194,7 +198,7 @@ a.docs {
   padding-left: 5px;
 }
 
-.apiresource:hover .icons {
+.apiresource .icons:hover {
   opacity: 1;
 }
 
