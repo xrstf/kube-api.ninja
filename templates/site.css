@@ -10,6 +10,11 @@ td.scope {
   vertical-align: sub;
 }
 
+.hamburg {
+  height: 15px;
+  filter: grayscale(1);
+}
+
 thead .release a {
   border-bottom: 1px dashed #616a74;
   cursor: help;
@@ -214,8 +219,19 @@ tbody.collapsed tr.apiresource {
 /* page footer */
 footer {
   font-size: 75%;
+}
 
-  /* make the footer independent from the megatable, so scrolling horizontally works better */
+footer a {
+  color: rgb(222, 226, 230);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* make the footer independent from the megatable, so scrolling horizontally works better */
+#page-timeline footer {
   position: fixed;
   width: 100%;
   bottom: 0;
@@ -245,11 +261,9 @@ footer .border-top {
 }
 
 /* mark currently supported Kubernetes releases */
-th.release-supported {
-  background: #1e3f34; /* no opacity cause it makes the header looks weird when scrolling */
-}
+th.release-supported,
 td.release-supported {
-  background: #1c5f4275;
+  background: #1e3f34;
 }
 td.oldest-release-supported, th.oldest-release-supported {
   border-left: 1px solid #495057;
