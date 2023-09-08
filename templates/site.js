@@ -1,3 +1,5 @@
+let megatable = document.querySelector('#release-megatable');
+
 // thank you https://stackoverflow.com/a/15289883
 function dateDiffInDays(a, b) {
   const _MS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -143,6 +145,9 @@ function updateAPIResourcesVisibility(apiversionRow) {
 document.querySelectorAll('tr.apiversion').forEach(updateAPIResourcesVisibility);
 
 // toggle visibility of APIVersions for an APIGroup
+let collapseIcon = '⊙';
+let expandIcon = '⊕';
+
 document.querySelectorAll('tr.apigroup a.toggle').forEach(function(node) {
   node.addEventListener("click", function(e) {
     let apigroupRow  = this.closest('tr');
@@ -153,7 +158,7 @@ document.querySelectorAll('tr.apigroup a.toggle').forEach(function(node) {
     apigroupBody.classList.toggle("collapsed");
 
     // update icon
-    this.innerText = apigroupBody.classList.contains("collapsed") ? '⊕' : '⊙';
+    this.querySelector('.icons').innerText = apigroupBody.classList.contains("collapsed") ? expandIcon : collapseIcon;
 
     e.preventDefault();
   });
@@ -172,15 +177,40 @@ document.querySelectorAll('tr.apiversion a.toggle').forEach(function(node) {
     updateAPIResourcesVisibility(apiversionRow);
 
     // update icon
-    this.innerText = apiversionRow.classList.contains("collapsed") ? '⊕' : '⊙';
+    this.querySelector('.icons').innerText = apiversionRow.classList.contains("collapsed") ? expandIcon : collapseIcon;
 
     e.preventDefault();
   });
 });
 
+// toggle all rows at once
+function toggleAllRows(visible) {
+  megatable.querySelectorAll('tbody').forEach(function(node) {
+    node.classList.toggle('collapsed', !visible);
+  });
+
+  megatable.querySelectorAll('tr.apiversion').forEach(function(node) {
+    node.classList.toggle('collapsed', !visible);
+    updateAPIResourcesVisibility(node);
+  });
+
+  megatable.querySelectorAll('tbody .toggle .icons').forEach(function(node) {
+    node.innerText = visible ? collapseIcon : expandIcon;
+  });
+}
+
+document.querySelector('#expand-all').addEventListener('click', function(e) {
+  toggleAllRows(true);
+  e.preventDefault();
+});
+
+document.querySelector('#collapse-all').addEventListener('click', function(e) {
+  toggleAllRows(false);
+  e.preventDefault();
+});
+
 // handle ROI dropdown changes
 let selector = document.querySelector('#roi-selector');
-let megatable = document.querySelector('#release-megatable');
 let releaseColumns = document.querySelectorAll('th.release');
 
 function roiClass(release) {

@@ -54,7 +54,12 @@
     <table class="table non-roi-mode" id="release-megatable">
       <thead>
         <tr>
-          <th>&nbsp;</th>
+          <th class="all-togglers">
+            <div class="btn-group btn-group-sm" role="group">
+              <button type="button" class="btn btn-primary" id="expand-all">⊕ Expand all</button>
+              <button type="button" class="btn btn-secondary" id="collapse-all">⊙ Collapse all</button>
+            </div>
+          </th>
           {{ range $idx, $rel := .Timeline.Releases }}
           <th
             class="{{ getReleaseHeaderClass $.Timeline $rel }}"
@@ -76,8 +81,7 @@
         <!-- row for the API group -->
         <tr class="{{ getAPIGroupClass $.Timeline $apiGroup }}">
           <th class="name">
-            {{ $apiGroup.Name }}
-            <span class="icons"><small><a href="#" class="toggle" title="expand/collapse this API group">⊕</a></small></span>
+            <a href="#" class="toggle" title="expand/collapse this API group"><span class="icons">⊕</span> <span class="name">{{ $apiGroup.Name }}</span></a>
           </th>
           {{ range $rel := $.Timeline.Releases }}
           <td class="{{ getAPIGroupReleaseClass $.Timeline $apiGroup $rel }}">
@@ -91,8 +95,7 @@
         <!-- TODO: collapsed should be applied via JS -->
         <tr class="{{ getAPIVersionClass $.Timeline $apiGroup $apiVersion }} collapsed" data-apiversion="{{ $apiVersion.Version }}">
           <th class="name">
-            <span class="hidden">{{ $apiGroup.Name }}/</span>{{ $apiVersion.Version }}
-            <span class="icons"><small><a href="#" class="toggle" title="expand/collapse this API version">⊕</a></small></span>
+            <a href="#" class="toggle" title="expand/collapse this API version"><span class="icons">⊕</span> <span class="hidden">{{ $apiGroup.Name }}/</span><span class="name">{{ $apiVersion.Version }}</span></a>
           </th>
           {{ range $rel := $.Timeline.Releases }}
           <td class="{{ getAPIVersionReleaseClass $.Timeline $apiGroup $apiVersion $rel }}">
