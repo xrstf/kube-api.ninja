@@ -112,7 +112,7 @@
         <tr class="{{ getAPIResourceClass $.Timeline $apiGroup $apiVersion $apiResource }}" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
           <th class="name">
             <span title="{{ $apiResource.Description }}">{{ $apiResource.Kind }}</span>
-            <span class="icons"><small><a href="{{ getResourceDocumentationLink $.Timeline $apiGroup $apiVersion $apiResource }}" class="docs" title="view documentation for most recent Kubernetes release"><i class="fa-solid fa-book"></i></a></small></span>
+            <span class="icons"><small><a href="{{ getResourceDocumentationLink $.Timeline $apiGroup $apiVersion $apiResource }}" class="docs" title="view documentation for most recent Kubernetes release" target="_blank"><i class="fa-solid fa-book"></i></a></small></span>
           </th>
           {{ range $rel := $.Timeline.Releases }}
           <td class="{{ getAPIResourceReleaseClass $.Timeline $apiGroup $apiVersion $apiResource $rel }}">
