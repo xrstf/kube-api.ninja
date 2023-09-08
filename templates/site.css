@@ -321,7 +321,7 @@ td.oldest-release-supported, th.oldest-release-supported {
 }
 
 /* in roi mode, all affected rows are shown, so these buttons are pointless */
-#release-megatable.roi-mode .all-togglers small {
+#release-megatable.roi-mode .all-togglers .btn-group {
   display: none;
 }
 
@@ -356,7 +356,8 @@ td.oldest-release-supported, th.oldest-release-supported {
   display: table-row;
 }
 
-#release-megatable tfoot .no-notable-changes td {
+#release-megatable tfoot .no-notable-changes td,
+#release-megatable tfoot .no-notable-changes th {
   background: #1c5f4275;
 }
 

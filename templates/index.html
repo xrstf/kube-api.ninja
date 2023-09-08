@@ -126,9 +126,7 @@
       {{ end }}
       <tfoot>
         <tr class="no-notable-changes">
-          <th>&nbsp;</th>
-          <!-- colspan is always 3 because in ROI mode we show the release itself plus 2 preceding releases -->
-          <td colspan="{{ len .Timeline.Releases }}" class="infotext">There are no notable API changes in this release.<br><i class="fa-solid fa-face-smile-beam"></i></td>
+          <td colspan="{{ add 1 (len .Timeline.Releases) }}" class="infotext">There are no notable API changes in this release.<br><i class="fa-solid fa-face-smile-beam"></i></td>
         </tr>
       </tfoot>
     </table>
