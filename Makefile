@@ -62,3 +62,6 @@ deploy:
 	scp public/about.html kube-api.ninja:/srv/www/kube-api.ninja/www/
 	scp -r public/static/ kube-api.ninja:/srv/www/kube-api.ninja/www/
 
+.PHONY: build-refdocs-image
+build-refdocs-image:
+	docker build --no-cache -t kubernetes-apidocs:latest hack/containers/kubernetes-reference-docs/
