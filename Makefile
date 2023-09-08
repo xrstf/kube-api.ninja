@@ -58,9 +58,7 @@ render: clean build
 
 .PHONY: deploy
 deploy:
-	scp public/index.html kube-api.ninja:/srv/www/kube-api.ninja/www/
-	scp public/about.html kube-api.ninja:/srv/www/kube-api.ninja/www/
-	scp -r public/static/ kube-api.ninja:/srv/www/kube-api.ninja/www/
+	rsync --delete --recursive public/ xrstf@kube-api.ninja:/srv/www/kube-api.ninja/www
 
 .PHONY: build-refdocs-image
 build-refdocs-image:
