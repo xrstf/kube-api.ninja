@@ -241,7 +241,10 @@ footer .border-top {
 }
 
 /* mark currently supported Kubernetes releases */
-td.release-supported, th.release-supported {
+th.release-supported {
+  background: #1e3f34; /* no opacity cause it makes the header looks weird when scrolling */
+}
+td.release-supported {
   background: #1c5f4275;
 }
 td.oldest-release-supported, th.oldest-release-supported {
