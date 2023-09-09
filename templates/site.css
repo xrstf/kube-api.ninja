@@ -29,6 +29,19 @@ nav .navbar-brand {
   padding-bottom: 0.4rem;
 }
 
+a.kube {
+  padding-left: 1.2rem;
+  background-image: url(../images/kubernetes-logo.svg);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 1rem;
+}
+
+a.dropdown-item.kube {
+  padding-left: 2.2rem;
+  background-position: 1rem center;
+}
+
 .all-togglers {
   text-align: center;
 }

@@ -8,7 +8,7 @@
   <link href="static/fontawesome-6.4.2/css/fontawesome.min.css" rel="stylesheet">
   <link href="static/fontawesome-6.4.2/css/brands.min.css" rel="stylesheet">
   <link href="static/fontawesome-6.4.2/css/solid.min.css" rel="stylesheet">
-  <link href="static/css/site.css" rel="stylesheet">
+  <link href="static/css/site.css?v={{ .AssetStamp }}" rel="stylesheet">
 </head>
 
 <body id="page-about">
@@ -29,6 +29,16 @@
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/about.html">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Quicklinks
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item kube" href="https://kubernetes.io/releases/patch-releases/" target="_blank">Patch Releases &amp; Schedule</a></li>
+              <li><a class="dropdown-item kube" href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/" target="_blank">Deprecation Policy</a></li>
+              <li><a class="dropdown-item kube" href="https://kubernetes.io/docs/reference/using-api/deprecation-policy/" target="_blank">Deprecated API Migration Guide</a></li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -222,7 +232,7 @@ data:
             <p>
               Release columns marked green represent those that are currently supported by the
               Kubernetes maintainers. More information on the
-              <a href="https://kubernetes.io/releases/version-skew-policy/#supported-versions" target="_blank">support policy</a>
+              <a href="https://kubernetes.io/releases/version-skew-policy/#supported-versions" target="_blank" class="kube">support policy</a>
               can be found on the Kubernetes website.
             </p>
           </div>
@@ -355,6 +365,6 @@ data:
   </footer>
 
   <script src="static/bootstrap-5.3.1/js/bootstrap.bundle.min.js"></script>
-  <script src="static/js/site.js"></script>
+  <script src="static/js/site.js?v={{ .AssetStamp }}"></script>
 </body>
 </html>

@@ -23,6 +23,13 @@ const (
 func main() {
 	now := time.Now().UTC()
 
+	stamp := os.Getenv("ASSET_STAMP")
+	if stamp == "" {
+		stamp = now.Format("2006-01-02-15-04-05")
+	} else if len(stamp) > 10 {
+		stamp = stamp[:10]
+	}
+
 	db, err := database.NewReleaseDatabase("data")
 	if err != nil {
 		log.Fatalf("Failed to open database: %v", err)
@@ -67,15 +74,20 @@ func main() {
 		}
 	}
 
-	if err := renderFileType(outputDirectory, htmlTemplates, timelineObj, "html"); err != nil {
+	data := &pageData{
+		Timeline:   timelineObj,
+		AssetStamp: stamp,
+	}
+
+	if err := renderFileType(outputDirectory, htmlTemplates, data, "html"); err != nil {
 		log.Fatalf("Failed to render: %v", err)
 	}
 
-	if err := renderFileType(filepath.Join(outputDirectory, "static", "css"), textTemplates, timelineObj, "css"); err != nil {
+	if err := renderFileType(filepath.Join(outputDirectory, "static", "css"), textTemplates, data, "css"); err != nil {
 		log.Fatalf("Failed to render: %v", err)
 	}
 
-	if err := renderFileType(filepath.Join(outputDirectory, "static", "js"), textTemplates, timelineObj, "js"); err != nil {
+	if err := renderFileType(filepath.Join(outputDirectory, "static", "js"), textTemplates, data, "js"); err != nil {
 		log.Fatalf("Failed to render: %v", err)
 	}
 
@@ -83,14 +95,12 @@ func main() {
 }
 
 type pageData struct {
-	Timeline *timeline.Timeline
+	Timeline   *timeline.Timeline
+	AssetStamp string
 }
 
-func renderFileType(targetDir string, tpls []render.Renderable, timelineObj *timeline.Timeline, filetype string) error {
+func renderFileType(targetDir string, tpls []render.Renderable, data *pageData, filetype string) error {
 	extension := fmt.Sprintf(".%s", filetype)
-	data := pageData{
-		Timeline: timelineObj,
-	}
 
 	for _, t := range tpls {
 		basename := t.Name()

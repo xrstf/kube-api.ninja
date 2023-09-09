@@ -42,7 +42,7 @@ dump-swagger:
 
 .PHONY: render
 render:
-	_build/render
+	ASSET_STAMP=$(GIT_HEAD) _build/render
 
 .PHONY: deploy
 deploy:

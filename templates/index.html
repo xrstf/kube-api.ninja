@@ -9,7 +9,7 @@
   <link href="static/fontawesome-6.4.2/css/fontawesome.min.css" rel="stylesheet">
   <link href="static/fontawesome-6.4.2/css/brands.min.css" rel="stylesheet">
   <link href="static/fontawesome-6.4.2/css/solid.min.css" rel="stylesheet">
-  <link href="static/css/site.css" rel="stylesheet">
+  <link href="static/css/site.css?v={{ .AssetStamp }}" rel="stylesheet">
 </head>
 
 <body id="page-timeline">
@@ -30,6 +30,16 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/about.html">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Quicklinks
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item kube" href="https://kubernetes.io/releases/patch-releases/" target="_blank">Patch Releases &amp; Schedule</a></li>
+              <li><a class="dropdown-item kube" href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/" target="_blank">Deprecation Policy</a></li>
+              <li><a class="dropdown-item kube" href="https://kubernetes.io/docs/reference/using-api/deprecation-policy/" target="_blank">Deprecated API Migration Guide</a></li>
+            </ul>
           </li>
         </ul>
         <div class="form-check form-switch">
@@ -52,9 +62,6 @@
 
   <!-- the main page container -->
   <main class="site-container">
-
-    <!-- This 2 column div contains the mega table; it's two columns so that the right side table -->
-    <!-- can be a responsive table and get horizontal scrolling while keeping the left column fixed. -->
     <table class="table non-roi-mode hide-archive container-xxl" id="release-megatable">
       <thead>
         <tr>
@@ -183,7 +190,7 @@
   </div>
 
   <script src="static/bootstrap-5.3.1/js/bootstrap.bundle.min.js"></script>
-  <script src="static/js/site.js"></script>
-  <script src="static/js/release-megatable.js"></script>
+  <script src="static/js/site.js?v={{ .AssetStamp }}"></script>
+  <script src="static/js/release-megatable.js?v={{ .AssetStamp }}"></script>
 </body>
 </html>
