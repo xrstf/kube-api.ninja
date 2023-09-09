@@ -4,12 +4,11 @@
 package main
 
 import (
-	htmltpl "html/template"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
-	"text/template"
-	texttpl "text/template"
+	"strings"
 	"time"
 
 	"go.xrstf.de/kube-api.ninja/pkg/database"
@@ -68,24 +67,16 @@ func main() {
 		}
 	}
 
-	log.Println("Rendering index.html…")
-	if err := renderIndex(outputDirectory, htmlTemplates, timelineObj); err != nil {
-		log.Fatalf("Failed to render index.html: %v", err)
+	if err := renderFileType(outputDirectory, htmlTemplates, timelineObj, "html"); err != nil {
+		log.Fatalf("Failed to render: %v", err)
 	}
 
-	log.Println("Rendering about.html…")
-	if err := renderAbout(outputDirectory, htmlTemplates, timelineObj); err != nil {
-		log.Fatalf("Failed to render about.html: %v", err)
+	if err := renderFileType(filepath.Join(outputDirectory, "static", "css"), textTemplates, timelineObj, "css"); err != nil {
+		log.Fatalf("Failed to render: %v", err)
 	}
 
-	log.Println("Rendering site.css…")
-	if err := renderCSS(outputDirectory, textTemplates, timelineObj); err != nil {
-		log.Fatalf("Failed to render site.css: %v", err)
-	}
-
-	log.Println("Rendering site.js")
-	if err := renderJS(outputDirectory, textTemplates, timelineObj); err != nil {
-		log.Fatalf("Failed to render site.js: %v", err)
+	if err := renderFileType(filepath.Join(outputDirectory, "static", "js"), textTemplates, timelineObj, "js"); err != nil {
+		log.Fatalf("Failed to render: %v", err)
 	}
 
 	log.Println("Done.")
@@ -95,50 +86,31 @@ type pageData struct {
 	Timeline *timeline.Timeline
 }
 
-func renderIndex(directory string, tpl *htmltpl.Template, timelineObj *timeline.Timeline) error {
-	f, err := os.Create(filepath.Join(directory, "index.html"))
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	return tpl.ExecuteTemplate(f, "index.html", pageData{
+func renderFileType(targetDir string, tpls []render.Renderable, timelineObj *timeline.Timeline, filetype string) error {
+	extension := fmt.Sprintf(".%s", filetype)
+	data := pageData{
 		Timeline: timelineObj,
-	})
-}
-
-func renderAbout(directory string, tpl *htmltpl.Template, timelineObj *timeline.Timeline) error {
-	f, err := os.Create(filepath.Join(directory, "about.html"))
-	if err != nil {
-		return err
 	}
-	defer f.Close()
 
-	return tpl.ExecuteTemplate(f, "about.html", pageData{
-		Timeline: timelineObj,
-	})
-}
+	for _, t := range tpls {
+		basename := t.Name()
+		if !strings.HasSuffix(basename, extension) {
+			continue
+		}
 
-func renderCSS(directory string, tpl *texttpl.Template, timelineObj *timeline.Timeline) error {
-	f, err := os.Create(filepath.Join(directory, "static", "css", "site.css"))
-	if err != nil {
-		return err
+		log.Printf("Rendering %s…", basename)
+		f, err := os.Create(filepath.Join(targetDir, basename))
+		if err != nil {
+			return err
+		}
+
+		if err := t.Execute(f, data); err != nil {
+			f.Close()
+			return fmt.Errorf("failed to render %s: %w", basename, err)
+		}
+
+		f.Close()
 	}
-	defer f.Close()
 
-	return tpl.ExecuteTemplate(f, "site.css", pageData{
-		Timeline: timelineObj,
-	})
-}
-
-func renderJS(directory string, tpl *template.Template, timelineObj *timeline.Timeline) error {
-	f, err := os.Create(filepath.Join(directory, "static", "js", "site.js"))
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	return tpl.ExecuteTemplate(f, "site.js", pageData{
-		Timeline: timelineObj,
-	})
+	return nil
 }

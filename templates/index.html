@@ -2,7 +2,8 @@
 <html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- minimum-scale to make the sticky table columns/rows work, thx https://stackoverflow.com/a/68865031 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
   <title>Kubernetes API Timeline</title>
   <link href="static/bootstrap-5.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="static/fontawesome-6.4.2/css/fontawesome.min.css" rel="stylesheet">
@@ -183,5 +184,6 @@
 
   <script src="static/bootstrap-5.3.1/js/bootstrap.bundle.min.js"></script>
   <script src="static/js/site.js"></script>
+  <script src="static/js/release-megatable.js"></script>
 </body>
 </html>

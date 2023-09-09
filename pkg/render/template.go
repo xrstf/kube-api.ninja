@@ -5,13 +5,39 @@ package render
 
 import (
 	htmltpl "html/template"
+	"io"
 	texttpl "text/template"
 )
 
-func LoadHTMLTemplates() (*htmltpl.Template, error) {
-	return htmltpl.New("kubernetes-apis").Funcs(templateFuncs).ParseGlob("templates/*")
+type Renderable interface {
+	Name() string
+	Execute(wr io.Writer, data any) error
 }
 
-func LoadTextTemplates() (*texttpl.Template, error) {
-	return texttpl.New("kubernetes-apis").Funcs(templateFuncs).ParseGlob("templates/*")
+func LoadHTMLTemplates() ([]Renderable, error) {
+	tpl, err := htmltpl.New("kubernetes-apis").Funcs(templateFuncs).ParseGlob("templates/*")
+	if err != nil {
+		return nil, err
+	}
+
+	result := []Renderable{}
+	for _, t := range tpl.Templates() {
+		result = append(result, t.Lookup(t.Name()))
+	}
+
+	return result, nil
+}
+
+func LoadTextTemplates() ([]Renderable, error) {
+	tpl, err := texttpl.New("kubernetes-apis").Funcs(templateFuncs).ParseGlob("templates/*")
+	if err != nil {
+		return nil, err
+	}
+
+	result := []Renderable{}
+	for _, t := range tpl.Templates() {
+		result = append(result, t.Lookup(t.Name()))
+	}
+
+	return result, nil
 }
