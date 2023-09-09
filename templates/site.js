@@ -1,5 +1,7 @@
 let megatable = document.querySelector('#release-megatable');
 
+document.querySelector('body').classList.add('has-javascript');
+
 // thank you https://stackoverflow.com/a/15289883
 function dateDiffInDays(a, b) {
   const _MS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -142,7 +144,14 @@ function updateAPIResourcesVisibility(apiversionRow) {
 }
 
 // initial setup
-document.querySelectorAll('tr.apiversion').forEach(updateAPIResourcesVisibility);
+document.querySelectorAll('#release-megatable tbody').forEach(function(node) {
+  node.classList.add('collapsed');
+});
+
+document.querySelectorAll('#release-megatable tr.apiresource').forEach(function(node) {
+  node.classList.add('collapsed');
+  updateAPIResourcesVisibility(node);
+});
 
 // toggle visibility of APIVersions for an APIGroup
 let collapseIcon = '⊙';
@@ -199,15 +208,18 @@ function toggleAllRows(visible) {
   });
 }
 
-document.querySelector('#expand-all').addEventListener('click', function(e) {
-  toggleAllRows(true);
-  e.preventDefault();
-});
+let expandButton = document.querySelector('#expand-all');
+if (expandButton !== null) {
+  expandButton.addEventListener('click', function(e) {
+    toggleAllRows(true);
+    e.preventDefault();
+  });
 
-document.querySelector('#collapse-all').addEventListener('click', function(e) {
-  toggleAllRows(false);
-  e.preventDefault();
-});
+  document.querySelector('#collapse-all').addEventListener('click', function(e) {
+    toggleAllRows(false);
+    e.preventDefault();
+  });
+}
 
 // handle ROI dropdown changes
 let selector = document.querySelector('#roi-selector');
@@ -252,7 +264,9 @@ function updateROIState() {
   updateArchiveViewState();
 }
 
-selector.addEventListener('change', updateROIState);
+if (selector !== null) {
+  selector.addEventListener('change', updateROIState);
+}
 
 // handle archiveView switch being toggled
 let archiveViewSwitch = document.querySelector('#archiveViewSwitch');
@@ -266,8 +280,19 @@ function updateArchiveViewState() {
   }
 }
 
-archiveViewSwitch.addEventListener('change', updateArchiveViewState);
+if (archiveViewSwitch !== null) {
+  archiveViewSwitch.addEventListener('change', updateArchiveViewState);
 
-// initial setup
-updateROIState();
-updateArchiveViewState();
+  // initial setup
+  updateROIState();
+  updateArchiveViewState();
+}
+
+// hide accordion items on the about page
+document.querySelectorAll('.accordion-button').forEach(function(n) {
+  n.classList.add('collapsed');
+});
+
+document.querySelectorAll('.accordion-collapse').forEach(function(n) {
+  n.classList.add('collapse');
+});

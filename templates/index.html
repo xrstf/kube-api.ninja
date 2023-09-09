@@ -54,7 +54,7 @@
 
     <!-- This 2 column div contains the mega table; it's two columns so that the right side table -->
     <!-- can be a responsive table and get horizontal scrolling while keeping the left column fixed. -->
-    <table class="table non-roi-mode" id="release-megatable">
+    <table class="table non-roi-mode hide-archive" id="release-megatable">
       <thead>
         <tr>
           <th class="all-togglers">
@@ -79,12 +79,11 @@
       </thead>
 
       {{ range $apiGroup := .Timeline.APIGroups }}
-      <!-- TODO: collapsed should be applied via JS -->
-      <tbody data-apigroup="{{ $apiGroup.Name }}" class="{{ getAPIGroupBodyClass $.Timeline $apiGroup }} collapsed">
+      <tbody data-apigroup="{{ $apiGroup.Name }}" class="{{ getAPIGroupBodyClass $.Timeline $apiGroup }}">
         <!-- row for the API group -->
         <tr class="{{ getAPIGroupClass $.Timeline $apiGroup }}">
           <th class="name">
-            <a href="#" class="toggle" title="expand/collapse this API group"><span class="icons">⊕</span> <span class="name">{{ $apiGroup.Name }}</span></a>
+            <a href="#" class="toggle" title="expand/collapse this API group"><span class="icons hidden">⊕</span> <span class="name">{{ $apiGroup.Name }}</span></a>
           </th>
           {{ range $rel := $.Timeline.Releases }}
           <td class="{{ getAPIGroupReleaseClass $.Timeline $apiGroup $rel }}">

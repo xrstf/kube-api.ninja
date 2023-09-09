@@ -28,6 +28,32 @@ nav .form-switch {
   text-align: center;
 }
 
+/* hide togglers by default and only show them when JS is available */
+.all-togglers .btn-group {
+  display: none;
+}
+
+.has-javascript .all-togglers .btn-group {
+  display: inline-flex;
+}
+
+/* same for the controls in the navbar */
+nav .form-switch {
+  display: none;
+}
+
+nav .d-flex {
+  display: none !important;
+}
+
+.has-javascript nav .form-switch {
+  display: block;
+}
+
+.has-javascript nav .d-flex {
+  display: flex !important;
+}
+
 .hidden {
   display: none;
 }
@@ -39,10 +65,13 @@ nav .form-switch {
 
 .apigroup > th.name {
   text-align: left;
-  padding-left: 5px;
 
   /* make sure the icons do not slip into a new line */
   white-space: nowrap;
+}
+
+.has-javascript .apigroup > th.name {
+  padding-left: 5px;
 }
 
 .apigroup > th.name .icons {
@@ -54,8 +83,14 @@ a.toggle {
   text-decoration: none;
 }
 a.toggle .icons {
+  display: none;
   color: rgb(178, 178, 178);
 }
+
+.has-javascript a.toggle .icons {
+  display: inline;
+}
+
 a.toggle .name {
   color: rgb(222, 226, 230);
   font-weight: bold;
