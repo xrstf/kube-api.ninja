@@ -37,11 +37,11 @@ lint:
 full-rebuild: make clean build dump-swagger render
 
 .PHONY: dump-swagger
-dump-swagger:
+dump-swagger: build
 	./hack/dump-swagger-specs.sh
 
 .PHONY: render
-render:
+render: build
 	ASSET_STAMP=$(GIT_HEAD) _build/render
 
 .PHONY: deploy
