@@ -54,13 +54,13 @@
 
     <!-- This 2 column div contains the mega table; it's two columns so that the right side table -->
     <!-- can be a responsive table and get horizontal scrolling while keeping the left column fixed. -->
-    <table class="table non-roi-mode hide-archive" id="release-megatable">
+    <table class="table non-roi-mode hide-archive container-xxl" id="release-megatable">
       <thead>
         <tr>
           <th class="all-togglers">
-            <div class="btn-group btn-group-sm" role="group">
-              <button type="button" class="btn btn-primary" id="expand-all">⊕ Expand all</button>
-              <button type="button" class="btn btn-secondary" id="collapse-all">⊙ Collapse all</button>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-sm btn-outline-primary" id="expand-all">⊕ Expand all</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" id="collapse-all">⊙ Collapse all</button>
             </div>
           </th>
           {{ range $idx, $rel := .Timeline.Releases }}

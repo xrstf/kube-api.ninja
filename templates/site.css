@@ -24,8 +24,18 @@ nav .form-switch {
   margin-right: 1rem;
 }
 
+/* make brand line up better with menu */
+nav .navbar-brand {
+  padding-bottom: 0.4rem;
+}
+
 .all-togglers {
   text-align: center;
+}
+
+.all-togglers .btn {
+  --bs-btn-padding-y: 0.2rem;
+  --bs-btn-font-size: 0.7rem;
 }
 
 /* hide togglers by default and only show them when JS is available */
