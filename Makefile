@@ -17,7 +17,7 @@ default: build
 
 .PHONY: build
 build:
-	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/dumper
+	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/clusterdumper
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/swaggerdumper
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/render
 
@@ -34,26 +34,14 @@ lint:
 	golangci-lint run ./...
 
 .PHONY: full-rebuild
-full-rebuild: make clean build dump-all
+full-rebuild: make clean build dump-swagger render
 
-.PHONY: dump
-dump: clean build
-	_build/dumper
-
-.PHONY: dump-all
-dump-all: clean build
+.PHONY: dump-swagger
+dump-swagger:
 	./hack/dump-swagger-specs.sh
 
-.PHONY: combine
-combine: clean build
-	_build/combiner
-
-.PHONY: combine-db
-combine-db: clean build
-	_build/combiner > data/database.json
-
 .PHONY: render
-render: clean build
+render:
 	_build/render
 
 .PHONY: deploy
