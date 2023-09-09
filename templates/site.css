@@ -12,7 +12,6 @@ td.scope {
 
 .hamburg {
   height: 15px;
-  filter: grayscale(1);
 }
 
 thead .release a {
