@@ -34,7 +34,7 @@ lint:
 	golangci-lint run ./...
 
 .PHONY: full-rebuild
-full-rebuild: make clean build dump-swagger render
+full-rebuild: clean build dump-swagger render
 
 .PHONY: dump-swagger
 dump-swagger: build
