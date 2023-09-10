@@ -46,7 +46,7 @@ render: build
 
 .PHONY: deploy
 deploy:
-	rsync --delete --recursive public/ xrstf@kube-api.ninja:/srv/www/kube-api.ninja/www
+	rsync --delete --recursive public/ xrstf@kube-api.ninja:/srv/www/kube-api.ninja/public
 
 .PHONY: build-refdocs-image
 build-refdocs-image:
