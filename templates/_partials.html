@@ -1,0 +1,75 @@
+{{ define "metatags" }}
+<meta charset="utf-8">
+<meta property="og:title" content="Kubernetes API Timeline">
+<meta property="og:description" content="This website offers a visual timeline of the availability of the Kubernetes core APIs across releases.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kube-api.ninja/">
+<meta property="og:image" content="https://kube-api.ninja/static/images/example.png?v={{ .AssetStamp }}">
+{{ end }}
+
+{{ define "css" }}
+<link href="static/bootstrap-5.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="static/fontawesome-6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="static/fontawesome-6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="static/fontawesome-6.4.2/css/solid.min.css" rel="stylesheet">
+<link href="static/css/site.css?v={{ .AssetStamp }}" rel="stylesheet">
+{{ end }}
+
+{{ define "scripts" }}
+<script src="static/bootstrap-5.3.1/js/bootstrap.bundle.min.js"></script>
+<script src="static/js/site.js?v={{ .AssetStamp }}"></script>
+{{ end }}
+
+{{ define "navbar-brand" }}
+<a class="navbar-brand" href="/">
+  <img alt="Kubernetes" title="Kubernetes" src="static/images/kubernetes-logo.svg" width="25" id="logo">
+  API Timeline
+</a>
+{{ end }}
+
+{{ define "navbar-toggler" }}
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+  aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+{{ end }}
+
+{{ define "navbar-menu" }}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="nav-item">
+    {{ if eq .CurrentPage "about.html" }}
+    <a class="nav-link active" aria-current="page" href="/about.html">About</a>
+    {{ else }}
+    <a class="nav-link" href="/about.html">About</a>
+    {{ end }}
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Quicklinks
+    </a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item kube" href="https://kubernetes.io/releases/patch-releases/" target="_blank"><span class="external">Patch Releases &amp; Schedule</span></a></li>
+      <li><a class="dropdown-item kube" href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/" target="_blank"><span class="external">Deprecation Policy</span></a></li>
+      <li><a class="dropdown-item kube" href="https://kubernetes.io/docs/reference/using-api/deprecation-policy/" target="_blank"><span class="external">Deprecated API Migration Guide</span></a></li>
+    </ul>
+  </li>
+</ul>
+{{ end }}
+
+{{ define "footer" }}
+<footer>
+  <div class="container">
+    <p class="text-center text-body-secondary border-top">
+      Made
+        with <i class="fa-regular fa-keyboard"></i>
+        in <img src="static/images/hamburg.png" class="hamburg"> Hamburg
+        by <i class="fa-brands fa-github"></i> <a href="https://github.com/xrstf" target="_blank">xrstf</a>.
+    </p>
+    <p class="text-center text-body-secondary">
+      <a href="https://kubernetes.io" target="_blank" class="external">Kubernetes®</a> is a registered trademark of The Linux Foundation®. All rights reserved.<br>
+      This website has no relation with and is not endorsed by <a href="https://www.linuxfoundation.org/" target="_blank" class="external">The Linux Foundation</a>.<br>
+      Distributed under CC NC BY 4.0
+    </p>
+  </div>
+</footer>
+{{ end }}

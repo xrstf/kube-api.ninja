@@ -4,45 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About — Kubernetes API Timeline</title>
-  <meta property="og:title" content="Kubernetes API Timeline">
-  <meta property="og:description" content="This website offers a visual timeline of the availability of the Kubernetes core APIs across releases.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://kube-api.ninja/">
-  <meta property="og:image" content="https://kube-api.ninja/static/images/example.png?v={{ .AssetStamp }}">
-  <link href="static/bootstrap-5.3.1/css/bootstrap.min.css" rel="stylesheet">
-  <link href="static/fontawesome-6.4.2/css/fontawesome.min.css" rel="stylesheet">
-  <link href="static/fontawesome-6.4.2/css/brands.min.css" rel="stylesheet">
-  <link href="static/fontawesome-6.4.2/css/solid.min.css" rel="stylesheet">
-  <link href="static/css/site.css?v={{ .AssetStamp }}" rel="stylesheet">
+  {{ template "metatags" . }}
+  {{ template "css" . }}
 </head>
 
 <body id="page-about">
   <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">
-        <img alt="Kubernetes" title="Kubernetes" src="static/images/kubernetes-logo.svg" width="25" id="logo">
-        API Timeline
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      {{ template "navbar-brand" . }}
+      {{ template "navbar-toggler" . }}
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/about.html">About</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Quicklinks
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item kube" href="https://kubernetes.io/releases/patch-releases/" target="_blank">Patch Releases &amp; Schedule</a></li>
-              <li><a class="dropdown-item kube" href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/" target="_blank">Deprecation Policy</a></li>
-              <li><a class="dropdown-item kube" href="https://kubernetes.io/docs/reference/using-api/deprecation-policy/" target="_blank">Deprecated API Migration Guide</a></li>
-            </ul>
-          </li>
-        </ul>
+        {{ template "navbar-menu" . }}
       </div>
     </div>
   </nav>
@@ -234,7 +206,7 @@ data:
             <p>
               Release columns marked green represent those that are currently supported by the
               Kubernetes maintainers. More information on the
-              <a href="https://kubernetes.io/releases/version-skew-policy/#supported-versions" target="_blank" class="kube">support policy</a>
+              <a href="https://kubernetes.io/releases/version-skew-policy/#supported-versions" target="_blank" class="kube"><span class="external">support policy</span></a>
               can be found on the Kubernetes website.
             </p>
           </div>
@@ -308,9 +280,9 @@ data:
             </p>
 
             <ul>
-              <li><a href="https://github.com/doitintl/kube-no-trouble" target="_blank">kube-no-trouble</a></li>
-              <li><a href="https://github.com/FairwindsOps/pluto" target="_blank">Pluto</a></li>
-              <li><a href="https://github.com/derailed/popeye" target="_blank">Popeye</a></li>
+              <li><a href="https://github.com/doitintl/kube-no-trouble" target="_blank" class="external">kube-no-trouble</a></li>
+              <li><a href="https://github.com/FairwindsOps/pluto" target="_blank" class="external">Pluto</a></li>
+              <li><a href="https://github.com/derailed/popeye" target="_blank" class="external">Popeye</a></li>
             </ul>
           </div>
         </div>
@@ -350,23 +322,7 @@ data:
     </div>
   </main>
 
-  <footer>
-    <div class="container">
-      <p class="text-center text-body-secondary border-top">
-        Made
-          with <i class="fa-solid fa-keyboard"></i>
-          in <img src="static/images/hamburg.png" class="hamburg"> Hamburg
-          by <i class="fa-brands fa-github"></i> <a href="https://github.com/xrstf" target="_blank">xrstf</a>.
-      </p>
-      <p class="text-center text-body-secondary">
-        Kubernetes® is a registered trademark of The Linux Foundation®. All rights reserved.<br>
-        This website has no relation with and is not endorsed by The Linux Foundation.<br>
-        Distributed under CC NC BY 4.0
-      </p>
-    </div>
-  </footer>
-
-  <script src="static/bootstrap-5.3.1/js/bootstrap.bundle.min.js"></script>
-  <script src="static/js/site.js?v={{ .AssetStamp }}"></script>
+  {{ template "footer" . }}
+  {{ template "scripts" . }}
 </body>
 </html>

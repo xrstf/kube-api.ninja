@@ -36,6 +36,15 @@ a.kube {
   background-size: 1rem;
 }
 
+/* spans are used for when a link is already a.kube */
+a.external, span.external {
+  padding-right: 1rem;
+  background-image: url(../images/external-link.svg);
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 0.9rem;
+}
+
 a.dropdown-item.kube {
   padding-left: 2.2rem;
   background-position: 1rem center;

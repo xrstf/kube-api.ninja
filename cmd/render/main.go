@@ -95,8 +95,9 @@ func main() {
 }
 
 type pageData struct {
-	Timeline   *timeline.Timeline
-	AssetStamp string
+	Timeline    *timeline.Timeline
+	AssetStamp  string
+	CurrentPage string
 }
 
 func renderFileType(targetDir string, tpls []render.Renderable, data *pageData, filetype string) error {
@@ -108,11 +109,18 @@ func renderFileType(targetDir string, tpls []render.Renderable, data *pageData, 
 			continue
 		}
 
+		// ignore partials/helpers
+		if strings.HasPrefix(basename, "_") {
+			continue
+		}
+
 		log.Printf("Rendering %s…", basename)
 		f, err := os.Create(filepath.Join(targetDir, basename))
 		if err != nil {
 			return err
 		}
+
+		data.CurrentPage = basename
 
 		if err := t.Execute(f, data); err != nil {
 			f.Close()
