@@ -10,10 +10,6 @@ td.scope {
   vertical-align: sub;
 }
 
-.hamburg {
-  height: 15px;
-}
-
 thead .release a {
   border-bottom: 1px dashed #616a74;
   cursor: help;
@@ -34,6 +30,14 @@ a.kube {
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 1rem;
+}
+
+span.hamburg {
+  padding-left: 0.9rem;
+  background-image: url('../images/hamburg.png?v={{ .AssetStamp }}');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0.8rem;
 }
 
 /* spans are used for when a link is already a.kube */
