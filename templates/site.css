@@ -30,7 +30,7 @@ nav .navbar-brand {
 
 a.kube {
   padding-left: 1.2rem;
-  background-image: url(../images/kubernetes-logo.svg);
+  background-image: url('../images/kubernetes-logo.svg?v={{ .AssetStamp }}');
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 1rem;
@@ -39,7 +39,7 @@ a.kube {
 /* spans are used for when a link is already a.kube */
 a.external, span.external {
   padding-right: 1rem;
-  background-image: url(../images/external-link.svg);
+  background-image: url('../images/external-link.svg?v={{ .AssetStamp }}');
   background-repeat: no-repeat;
   background-position: right center;
   background-size: 0.9rem;
