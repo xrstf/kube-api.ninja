@@ -338,6 +338,9 @@ td.release-supported {
 td.oldest-release-supported, th.oldest-release-supported {
   border-left: 1px solid #495057;
 }
+td.newest-release-supported, th.newest-release-supported {
+  border-right: 1px solid #495057;
+}
 
 /* tighter layout */
 .release-links .list-group-item {

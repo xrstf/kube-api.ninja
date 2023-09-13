@@ -82,9 +82,19 @@ func getReleaseHeaderClassNames(tl *timeline.Timeline, release *timeline.Release
 	if release.Supported {
 		classes = append(classes, "release-supported")
 
-		// is this the oldest supported release?
-		isOldest := false
+		// is this the newest/oldest supported release?
+		isNewest := false
+		for _, metadata := range tl.Releases {
+			if metadata.Supported {
+				isNewest = metadata.Version == release.Version
+			}
+		}
 
+		if isNewest {
+			classes = append(classes, "newest-release-supported")
+		}
+
+		isOldest := false
 		for _, metadata := range tl.Releases {
 			if metadata.Supported {
 				isOldest = metadata.Version == release.Version
@@ -259,7 +269,7 @@ func getAPIVersionReleaseContent(tl *timeline.Timeline, apiGroup *timeline.APIGr
 		return "✪"
 	}
 
-	return template.HTML("&nbsp;")
+	return template.HTML("✔")
 }
 
 func getAPIResourceClass(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, apiResource *timeline.APIResource) string {

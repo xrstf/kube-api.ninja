@@ -1,0 +1,28 @@
+footer,
+nav,
+tr.apigroup .icons,
+tr.apiversion .icons,
+tr.apiresource .icons {
+  display: none !important;
+}
+
+nav.mb-4 {
+  margin-bottom: 0 !important;
+}
+
+.all-togglers .btn-group {
+  display: none !important;
+}
+
+thead .release a {
+  border-bottom: 0 none;
+}
+
+.apiversion td.release span,
+.apiresource td.release span {
+  text-indent: 0;
+}
+
+.site-container {
+  margin-bottom: inherit;
+}
