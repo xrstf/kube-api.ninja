@@ -184,6 +184,11 @@ a.toggle .name {
   padding: .2rem .2rem;
 }
 
+/* make sure the togglers always show when scrolling the table */
+.all-togglers {
+    z-index: 2 !important;
+}
+
 /* fix missing table borders in Firefox */
 /* thanks to https://stackoverflow.com/a/58319944 */
 .table tbody th {

@@ -54,7 +54,6 @@
               data-latest-version="{{ $rel.LatestVersion }}"
               data-release-date="{{ $rel.ReleaseDate.Format "2006-01-02" }}"
               data-eol-date="{{ with $rel.EndOfLifeDate }}{{ .Format "2006-01-02" }}{{ end }}"
-              style="z-index:0;"
             >
               <a tabindex="{{ $idx }}" role="button" data-bs-toggle="popover" data-release="{{ $rel.Version }}">{{ $rel.Version }}</a>
             </th>
