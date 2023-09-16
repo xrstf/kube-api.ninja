@@ -1,10 +1,31 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 cd $(dirname $0)/..
 
-export RELEASES="1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.23 1.24 1.25 1.26 1.27 1.28 1.29"
+today="$(date +'%Y-%m-%d')"
+INCLUDE_EOL=${INCLUDE_EOL:-false}
+
+if ! $INCLUDE_EOL; then
+  echo "Not including EOL releases, set INCLUDE_EOL=true to dump specs for all releases."
+fi
+
+if [ -z "${RELEASES:-}" ]; then
+  RELEASES=""
+
+  for releaseDir in data/releases/*; do
+    eolDate="$(cat "$releaseDir/eol.txt" 2>/dev/null || true)"
+    release="$(basename $releaseDir)"
+
+    if ! $INCLUDE_EOL && [ -n "$eolDate" ] && [[ "$eolDate" < "$today" ]]; then
+      echo "Skipping release $release because it's end-of-life."
+      continue
+    fi
+
+    RELEASES="$RELEASES $release"
+  done
+fi
 
 docker run \
   --rm \
