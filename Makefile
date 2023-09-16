@@ -41,7 +41,10 @@ dump-swagger: build
 	./hack/dump-swagger-specs.sh
 
 .PHONY: render
-render: build
+render: build quickrender
+
+.PHONY: quickrender
+quickrender:
 	ASSET_STAMP=$(GIT_HEAD) _build/render
 
 .PHONY: deploy

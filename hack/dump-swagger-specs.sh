@@ -1,14 +1,29 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 cd $(dirname $0)/..
 
 make clean build
 
 currentdev=1.29
+INCLUDE_EOL=${INCLUDE_EOL:-false}
 
-for release in 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 1.25 1.26 1.27 1.28 1.29; do
+if ! $INCLUDE_EOL; then
+  echo "Not including EOL releases, set INCLUDE_EOL=true to dump specs for all releases."
+fi
+
+today="$(date +'%Y-%m-%d')"
+
+for releaseDir in data/releases/*; do
+  release="$(basename "$releaseDir")"
+  eolDate="$(cat "$releaseDir/eol.txt" 2>/dev/null || true)"
+
+  if ! $INCLUDE_EOL && [ -n "$eolDate" ] && [[ "$eolDate" < "$today" ]]; then
+    echo "Skipping release $release because it's end-of-life."
+    continue
+  fi
+
   echo "Dumping APIs for Kubernetes $release …"
 
   # allow to fetch the development branch before it was released
@@ -19,11 +34,10 @@ for release in 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 
 
   wget --output-document swagger.json https://github.com/kubernetes/kubernetes/raw/$branch/api/openapi-spec/swagger.json
 
-  mkdir -p "data/releases/$release"
   _build/swaggerdumper \
     -swagger-file swagger.json \
     -kubernetes-version "$release.0" \
     > "data/releases/$release/api.json"
 done
 
-rm swagger.json
+rm -f swagger.json
