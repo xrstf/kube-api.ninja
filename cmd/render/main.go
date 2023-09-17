@@ -14,10 +14,13 @@ import (
 	"go.xrstf.de/kube-api.ninja/pkg/database"
 	"go.xrstf.de/kube-api.ninja/pkg/render"
 	"go.xrstf.de/kube-api.ninja/pkg/timeline"
+
+	"github.com/snabb/sitemap"
 )
 
 const (
 	outputDirectory = "public"
+	baseDomain      = "kube-api.ninja"
 )
 
 func main() {
@@ -80,15 +83,19 @@ func main() {
 	}
 
 	if err := renderFileType(outputDirectory, htmlTemplates, data, "html"); err != nil {
-		log.Fatalf("Failed to render: %v", err)
+		log.Fatalf("Failed to render HTML: %v", err)
 	}
 
 	if err := renderFileType(filepath.Join(outputDirectory, "static", "css"), textTemplates, data, "css"); err != nil {
-		log.Fatalf("Failed to render: %v", err)
+		log.Fatalf("Failed to render CSS: %v", err)
 	}
 
 	if err := renderFileType(filepath.Join(outputDirectory, "static", "js"), textTemplates, data, "js"); err != nil {
-		log.Fatalf("Failed to render: %v", err)
+		log.Fatalf("Failed to render JS: %v", err)
+	}
+
+	if err := renderSitemap(now, releases); err != nil {
+		log.Fatalf("Failed to render sitemap.xml: %v", err)
 	}
 
 	log.Println("Done.")
@@ -128,6 +135,63 @@ func renderFileType(targetDir string, tpls []render.Renderable, data *pageData, 
 		}
 
 		f.Close()
+	}
+
+	return nil
+}
+
+func renderSitemap(now time.Time, releases []*database.KubernetesRelease) error {
+	baseUrl := fmt.Sprintf("https://%s", baseDomain)
+
+	sm := sitemap.New()
+	sm.Add(&sitemap.URL{
+		Loc:        baseUrl + "/",
+		LastMod:    &now,
+		ChangeFreq: sitemap.Daily,
+		Priority:   1,
+	})
+	sm.Add(&sitemap.URL{
+		Loc:        baseUrl + "/about.html",
+		LastMod:    &now,
+		ChangeFreq: sitemap.Daily,
+		Priority:   0.8,
+	})
+
+	for _, release := range releases {
+		eolDate, err := release.EndOfLifeDate()
+		if err != nil {
+			return err
+		}
+
+		frequency := sitemap.Monthly
+		if eolDate != nil && now.After(*eolDate) {
+			frequency = sitemap.Yearly
+		}
+
+		index := filepath.Join(outputDirectory, "apidocs", release.Version(), "index.html")
+		stat, err := os.Stat(index)
+		if err != nil {
+			return err
+		}
+
+		lastMod := stat.ModTime()
+
+		sm.Add(&sitemap.URL{
+			Loc:        fmt.Sprintf("%s/apidocs/%s/", baseUrl, release.Version()),
+			LastMod:    &lastMod,
+			ChangeFreq: frequency,
+			Priority:   0.8,
+		})
+	}
+
+	f, err := os.Create(filepath.Join(outputDirectory, "sitemap.xml"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	if _, err := sm.WriteTo(f); err != nil {
+		return err
 	}
 
 	return nil
