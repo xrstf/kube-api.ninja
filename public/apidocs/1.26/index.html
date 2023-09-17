@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<HTML>
+<HTML lang="en">
 <HEAD>
 <META charset="UTF-8">
 <TITLE>Kubernetes API Reference Docs</TITLE>
@@ -12,8 +12,6 @@
 <DIV id="wrapper" class="container-fluid">
 <DIV class="row">
 <DIV id="sidebar-wrapper" class="col-xs-4 col-sm-3 col-md-2 side-nav side-bar-nav">
-
-
 <UL id="navigation">
 <LI class="nav-level-1" data-level="1">
   <A href="#api-overview" class="nav-item">Overview</A>
@@ -3577,7 +3575,7 @@
  <a href="https://github.com/kubernetes/kubernetes">Copyright 2016-2023 The Kubernetes Authors.</a>
   </DIV>
   <DIV class="col-md-6 text-right">
-    <DIV>Generated at: 2023-09-17 08:56:52 (UTC)</DIV>
+    <DIV>Generated at: 2023-09-17 10:53:21 (UTC)</DIV>
     <DIV>API Version: <a href="https://github.com/kubernetes/kubernetes/blob/release-1.26/api/openapi-spec/swagger.json">v1.26.0</a></DIV>
   </DIV>
 </DIV><DIV id="api-overview">
@@ -3627,7 +3625,7 @@ To update the status, one must invoke the specific status update operation.<BR>
 
 Note: Replacing a resource object may not result immediately in changes being propagated to downstream objects. For instance
 replacing a <CODE>ConfigMap</CODE> or <CODE>Secret</CODE> resource will not result in all <EM>Pod</EM>s seeing the changes unless the <EM>Pod</EM>s are
-restarted out of band.</P></LI>
+restarted out of band.</LI>
 
 <LI><STRONG>Patch</STRONG>:
 Patch will apply a change to a specific field. How the change is merged is defined per field. Lists may either be
@@ -3650,7 +3648,7 @@ the field's current value, or merge the contents into the current value.</EM></L
 <LI><STRONG>Watch</STRONG>: Watch will stream results for an object(s) as it is updated. Similar to a callback, watch is used to respond to resource changes.</LI>
 </UL>
 
-<H4 id="resource-operations-read">Delete</H4>
+<H4 id="resource-operations-delete">Delete</H4>
 
 <P>Delete will delete a resource. Depending on the specific resource, child objects may or may not be garbage collected by the server. See
 notes on specific resource objects for details.</P>
@@ -34399,7 +34397,7 @@ $ curl -X GET 'http://127.0.0.1:8001/api/v1/watch/namespaces/default/services/de
 <P>This section contains definitions for objects used in the Kubernetes APIs.</P>
 </DIV>
 <DIV id="old-api-versions">
-<H1 class="toc-item section" id="">Old API Versions</H1>
+<H1 class="toc-item section">Old API Versions</H1>
 
 <P>This section contains older versions of resources shown above.</P>
 </DIV>

@@ -29,6 +29,7 @@ fi
 
 docker run \
   --rm \
+  -it \
   -e "RELEASES=$RELEASES" \
   -v "$(realpath public/apidocs/):/output" \
   kubernetes-apidocs:latest /make.sh
