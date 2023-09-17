@@ -10,5 +10,5 @@ for release in $RELEASES; do
   mkdir -p "/output/$release"
 
   K8S_RELEASE=$release make api
-  cp gen-apidocs/build/index.html gen-apidocs/build/navData.js "/output/$release/"
+  cp gen-apidocs/build/index.html "/output/$release/"
 done

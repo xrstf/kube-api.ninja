@@ -40,7 +40,6 @@ for release in $RELEASES; do
   sed -i 's#href="favicon.ico" type="image/vnd.microsoft.icon"#href="../static/images/favicon.png" type="image/png"#g' index.html
   sed -i 's#"/css/#"../static/css/#g' index.html
   sed -i 's#"/js/#"../static/js/#g' index.html
-  sed -i 's#"js/navData.js"#"navData.js"#g' index.html
 
   cd ..
 done
