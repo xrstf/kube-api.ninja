@@ -1,0 +1,379 @@
+{
+  "version": "1.4.0",
+  "release": "1.4",
+  "apiGroups": [
+    {
+      "name": "",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "ComponentStatus",
+              "namespaced": false,
+              "singular": "componentstatus",
+              "plural": "componentstatuses",
+              "description": ""
+            },
+            {
+              "kind": "ConfigMap",
+              "namespaced": true,
+              "singular": "configmap",
+              "plural": "configmaps",
+              "description": ""
+            },
+            {
+              "kind": "Endpoints",
+              "namespaced": true,
+              "singular": "endpoints",
+              "plural": "endpoints",
+              "description": ""
+            },
+            {
+              "kind": "Event",
+              "namespaced": true,
+              "singular": "event",
+              "plural": "events",
+              "description": ""
+            },
+            {
+              "kind": "LimitRange",
+              "namespaced": true,
+              "singular": "limitrange",
+              "plural": "limitranges",
+              "description": ""
+            },
+            {
+              "kind": "Namespace",
+              "namespaced": false,
+              "singular": "namespace",
+              "plural": "namespaces",
+              "description": ""
+            },
+            {
+              "kind": "Node",
+              "namespaced": false,
+              "singular": "node",
+              "plural": "nodes",
+              "description": ""
+            },
+            {
+              "kind": "PersistentVolume",
+              "namespaced": false,
+              "singular": "persistentvolume",
+              "plural": "persistentvolumes",
+              "description": ""
+            },
+            {
+              "kind": "PersistentVolumeClaim",
+              "namespaced": true,
+              "singular": "persistentvolumeclaim",
+              "plural": "persistentvolumeclaims",
+              "description": ""
+            },
+            {
+              "kind": "Pod",
+              "namespaced": true,
+              "singular": "pod",
+              "plural": "pods",
+              "description": ""
+            },
+            {
+              "kind": "PodTemplate",
+              "namespaced": true,
+              "singular": "podtemplate",
+              "plural": "podtemplates",
+              "description": ""
+            },
+            {
+              "kind": "ReplicationController",
+              "namespaced": true,
+              "singular": "replicationcontroller",
+              "plural": "replicationcontrollers",
+              "description": ""
+            },
+            {
+              "kind": "ResourceQuota",
+              "namespaced": true,
+              "singular": "resourcequota",
+              "plural": "resourcequotas",
+              "description": ""
+            },
+            {
+              "kind": "Secret",
+              "namespaced": true,
+              "singular": "secret",
+              "plural": "secrets",
+              "description": ""
+            },
+            {
+              "kind": "Service",
+              "namespaced": true,
+              "singular": "service",
+              "plural": "services",
+              "description": ""
+            },
+            {
+              "kind": "ServiceAccount",
+              "namespaced": true,
+              "singular": "serviceaccount",
+              "plural": "serviceaccounts",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extensions",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "DaemonSet",
+              "namespaced": true,
+              "singular": "daemonset",
+              "plural": "daemonsets",
+              "description": ""
+            },
+            {
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments",
+              "description": ""
+            },
+            {
+              "kind": "HorizontalPodAutoscaler",
+              "namespaced": true,
+              "singular": "horizontalpodautoscaler",
+              "plural": "horizontalpodautoscalers",
+              "description": ""
+            },
+            {
+              "kind": "Ingress",
+              "namespaced": true,
+              "singular": "ingress",
+              "plural": "ingresses",
+              "description": ""
+            },
+            {
+              "kind": "Job",
+              "namespaced": true,
+              "singular": "job",
+              "plural": "jobs",
+              "description": ""
+            },
+            {
+              "kind": "NetworkPolicy",
+              "namespaced": true,
+              "singular": "networkpolicy",
+              "plural": "networkpolicies",
+              "description": ""
+            },
+            {
+              "kind": "ReplicaSet",
+              "namespaced": true,
+              "singular": "replicaset",
+              "plural": "replicasets",
+              "description": ""
+            },
+            {
+              "kind": "ThirdPartyResource",
+              "namespaced": false,
+              "singular": "thirdpartyresource",
+              "plural": "thirdpartyresources",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "autoscaling",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "HorizontalPodAutoscaler",
+              "namespaced": true,
+              "singular": "horizontalpodautoscaler",
+              "plural": "horizontalpodautoscalers",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "batch",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "Job",
+              "namespaced": true,
+              "singular": "job",
+              "plural": "jobs",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "policy",
+      "preferredVersion": "v1alpha1",
+      "apiVersions": [
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "PodDisruptionBudget",
+              "namespaced": true,
+              "singular": "poddisruptionbudget",
+              "plural": "poddisruptionbudgets",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apps",
+      "preferredVersion": "v1alpha1",
+      "apiVersions": [
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "PetSet",
+              "namespaced": true,
+              "singular": "petset",
+              "plural": "petsetss",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rbac.authorization.k8s.io",
+      "preferredVersion": "v1alpha1",
+      "apiVersions": [
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "ClusterRole",
+              "namespaced": false,
+              "singular": "clusterrole",
+              "plural": "clusterroles",
+              "description": ""
+            },
+            {
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings",
+              "description": ""
+            },
+            {
+              "kind": "Role",
+              "namespaced": true,
+              "singular": "role",
+              "plural": "roles",
+              "description": ""
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "authentication.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "TokenReview",
+              "namespaced": false,
+              "singular": "tokenreview",
+              "plural": "tokenreviews",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "authorization.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "SubjectAccessReview",
+              "namespaced": false,
+              "singular": "subjectaccessreview",
+              "plural": "subjectaccessreviews",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "certificates.k8s.io",
+      "preferredVersion": "v1alpha1",
+      "apiVersions": [
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "CertificateSigningRequest",
+              "namespaced": false,
+              "singular": "certificatesigningrequest",
+              "plural": "certificatesigningrequests",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "storage.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "StorageClass",
+              "namespaced": false,
+              "singular": "storageclass",
+              "plural": "storageclasses",
+              "description": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
