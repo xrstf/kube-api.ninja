@@ -1,0 +1,808 @@
+{
+  "version": "1.10.0",
+  "release": "1.10",
+  "apiGroups": [
+    {
+      "name": "",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "ComponentStatus",
+              "namespaced": false,
+              "singular": "componentstatus",
+              "plural": "componentstatuses",
+              "description": "ComponentStatus (and ComponentStatusList) holds the cluster validation info."
+            },
+            {
+              "kind": "ConfigMap",
+              "namespaced": true,
+              "singular": "configmap",
+              "plural": "configmaps",
+              "description": "ConfigMap holds configuration data for pods to consume."
+            },
+            {
+              "kind": "Endpoints",
+              "namespaced": true,
+              "singular": "endpoints",
+              "plural": "endpoints",
+              "description": "Endpoints is a collection of endpoints that implement the actual service. Example:\n  Name: \"mysvc\",\n  Subsets: [\n    {\n      Addresses: [{\"ip\": \"10.10.1.1\"}, {\"ip\": \"10.10.2.2\"}],\n      Ports: [{\"name\": \"a\", \"port\": 8675}, {\"name\": \"b\", \"port\": 309}]\n    },\n    {\n      Addresses: [{\"ip\": \"10.10.3.3\"}],\n      Ports: [{\"name\": \"a\", \"port\": 93}, {\"name\": \"b\", \"port\": 76}]\n    },\n ]"
+            },
+            {
+              "kind": "Event",
+              "namespaced": true,
+              "singular": "event",
+              "plural": "events",
+              "description": "Event is a report of an event somewhere in the cluster."
+            },
+            {
+              "kind": "LimitRange",
+              "namespaced": true,
+              "singular": "limitrange",
+              "plural": "limitranges",
+              "description": "LimitRange sets resource usage limits for each kind of resource in a Namespace."
+            },
+            {
+              "kind": "Namespace",
+              "namespaced": false,
+              "singular": "namespace",
+              "plural": "namespaces",
+              "description": "Namespace provides a scope for Names. Use of multiple namespaces is optional."
+            },
+            {
+              "kind": "Node",
+              "namespaced": false,
+              "singular": "node",
+              "plural": "nodes",
+              "description": "Node is a worker node in Kubernetes. Each node will have a unique identifier in the cache (i.e. in etcd)."
+            },
+            {
+              "kind": "PersistentVolume",
+              "namespaced": false,
+              "singular": "persistentvolume",
+              "plural": "persistentvolumes",
+              "description": "PersistentVolume (PV) is a storage resource provisioned by an administrator. It is analogous to a node. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes"
+            },
+            {
+              "kind": "PersistentVolumeClaim",
+              "namespaced": true,
+              "singular": "persistentvolumeclaim",
+              "plural": "persistentvolumeclaims",
+              "description": "PersistentVolumeClaim is a user's request for and claim to a persistent volume"
+            },
+            {
+              "kind": "Pod",
+              "namespaced": true,
+              "singular": "pod",
+              "plural": "pods",
+              "description": "Pod is a collection of containers that can run on a host. This resource is created by clients and scheduled onto hosts."
+            },
+            {
+              "kind": "PodTemplate",
+              "namespaced": true,
+              "singular": "podtemplate",
+              "plural": "podtemplates",
+              "description": "PodTemplate describes a template for creating copies of a predefined pod."
+            },
+            {
+              "kind": "ReplicationController",
+              "namespaced": true,
+              "singular": "replicationcontroller",
+              "plural": "replicationcontrollers",
+              "description": "ReplicationController represents the configuration of a replication controller."
+            },
+            {
+              "kind": "ResourceQuota",
+              "namespaced": true,
+              "singular": "resourcequota",
+              "plural": "resourcequotas",
+              "description": "ResourceQuota sets aggregate quota restrictions enforced per namespace"
+            },
+            {
+              "kind": "Secret",
+              "namespaced": true,
+              "singular": "secret",
+              "plural": "secrets",
+              "description": "Secret holds secret data of a certain type. The total bytes of the values in the Data field must be less than MaxSecretSize bytes."
+            },
+            {
+              "kind": "Service",
+              "namespaced": true,
+              "singular": "service",
+              "plural": "services",
+              "description": "Service is a named abstraction of software service (for example, mysql) consisting of local port (for example 3306) that the proxy listens on, and the selector that determines which pods will answer requests sent through the proxy."
+            },
+            {
+              "kind": "ServiceAccount",
+              "namespaced": true,
+              "singular": "serviceaccount",
+              "plural": "serviceaccounts",
+              "description": "ServiceAccount binds together: * a name, understood by users, and perhaps by peripheral systems, for an identity * a principal that can be authenticated and authorized * a set of secrets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admissionregistration.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "InitializerConfiguration",
+              "namespaced": false,
+              "singular": "initializerconfiguration",
+              "plural": "initializerconfigurations",
+              "description": "InitializerConfiguration describes the configuration of initializers."
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "MutatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "mutatingwebhookconfiguration",
+              "plural": "mutatingwebhookconfigurations",
+              "description": "MutatingWebhookConfiguration describes the configuration of and admission webhook that accept or reject and may change the object."
+            },
+            {
+              "kind": "ValidatingWebhookConfiguration",
+              "namespaced": false,
+              "singular": "validatingwebhookconfiguration",
+              "plural": "validatingwebhookconfigurations",
+              "description": "ValidatingWebhookConfiguration describes the configuration of and admission webhook that accept or reject and object without changing it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apiextensions.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CustomResourceDefinition",
+              "namespaced": false,
+              "singular": "customresourcedefinition",
+              "plural": "customresourcedefinitions",
+              "description": "CustomResourceDefinition represents a resource that should be exposed on the API server.  Its name MUST be in the format \u003c.spec.name\u003e.\u003c.spec.group\u003e."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apiregistration.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "APIService",
+              "namespaced": false,
+              "singular": "apiservice",
+              "plural": "apiservices",
+              "description": "APIService represents a server for a particular GroupVersion. Name must be \"version.group\"."
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "APIService",
+              "namespaced": false,
+              "singular": "apiservice",
+              "plural": "apiservices",
+              "description": "APIService represents a server for a particular GroupVersion. Name must be \"version.group\"."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apps",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "ControllerRevision",
+              "namespaced": true,
+              "singular": "controllerrevision",
+              "plural": "controllerrevisions",
+              "description": "ControllerRevision implements an immutable snapshot of state data. Clients are responsible for serializing and deserializing the objects that contain their internal state. Once a ControllerRevision has been successfully created, it can not be updated. The API Server will fail validation of all requests that attempt to mutate the Data field. ControllerRevisions may, however, be deleted. Note that, due to its use by both the DaemonSet and StatefulSet controllers for update and rollback, this object is beta. However, it may be subject to name and representation changes in future releases, and clients should not depend on its stability. It is primarily for internal use by controllers."
+            },
+            {
+              "kind": "DaemonSet",
+              "namespaced": true,
+              "singular": "daemonset",
+              "plural": "daemonsets",
+              "description": "DaemonSet represents the configuration of a daemon set."
+            },
+            {
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments",
+              "description": "Deployment enables declarative updates for Pods and ReplicaSets."
+            },
+            {
+              "kind": "ReplicaSet",
+              "namespaced": true,
+              "singular": "replicaset",
+              "plural": "replicasets",
+              "description": "ReplicaSet ensures that a specified number of pod replicas are running at any given time."
+            },
+            {
+              "kind": "StatefulSet",
+              "namespaced": true,
+              "singular": "statefulset",
+              "plural": "statefulsets",
+              "description": "StatefulSet represents a set of pods with consistent identities. Identities are defined as:\n - Network: A single stable DNS and hostname.\n - Storage: As many VolumeClaims as requested.\nThe StatefulSet guarantees that a given network identity will always map to the same storage identity."
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "ControllerRevision",
+              "namespaced": true,
+              "singular": "controllerrevision",
+              "plural": "controllerrevisions",
+              "description": "DEPRECATED - This group version of ControllerRevision is deprecated by apps/v1beta2/ControllerRevision. See the release notes for more information. ControllerRevision implements an immutable snapshot of state data. Clients are responsible for serializing and deserializing the objects that contain their internal state. Once a ControllerRevision has been successfully created, it can not be updated. The API Server will fail validation of all requests that attempt to mutate the Data field. ControllerRevisions may, however, be deleted. Note that, due to its use by both the DaemonSet and StatefulSet controllers for update and rollback, this object is beta. However, it may be subject to name and representation changes in future releases, and clients should not depend on its stability. It is primarily for internal use by controllers."
+            },
+            {
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments",
+              "description": "DEPRECATED - This group version of Deployment is deprecated by apps/v1beta2/Deployment. See the release notes for more information. Deployment enables declarative updates for Pods and ReplicaSets."
+            },
+            {
+              "kind": "StatefulSet",
+              "namespaced": true,
+              "singular": "statefulset",
+              "plural": "statefulsets",
+              "description": "DEPRECATED - This group version of StatefulSet is deprecated by apps/v1beta2/StatefulSet. See the release notes for more information. StatefulSet represents a set of pods with consistent identities. Identities are defined as:\n - Network: A single stable DNS and hostname.\n - Storage: As many VolumeClaims as requested.\nThe StatefulSet guarantees that a given network identity will always map to the same storage identity."
+            }
+          ]
+        },
+        {
+          "version": "v1beta2",
+          "resources": [
+            {
+              "kind": "ControllerRevision",
+              "namespaced": true,
+              "singular": "controllerrevision",
+              "plural": "controllerrevisions",
+              "description": "DEPRECATED - This group version of ControllerRevision is deprecated by apps/v1/ControllerRevision. See the release notes for more information. ControllerRevision implements an immutable snapshot of state data. Clients are responsible for serializing and deserializing the objects that contain their internal state. Once a ControllerRevision has been successfully created, it can not be updated. The API Server will fail validation of all requests that attempt to mutate the Data field. ControllerRevisions may, however, be deleted. Note that, due to its use by both the DaemonSet and StatefulSet controllers for update and rollback, this object is beta. However, it may be subject to name and representation changes in future releases, and clients should not depend on its stability. It is primarily for internal use by controllers."
+            },
+            {
+              "kind": "DaemonSet",
+              "namespaced": true,
+              "singular": "daemonset",
+              "plural": "daemonsets",
+              "description": "DEPRECATED - This group version of DaemonSet is deprecated by apps/v1/DaemonSet. See the release notes for more information. DaemonSet represents the configuration of a daemon set."
+            },
+            {
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments",
+              "description": "DEPRECATED - This group version of Deployment is deprecated by apps/v1/Deployment. See the release notes for more information. Deployment enables declarative updates for Pods and ReplicaSets."
+            },
+            {
+              "kind": "ReplicaSet",
+              "namespaced": true,
+              "singular": "replicaset",
+              "plural": "replicasets",
+              "description": "DEPRECATED - This group version of ReplicaSet is deprecated by apps/v1/ReplicaSet. See the release notes for more information. ReplicaSet ensures that a specified number of pod replicas are running at any given time."
+            },
+            {
+              "kind": "StatefulSet",
+              "namespaced": true,
+              "singular": "statefulset",
+              "plural": "statefulsets",
+              "description": "DEPRECATED - This group version of StatefulSet is deprecated by apps/v1/StatefulSet. See the release notes for more information. StatefulSet represents a set of pods with consistent identities. Identities are defined as:\n - Network: A single stable DNS and hostname.\n - Storage: As many VolumeClaims as requested.\nThe StatefulSet guarantees that a given network identity will always map to the same storage identity."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "authentication.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "TokenReview",
+              "namespaced": false,
+              "singular": "tokenreview",
+              "plural": "tokenreviews",
+              "description": "TokenReview attempts to authenticate a token to a known user. Note: TokenReview requests may be cached by the webhook token authenticator plugin in the kube-apiserver."
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "TokenReview",
+              "namespaced": false,
+              "singular": "tokenreview",
+              "plural": "tokenreviews",
+              "description": "TokenReview attempts to authenticate a token to a known user. Note: TokenReview requests may be cached by the webhook token authenticator plugin in the kube-apiserver."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "authorization.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "SelfSubjectAccessReview",
+              "namespaced": false,
+              "singular": "selfsubjectaccessreview",
+              "plural": "selfsubjectaccessreviews",
+              "description": "SelfSubjectAccessReview checks whether or the current user can perform an action.  Not filling in a spec.namespace means \"in all namespaces\".  Self is a special case, because users should always be able to check whether they can perform an action"
+            },
+            {
+              "kind": "SelfSubjectRulesReview",
+              "namespaced": false,
+              "singular": "selfsubjectrulesreview",
+              "plural": "selfsubjectrulesreviews",
+              "description": "SelfSubjectRulesReview enumerates the set of actions the current user can perform within a namespace. The returned list of actions may be incomplete depending on the server's authorization mode, and any errors experienced during the evaluation. SelfSubjectRulesReview should be used by UIs to show/hide actions, or to quickly let an end user reason about their permissions. It should NOT Be used by external systems to drive authorization decisions as this raises confused deputy, cache lifetime/revocation, and correctness concerns. SubjectAccessReview, and LocalAccessReview are the correct way to defer authorization decisions to the API server."
+            },
+            {
+              "kind": "SubjectAccessReview",
+              "namespaced": false,
+              "singular": "subjectaccessreview",
+              "plural": "subjectaccessreviews",
+              "description": "SubjectAccessReview checks whether or not a user or group can perform an action."
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "SelfSubjectAccessReview",
+              "namespaced": false,
+              "singular": "selfsubjectaccessreview",
+              "plural": "selfsubjectaccessreviews",
+              "description": "SelfSubjectAccessReview checks whether or the current user can perform an action.  Not filling in a spec.namespace means \"in all namespaces\".  Self is a special case, because users should always be able to check whether they can perform an action"
+            },
+            {
+              "kind": "SelfSubjectRulesReview",
+              "namespaced": false,
+              "singular": "selfsubjectrulesreview",
+              "plural": "selfsubjectrulesreviews",
+              "description": "SelfSubjectRulesReview enumerates the set of actions the current user can perform within a namespace. The returned list of actions may be incomplete depending on the server's authorization mode, and any errors experienced during the evaluation. SelfSubjectRulesReview should be used by UIs to show/hide actions, or to quickly let an end user reason about their permissions. It should NOT Be used by external systems to drive authorization decisions as this raises confused deputy, cache lifetime/revocation, and correctness concerns. SubjectAccessReview, and LocalAccessReview are the correct way to defer authorization decisions to the API server."
+            },
+            {
+              "kind": "SubjectAccessReview",
+              "namespaced": false,
+              "singular": "subjectaccessreview",
+              "plural": "subjectaccessreviews",
+              "description": "SubjectAccessReview checks whether or not a user or group can perform an action."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "autoscaling",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "HorizontalPodAutoscaler",
+              "namespaced": true,
+              "singular": "horizontalpodautoscaler",
+              "plural": "horizontalpodautoscalers",
+              "description": "configuration of a horizontal pod autoscaler."
+            }
+          ]
+        },
+        {
+          "version": "v2beta1",
+          "resources": [
+            {
+              "kind": "HorizontalPodAutoscaler",
+              "namespaced": true,
+              "singular": "horizontalpodautoscaler",
+              "plural": "horizontalpodautoscalers",
+              "description": "HorizontalPodAutoscaler is the configuration for a horizontal pod autoscaler, which automatically manages the replica count of any resource implementing the scale subresource based on the metrics specified."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "batch",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "Job",
+              "namespaced": true,
+              "singular": "job",
+              "plural": "jobs",
+              "description": "Job represents the configuration of a single job."
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CronJob",
+              "namespaced": true,
+              "singular": "cronjob",
+              "plural": "cronjobs",
+              "description": "CronJob represents the configuration of a single cron job."
+            }
+          ]
+        },
+        {
+          "version": "v2alpha1",
+          "resources": [
+            {
+              "kind": "CronJob",
+              "namespaced": true,
+              "singular": "cronjob",
+              "plural": "cronjobs",
+              "description": "CronJob represents the configuration of a single cron job."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "certificates.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "CertificateSigningRequest",
+              "namespaced": false,
+              "singular": "certificatesigningrequest",
+              "plural": "certificatesigningrequests",
+              "description": "Describes a certificate signing request"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "events.k8s.io",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "Event",
+              "namespaced": true,
+              "singular": "event",
+              "plural": "events",
+              "description": "Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extensions",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "DaemonSet",
+              "namespaced": true,
+              "singular": "daemonset",
+              "plural": "daemonsets",
+              "description": "DEPRECATED - This group version of DaemonSet is deprecated by apps/v1beta2/DaemonSet. See the release notes for more information. DaemonSet represents the configuration of a daemon set."
+            },
+            {
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments",
+              "description": "DEPRECATED - This group version of Deployment is deprecated by apps/v1beta2/Deployment. See the release notes for more information. Deployment enables declarative updates for Pods and ReplicaSets."
+            },
+            {
+              "kind": "Ingress",
+              "namespaced": true,
+              "singular": "ingress",
+              "plural": "ingresses",
+              "description": "Ingress is a collection of rules that allow inbound connections to reach the endpoints defined by a backend. An Ingress can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc."
+            },
+            {
+              "kind": "NetworkPolicy",
+              "namespaced": true,
+              "singular": "networkpolicy",
+              "plural": "networkpolicies",
+              "description": "DEPRECATED 1.9 - This group version of NetworkPolicy is deprecated by networking/v1/NetworkPolicy. NetworkPolicy describes what network traffic is allowed for a set of Pods"
+            },
+            {
+              "kind": "PodSecurityPolicy",
+              "namespaced": false,
+              "singular": "podsecuritypolicy",
+              "plural": "podsecuritypolicies",
+              "description": "Pod Security Policy governs the ability to make requests that affect the Security Context that will be applied to a pod and container."
+            },
+            {
+              "kind": "ReplicaSet",
+              "namespaced": true,
+              "singular": "replicaset",
+              "plural": "replicasets",
+              "description": "DEPRECATED - This group version of ReplicaSet is deprecated by apps/v1beta2/ReplicaSet. See the release notes for more information. ReplicaSet ensures that a specified number of pod replicas are running at any given time."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "networking.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "NetworkPolicy",
+              "namespaced": true,
+              "singular": "networkpolicy",
+              "plural": "networkpolicies",
+              "description": "NetworkPolicy describes what network traffic is allowed for a set of Pods"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "policy",
+      "preferredVersion": "v1beta1",
+      "apiVersions": [
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "PodDisruptionBudget",
+              "namespaced": true,
+              "singular": "poddisruptionbudget",
+              "plural": "poddisruptionbudgets",
+              "description": "PodDisruptionBudget is an object to define the max disruption that can be caused to a collection of pods"
+            },
+            {
+              "kind": "PodSecurityPolicy",
+              "namespaced": false,
+              "singular": "podsecuritypolicy",
+              "plural": "podsecuritypolicies",
+              "description": "Pod Security Policy governs the ability to make requests that affect the Security Context that will be applied to a pod and container."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rbac.authorization.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "ClusterRole",
+              "namespaced": false,
+              "singular": "clusterrole",
+              "plural": "clusterroles",
+              "description": "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding."
+            },
+            {
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings",
+              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject."
+            },
+            {
+              "kind": "Role",
+              "namespaced": true,
+              "singular": "role",
+              "plural": "roles",
+              "description": "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding."
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings",
+              "description": "RoleBinding references a role, but does not contain it.  It can reference a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in.  RoleBindings in a given namespace only have effect in that namespace."
+            }
+          ]
+        },
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "ClusterRole",
+              "namespaced": false,
+              "singular": "clusterrole",
+              "plural": "clusterroles",
+              "description": "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding."
+            },
+            {
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings",
+              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject."
+            },
+            {
+              "kind": "Role",
+              "namespaced": true,
+              "singular": "role",
+              "plural": "roles",
+              "description": "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding."
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings",
+              "description": "RoleBinding references a role, but does not contain it.  It can reference a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in.  RoleBindings in a given namespace only have effect in that namespace."
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "ClusterRole",
+              "namespaced": false,
+              "singular": "clusterrole",
+              "plural": "clusterroles",
+              "description": "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding."
+            },
+            {
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings",
+              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject."
+            },
+            {
+              "kind": "Role",
+              "namespaced": true,
+              "singular": "role",
+              "plural": "roles",
+              "description": "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding."
+            },
+            {
+              "kind": "RoleBinding",
+              "namespaced": true,
+              "singular": "rolebinding",
+              "plural": "rolebindings",
+              "description": "RoleBinding references a role, but does not contain it.  It can reference a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in.  RoleBindings in a given namespace only have effect in that namespace."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "scheduling.k8s.io",
+      "preferredVersion": "v1alpha1",
+      "apiVersions": [
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "PriorityClass",
+              "namespaced": false,
+              "singular": "priorityclass",
+              "plural": "priorityclasses",
+              "description": "PriorityClass defines mapping from a priority class name to the priority integer value. The value can be any valid integer."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "settings.k8s.io",
+      "preferredVersion": "v1alpha1",
+      "apiVersions": [
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "PodPreset",
+              "namespaced": true,
+              "singular": "podpreset",
+              "plural": "podpresets",
+              "description": "PodPreset is a policy resource that defines additional runtime requirements for a Pod."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "storage.k8s.io",
+      "preferredVersion": "v1",
+      "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "StorageClass",
+              "namespaced": false,
+              "singular": "storageclass",
+              "plural": "storageclasses",
+              "description": "StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.\n\nStorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name."
+            }
+          ]
+        },
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "VolumeAttachment",
+              "namespaced": false,
+              "singular": "volumeattachment",
+              "plural": "volumeattachments",
+              "description": "VolumeAttachment captures the intent to attach or detach the specified volume to/from the specified node.\n\nVolumeAttachment objects are non-namespaced."
+            }
+          ]
+        },
+        {
+          "version": "v1beta1",
+          "resources": [
+            {
+              "kind": "StorageClass",
+              "namespaced": false,
+              "singular": "storageclass",
+              "plural": "storageclasses",
+              "description": "StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.\n\nStorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name."
+            },
+            {
+              "kind": "VolumeAttachment",
+              "namespaced": false,
+              "singular": "volumeattachment",
+              "plural": "volumeattachments",
+              "description": "VolumeAttachment captures the intent to attach or detach the specified volume to/from the specified node.\n\nVolumeAttachment objects are non-namespaced."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
