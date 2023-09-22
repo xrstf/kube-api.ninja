@@ -171,11 +171,10 @@ func renderSitemap(now time.Time, releases []*database.KubernetesRelease) error 
 		index := filepath.Join(outputDirectory, "apidocs", release.Version(), "index.html")
 		stat, err := os.Stat(index)
 		if err != nil {
-			return err
+			continue
 		}
 
 		lastMod := stat.ModTime()
-
 		sm.Add(&sitemap.URL{
 			Loc:        fmt.Sprintf("%s/apidocs/%s/", baseUrl, release.Version()),
 			LastMod:    &lastMod,
