@@ -353,14 +353,13 @@ func getAPIResourceReleaseContent(tl *timeline.Timeline, apiGroup *timeline.APIG
 
 // /apidocs/1.25/#storageclass-v1-storage-k8s-io
 
-func getResourceDocumentationLink(tl *timeline.Timeline, apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, apiResource *timeline.APIResource) string {
-	if len(apiResource.Releases) == 0 {
+func getResourceDocumentationLink(apiGroup *timeline.APIGroup, apiVersion *timeline.APIVersion, apiResource *timeline.APIResource) string {
+	if len(apiResource.DocRelease) == 0 {
 		return ""
 	}
 
-	lastRelease := apiResource.Releases[len(apiResource.Releases)-1]
 	lowerKind := strings.ToLower(apiResource.Kind)
 	group := strings.ReplaceAll(apiGroup.Name, ".", "-")
 
-	return fmt.Sprintf("/apidocs/%s/#%s-%s-%s", lastRelease, lowerKind, apiVersion.Version, group)
+	return fmt.Sprintf("/apidocs/%s/#%s-%s-%s", apiResource.DocRelease, lowerKind, apiVersion.Version, group)
 }

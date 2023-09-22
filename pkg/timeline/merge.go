@@ -52,6 +52,11 @@ func CreateTimeline(releases []*database.KubernetesRelease, now time.Time) (*Tim
 		return nil, fmt.Errorf("failed to calculate ROIs: %w", err)
 	}
 
+	// calculate latest available docs for each resource
+	if err := calculateDocumentationReleases(timeline); err != nil {
+		return nil, fmt.Errorf("failed to calculate documentation releases: %w", err)
+	}
+
 	// sort API groups alphabetically
 	sort.Slice(timeline.APIGroups, func(i, j int) bool {
 		return timeline.APIGroups[i].Name < timeline.APIGroups[j].Name
@@ -253,6 +258,7 @@ func createReleaseMetadata(release *database.KubernetesRelease, now time.Time) (
 		ReleaseDate:   releaseDate,
 		EndOfLifeDate: endOfLife,
 		LatestVersion: latestVersion,
+		HasDocs:       release.HasDocumentation(),
 	}, nil
 }
 
@@ -308,6 +314,45 @@ func getReleasesWithNotableChangesForResource(res APIResource, releases []Releas
 	}
 
 	return result
+}
+
+func calculateDocumentationReleases(tl *Timeline) error {
+	hasDocsInRelease := func(version string) bool {
+		for _, release := range tl.Releases {
+			if release.Version == version {
+				return release.HasDocs
+			}
+		}
+
+		return false
+	}
+
+	for i, apiGroup := range tl.APIGroups {
+		for j, apiVersion := range apiGroup.APIVersions {
+			for k, apiResource := range apiVersion.Resources {
+				availableIn := apiResource.Releases
+				if len(availableIn) == 0 {
+					continue // should never happen
+				}
+
+				latestReleaseWithDocs := ""
+
+				// walk backwards to prefer later releases
+				for i := len(availableIn) - 1; i >= 0; i-- {
+					if version := availableIn[i]; hasDocsInRelease(version) {
+						latestReleaseWithDocs = version
+						break
+					}
+				}
+
+				if latestReleaseWithDocs != "" {
+					tl.APIGroups[i].APIVersions[j].Resources[k].DocRelease = latestReleaseWithDocs
+				}
+			}
+		}
+	}
+
+	return nil
 }
 
 func calculateArchivalStatus(tl *Timeline) error {

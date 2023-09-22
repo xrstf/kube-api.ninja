@@ -62,6 +62,7 @@ function showReleaseInfoPopover(link) {
   // would not magically make more data appear.
   let container = template.querySelector('.release-links');
   container.classList.toggle('unreleased', cell.dataset.released !== 'true');
+  container.classList.toggle('no-docs', cell.dataset.hasDocs !== 'true');
 
   template.querySelector('.release-date').innerText = releaseDate;
   template.querySelector('.latest-version').innerText = latestVersion;

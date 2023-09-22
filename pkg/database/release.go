@@ -15,10 +15,15 @@ import (
 type KubernetesRelease struct {
 	release string
 	baseDir string
+	hasDocs bool
 }
 
 func (r *KubernetesRelease) Version() string {
 	return r.release
+}
+
+func (r *KubernetesRelease) HasDocumentation() bool {
+	return r.hasDocs
 }
 
 func (r *KubernetesRelease) Semver() *version.Semver {

@@ -11,9 +11,10 @@ import (
 
 type ReleaseDatabase struct {
 	baseDir string
+	docsDir string
 }
 
-func NewReleaseDatabase(baseDir string) (*ReleaseDatabase, error) {
+func NewReleaseDatabase(baseDir string, docsDir string) (*ReleaseDatabase, error) {
 	err := os.MkdirAll(baseDir, 0755)
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare data directory: %w", err)
@@ -26,6 +27,7 @@ func NewReleaseDatabase(baseDir string) (*ReleaseDatabase, error) {
 
 	return &ReleaseDatabase{
 		baseDir: baseDir,
+		docsDir: docsDir,
 	}, nil
 }
 
@@ -64,8 +66,13 @@ func (db *ReleaseDatabase) Release(version string) (*KubernetesRelease, error) {
 		return nil, fmt.Errorf("failed to find release %q: %w", version, err)
 	}
 
+	docsDir := filepath.Join(db.docsDir, version)
+	_, err := os.Stat(docsDir)
+	hasDocs := err == nil
+
 	return &KubernetesRelease{
 		release: version,
 		baseDir: fullDir,
+		hasDocs: hasDocs,
 	}, nil
 }

@@ -352,6 +352,10 @@ td.newest-release-supported, th.newest-release-supported {
   display: none;
 }
 
+.release-links.no-docs .release-documentation-item {
+  display: none;
+}
+
 /* mimic the look of an
 
   definition:

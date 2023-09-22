@@ -15,6 +15,7 @@ type ReleaseMetadata struct {
 	Released      bool
 	Supported     bool
 	Archived      bool
+	HasDocs       bool
 	ReleaseDate   time.Time
 	EndOfLifeDate *time.Time
 	LatestVersion string
@@ -75,6 +76,7 @@ type APIResource struct {
 	Releases           []string // releases which have this resource
 	ReleasesOfInterest []string // releases which have notable changes for this resource
 	Description        string
+	DocRelease         string // release which should be linked to for this resource (can be empty!)
 }
 
 func (o *APIResource) HasRelease(release string) bool {

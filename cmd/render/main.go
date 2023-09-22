@@ -33,7 +33,7 @@ func main() {
 		stamp = stamp[:10]
 	}
 
-	db, err := database.NewReleaseDatabase("data")
+	db, err := database.NewReleaseDatabase("data", "public/apidocs")
 	if err != nil {
 		log.Fatalf("Failed to open database: %v", err)
 	}

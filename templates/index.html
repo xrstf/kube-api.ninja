@@ -48,6 +48,7 @@
           {{ range $idx, $rel := .Timeline.Releases }}
           <th
             class="{{ getReleaseHeaderClass $.Timeline $rel }}"
+            data-has-docs="{{ $rel.HasDocs }}"
             data-release="{{ $rel.Version }}"
             data-released="{{ $rel.Released }}"
             data-latest-version="{{ $rel.LatestVersion }}"
@@ -93,7 +94,9 @@
         <tr class="{{ getAPIResourceClass $.Timeline $apiGroup $apiVersion $apiResource }}" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
           <th class="name">
             <span title="{{ $apiResource.Description }}">{{ $apiResource.Kind }}</span>
-            <span class="icons"><small><a href="{{ getResourceDocumentationLink $.Timeline $apiGroup $apiVersion $apiResource }}" class="docs" title="view documentation for most recent Kubernetes release" target="_blank"><i class="fa-solid fa-book"></i></a></small></span>
+            {{ if $apiResource.DocRelease }}
+            <span class="icons"><small><a href="{{ getResourceDocumentationLink $apiGroup $apiVersion $apiResource }}" class="docs" title="view documentation for most recent Kubernetes release" target="_blank"><i class="fa-solid fa-book"></i></a></small></span>
+            {{ end }}
           </th>
           {{ range $rel := $.Timeline.Releases }}
           <td class="{{ getAPIResourceReleaseClass $.Timeline $apiGroup $apiVersion $apiResource $rel }}">
@@ -116,7 +119,7 @@
   <div class="hidden">
     <div class="release-popover-template">
       <ul class="list-group list-group-flush release-links">
-        <li class="list-group-item after-release">
+        <li class="list-group-item after-release release-documentation-item">
           <a class="release-documentation external" href="#" target="_blank">
             <i class="fa-solid fa-book"></i> Documentation
           </a>
