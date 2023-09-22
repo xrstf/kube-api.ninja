@@ -215,14 +215,22 @@ func dumpCoreAPIVersion(logger *slog.Logger, spec *swaggerSpec, apiVersion strin
 			}
 		}
 
-		reslogger := logger.With("resource", methodSpec.KubernetesGVK.Kind, "namespaced", namespaced)
+		kind := methodSpec.KubernetesGVK.Kind
+		if kind == "" {
+			kind = resourceNames[pluralName]
+			if kind == "" {
+				panic(fmt.Sprintf("Could not determine Kind for %s.", pluralName))
+			}
+		}
+
+		reslogger := logger.With("resource", kind, "namespaced", namespaced)
 		reslogger.Info("Found resource.")
 
 		res := types.Resource{
-			Kind:        methodSpec.KubernetesGVK.Kind,
+			Kind:        kind,
 			Namespaced:  namespaced,
 			Plural:      pluralName,
-			Singular:    strings.ToLower(methodSpec.KubernetesGVK.Kind),
+			Singular:    strings.ToLower(kind),
 			Description: getResourceDescription(spec, methodSpec.Responses.OK.Schema.Ref),
 		}
 
@@ -278,14 +286,22 @@ func dumpAPIVersion(logger *slog.Logger, spec *swaggerSpec, apiGroup string, api
 			}
 		}
 
-		reslogger := logger.With("resource", methodSpec.KubernetesGVK.Kind, "namespaced", namespaced)
+		kind := methodSpec.KubernetesGVK.Kind
+		if kind == "" {
+			kind = resourceNames[pluralName]
+			if kind == "" {
+				panic(fmt.Sprintf("Could not determine Kind for %s.", pluralName))
+			}
+		}
+
+		reslogger := logger.With("resource", kind, "namespaced", namespaced)
 		reslogger.Info("Found resource.")
 
 		res := types.Resource{
-			Kind:        methodSpec.KubernetesGVK.Kind,
+			Kind:        kind,
 			Namespaced:  namespaced,
 			Plural:      pluralName,
-			Singular:    strings.ToLower(methodSpec.KubernetesGVK.Kind),
+			Singular:    strings.ToLower(kind),
 			Description: getResourceDescription(spec, methodSpec.Responses.OK.Schema.Ref),
 		}
 

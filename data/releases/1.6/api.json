@@ -10,116 +10,116 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "serviceaccounts",
-              "description": "ServiceAccount binds together: * a name, understood by users, and perhaps by peripheral systems, for an identity * a principal that can be authenticated and authorized * a set of secrets"
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "resourcequotas",
-              "description": "ResourceQuota sets aggregate quota restrictions enforced per namespace"
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "configmaps",
-              "description": "ConfigMap holds configuration data for pods to consume."
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "persistentvolumeclaims",
-              "description": "PersistentVolumeClaim is a user's request for and claim to a persistent volume"
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "podtemplates",
-              "description": "PodTemplate describes a template for creating copies of a predefined pod."
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "endpoints",
-              "description": "Endpoints is a collection of endpoints that implement the actual service. Example:\n  Name: \"mysvc\",\n  Subsets: [\n    {\n      Addresses: [{\"ip\": \"10.10.1.1\"}, {\"ip\": \"10.10.2.2\"}],\n      Ports: [{\"name\": \"a\", \"port\": 8675}, {\"name\": \"b\", \"port\": 309}]\n    },\n    {\n      Addresses: [{\"ip\": \"10.10.3.3\"}],\n      Ports: [{\"name\": \"a\", \"port\": 93}, {\"name\": \"b\", \"port\": 76}]\n    },\n ]"
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "pods",
-              "description": "Pod is a collection of containers that can run on a host. This resource is created by clients and scheduled onto hosts."
-            },
-            {
-              "kind": "",
+              "kind": "ComponentStatus",
               "namespaced": false,
-              "singular": "",
-              "plural": "persistentvolumes",
-              "description": "PersistentVolume (PV) is a storage resource provisioned by an administrator. It is analogous to a node. More info: http://kubernetes.io/docs/user-guide/persistent-volumes"
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "replicationcontrollers",
-              "description": "ReplicationController represents the configuration of a replication controller."
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "secrets",
-              "description": "Secret holds secret data of a certain type. The total bytes of the values in the Data field must be less than MaxSecretSize bytes."
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "limitranges",
-              "description": "LimitRange sets resource usage limits for each kind of resource in a Namespace."
-            },
-            {
-              "kind": "",
-              "namespaced": false,
-              "singular": "",
-              "plural": "nodes",
-              "description": "Node is a worker node in Kubernetes. Each node will have a unique identifier in the cache (i.e. in etcd)."
-            },
-            {
-              "kind": "",
-              "namespaced": false,
-              "singular": "",
-              "plural": "namespaces",
-              "description": "Namespace provides a scope for Names. Use of multiple namespaces is optional."
-            },
-            {
-              "kind": "",
-              "namespaced": false,
-              "singular": "",
+              "singular": "componentstatus",
               "plural": "componentstatuses",
               "description": "ComponentStatus (and ComponentStatusList) holds the cluster validation info."
             },
             {
-              "kind": "",
+              "kind": "ConfigMap",
               "namespaced": true,
-              "singular": "",
+              "singular": "configmap",
+              "plural": "configmaps",
+              "description": "ConfigMap holds configuration data for pods to consume."
+            },
+            {
+              "kind": "Endpoints",
+              "namespaced": true,
+              "singular": "endpoints",
+              "plural": "endpoints",
+              "description": "Endpoints is a collection of endpoints that implement the actual service. Example:\n  Name: \"mysvc\",\n  Subsets: [\n    {\n      Addresses: [{\"ip\": \"10.10.1.1\"}, {\"ip\": \"10.10.2.2\"}],\n      Ports: [{\"name\": \"a\", \"port\": 8675}, {\"name\": \"b\", \"port\": 309}]\n    },\n    {\n      Addresses: [{\"ip\": \"10.10.3.3\"}],\n      Ports: [{\"name\": \"a\", \"port\": 93}, {\"name\": \"b\", \"port\": 76}]\n    },\n ]"
+            },
+            {
+              "kind": "Event",
+              "namespaced": true,
+              "singular": "event",
+              "plural": "events",
+              "description": "Event is a report of an event somewhere in the cluster."
+            },
+            {
+              "kind": "LimitRange",
+              "namespaced": true,
+              "singular": "limitrange",
+              "plural": "limitranges",
+              "description": "LimitRange sets resource usage limits for each kind of resource in a Namespace."
+            },
+            {
+              "kind": "Namespace",
+              "namespaced": false,
+              "singular": "namespace",
+              "plural": "namespaces",
+              "description": "Namespace provides a scope for Names. Use of multiple namespaces is optional."
+            },
+            {
+              "kind": "Node",
+              "namespaced": false,
+              "singular": "node",
+              "plural": "nodes",
+              "description": "Node is a worker node in Kubernetes. Each node will have a unique identifier in the cache (i.e. in etcd)."
+            },
+            {
+              "kind": "PersistentVolume",
+              "namespaced": false,
+              "singular": "persistentvolume",
+              "plural": "persistentvolumes",
+              "description": "PersistentVolume (PV) is a storage resource provisioned by an administrator. It is analogous to a node. More info: http://kubernetes.io/docs/user-guide/persistent-volumes"
+            },
+            {
+              "kind": "PersistentVolumeClaim",
+              "namespaced": true,
+              "singular": "persistentvolumeclaim",
+              "plural": "persistentvolumeclaims",
+              "description": "PersistentVolumeClaim is a user's request for and claim to a persistent volume"
+            },
+            {
+              "kind": "Pod",
+              "namespaced": true,
+              "singular": "pod",
+              "plural": "pods",
+              "description": "Pod is a collection of containers that can run on a host. This resource is created by clients and scheduled onto hosts."
+            },
+            {
+              "kind": "PodTemplate",
+              "namespaced": true,
+              "singular": "podtemplate",
+              "plural": "podtemplates",
+              "description": "PodTemplate describes a template for creating copies of a predefined pod."
+            },
+            {
+              "kind": "ReplicationController",
+              "namespaced": true,
+              "singular": "replicationcontroller",
+              "plural": "replicationcontrollers",
+              "description": "ReplicationController represents the configuration of a replication controller."
+            },
+            {
+              "kind": "ResourceQuota",
+              "namespaced": true,
+              "singular": "resourcequota",
+              "plural": "resourcequotas",
+              "description": "ResourceQuota sets aggregate quota restrictions enforced per namespace"
+            },
+            {
+              "kind": "Secret",
+              "namespaced": true,
+              "singular": "secret",
+              "plural": "secrets",
+              "description": "Secret holds secret data of a certain type. The total bytes of the values in the Data field must be less than MaxSecretSize bytes."
+            },
+            {
+              "kind": "Service",
+              "namespaced": true,
+              "singular": "service",
               "plural": "services",
               "description": "Service is a named abstraction of software service (for example, mysql) consisting of local port (for example 3306) that the proxy listens on, and the selector that determines which pods will answer requests sent through the proxy."
             },
             {
-              "kind": "",
+              "kind": "ServiceAccount",
               "namespaced": true,
-              "singular": "",
-              "plural": "events",
-              "description": "Event is a report of an event somewhere in the cluster."
+              "singular": "serviceaccount",
+              "plural": "serviceaccounts",
+              "description": "ServiceAccount binds together: * a name, understood by users, and perhaps by peripheral systems, for an identity * a principal that can be authenticated and authorized * a set of secrets"
             }
           ]
         }
@@ -133,16 +133,16 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "",
+              "kind": "Deployment",
               "namespaced": true,
-              "singular": "",
+              "singular": "deployment",
               "plural": "deployments",
               "description": "Deployment enables declarative updates for Pods and ReplicaSets."
             },
             {
-              "kind": "",
+              "kind": "StatefulSet",
               "namespaced": true,
-              "singular": "",
+              "singular": "statefulset",
               "plural": "statefulsets",
               "description": "StatefulSet represents a set of pods with consistent identities. Identities are defined as:\n - Network: A single stable DNS and hostname.\n - Storage: As many VolumeClaims as requested.\nThe StatefulSet guarantees that a given network identity will always map to the same storage identity."
             }
@@ -158,9 +158,9 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "",
+              "kind": "TokenReview",
               "namespaced": false,
-              "singular": "",
+              "singular": "tokenreview",
               "plural": "tokenreviews",
               "description": "TokenReview attempts to authenticate a token to a known user. Note: TokenReview requests may be cached by the webhook token authenticator plugin in the kube-apiserver."
             }
@@ -170,9 +170,9 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "",
+              "kind": "TokenReview",
               "namespaced": false,
-              "singular": "",
+              "singular": "tokenreview",
               "plural": "tokenreviews",
               "description": "TokenReview attempts to authenticate a token to a known user. Note: TokenReview requests may be cached by the webhook token authenticator plugin in the kube-apiserver."
             }
@@ -188,18 +188,18 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "",
+              "kind": "SelfSubjectAccessReview",
               "namespaced": false,
-              "singular": "",
-              "plural": "subjectaccessreviews",
-              "description": "SubjectAccessReview checks whether or not a user or group can perform an action."
-            },
-            {
-              "kind": "",
-              "namespaced": false,
-              "singular": "",
+              "singular": "selfsubjectaccessreview",
               "plural": "selfsubjectaccessreviews",
               "description": "SelfSubjectAccessReview checks whether or the current user can perform an action.  Not filling in a spec.namespace means \"in all namespaces\".  Self is a special case, because users should always be able to check whether they can perform an action"
+            },
+            {
+              "kind": "SubjectAccessReview",
+              "namespaced": false,
+              "singular": "subjectaccessreview",
+              "plural": "subjectaccessreviews",
+              "description": "SubjectAccessReview checks whether or not a user or group can perform an action."
             }
           ]
         },
@@ -207,18 +207,18 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "",
+              "kind": "SelfSubjectAccessReview",
               "namespaced": false,
-              "singular": "",
-              "plural": "subjectaccessreviews",
-              "description": "SubjectAccessReview checks whether or not a user or group can perform an action."
-            },
-            {
-              "kind": "",
-              "namespaced": false,
-              "singular": "",
+              "singular": "selfsubjectaccessreview",
               "plural": "selfsubjectaccessreviews",
               "description": "SelfSubjectAccessReview checks whether or the current user can perform an action.  Not filling in a spec.namespace means \"in all namespaces\".  Self is a special case, because users should always be able to check whether they can perform an action"
+            },
+            {
+              "kind": "SubjectAccessReview",
+              "namespaced": false,
+              "singular": "subjectaccessreview",
+              "plural": "subjectaccessreviews",
+              "description": "SubjectAccessReview checks whether or not a user or group can perform an action."
             }
           ]
         }
@@ -232,9 +232,9 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "",
+              "kind": "HorizontalPodAutoscaler",
               "namespaced": true,
-              "singular": "",
+              "singular": "horizontalpodautoscaler",
               "plural": "horizontalpodautoscalers",
               "description": "configuration of a horizontal pod autoscaler."
             }
@@ -244,9 +244,9 @@
           "version": "v2alpha1",
           "resources": [
             {
-              "kind": "",
+              "kind": "HorizontalPodAutoscaler",
               "namespaced": true,
-              "singular": "",
+              "singular": "horizontalpodautoscaler",
               "plural": "horizontalpodautoscalers",
               "description": "HorizontalPodAutoscaler is the configuration for a horizontal pod autoscaler, which automatically manages the replica count of any resource implementing the scale subresource based on the metrics specified."
             }
@@ -262,9 +262,9 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "",
+              "kind": "Job",
               "namespaced": true,
-              "singular": "",
+              "singular": "job",
               "plural": "jobs",
               "description": "Job represents the configuration of a single job."
             }
@@ -274,16 +274,16 @@
           "version": "v2alpha1",
           "resources": [
             {
-              "kind": "",
+              "kind": "CronJob",
               "namespaced": true,
-              "singular": "",
+              "singular": "cronjob",
               "plural": "cronjobs",
               "description": "CronJob represents the configuration of a single cron job."
             },
             {
-              "kind": "",
+              "kind": "ScheduledJob",
               "namespaced": true,
-              "singular": "",
+              "singular": "scheduledjob",
               "plural": "scheduledjobs",
               "description": "CronJob represents the configuration of a single cron job."
             }
@@ -299,9 +299,9 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "",
+              "kind": "CertificateSigningRequest",
               "namespaced": false,
-              "singular": "",
+              "singular": "certificatesigningrequest",
               "plural": "certificatesigningrequests",
               "description": "Describes a certificate signing request"
             }
@@ -317,53 +317,53 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "",
+              "kind": "DaemonSet",
               "namespaced": true,
-              "singular": "",
-              "plural": "replicasets",
-              "description": "ReplicaSet represents the configuration of a ReplicaSet."
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "deployments",
-              "description": "Deployment enables declarative updates for Pods and ReplicaSets."
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "ingresses",
-              "description": "Ingress is a collection of rules that allow inbound connections to reach the endpoints defined by a backend. An Ingress can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc."
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
-              "plural": "networkpolicies",
-              "description": ""
-            },
-            {
-              "kind": "",
-              "namespaced": false,
-              "singular": "",
-              "plural": "thirdpartyresources",
-              "description": "A ThirdPartyResource is a generic representation of a resource, it is used by add-ons and plugins to add new resource types to the API.  It consists of one or more Versions of the api."
-            },
-            {
-              "kind": "",
-              "namespaced": true,
-              "singular": "",
+              "singular": "daemonset",
               "plural": "daemonsets",
               "description": "DaemonSet represents the configuration of a daemon set."
             },
             {
-              "kind": "",
+              "kind": "Deployment",
+              "namespaced": true,
+              "singular": "deployment",
+              "plural": "deployments",
+              "description": "Deployment enables declarative updates for Pods and ReplicaSets."
+            },
+            {
+              "kind": "Ingress",
+              "namespaced": true,
+              "singular": "ingress",
+              "plural": "ingresses",
+              "description": "Ingress is a collection of rules that allow inbound connections to reach the endpoints defined by a backend. An Ingress can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc."
+            },
+            {
+              "kind": "NetworkPolicy",
+              "namespaced": true,
+              "singular": "networkpolicy",
+              "plural": "networkpolicies",
+              "description": ""
+            },
+            {
+              "kind": "PodSecurityPolicy",
               "namespaced": false,
-              "singular": "",
+              "singular": "podsecuritypolicy",
               "plural": "podsecuritypolicies",
               "description": "Pod Security Policy governs the ability to make requests that affect the Security Context that will be applied to a pod and container."
+            },
+            {
+              "kind": "ReplicaSet",
+              "namespaced": true,
+              "singular": "replicaset",
+              "plural": "replicasets",
+              "description": "ReplicaSet represents the configuration of a ReplicaSet."
+            },
+            {
+              "kind": "ThirdPartyResource",
+              "namespaced": false,
+              "singular": "thirdpartyresource",
+              "plural": "thirdpartyresources",
+              "description": "A ThirdPartyResource is a generic representation of a resource, it is used by add-ons and plugins to add new resource types to the API.  It consists of one or more Versions of the api."
             }
           ]
         }
@@ -377,9 +377,9 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "",
+              "kind": "PodDisruptionBudget",
               "namespaced": true,
-              "singular": "",
+              "singular": "poddisruptionbudget",
               "plural": "poddisruptionbudgets",
               "description": "PodDisruptionBudget is an object to define the max disruption that can be caused to a collection of pods"
             }
@@ -395,32 +395,32 @@
           "version": "v1alpha1",
           "resources": [
             {
-              "kind": "",
+              "kind": "ClusterRole",
               "namespaced": false,
-              "singular": "",
+              "singular": "clusterrole",
               "plural": "clusterroles",
               "description": "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding."
             },
             {
-              "kind": "",
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings",
+              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject."
+            },
+            {
+              "kind": "Role",
               "namespaced": true,
-              "singular": "",
+              "singular": "role",
               "plural": "roles",
               "description": "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding."
             },
             {
-              "kind": "",
+              "kind": "RoleBinding",
               "namespaced": true,
-              "singular": "",
+              "singular": "rolebinding",
               "plural": "rolebindings",
               "description": "RoleBinding references a role, but does not contain it.  It can reference a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in.  RoleBindings in a given namespace only have effect in that namespace."
-            },
-            {
-              "kind": "",
-              "namespaced": false,
-              "singular": "",
-              "plural": "clusterrolebindings",
-              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject."
             }
           ]
         },
@@ -428,32 +428,32 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "",
+              "kind": "ClusterRole",
               "namespaced": false,
-              "singular": "",
+              "singular": "clusterrole",
               "plural": "clusterroles",
               "description": "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding."
             },
             {
-              "kind": "",
+              "kind": "ClusterRoleBinding",
+              "namespaced": false,
+              "singular": "clusterrolebinding",
+              "plural": "clusterrolebindings",
+              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject."
+            },
+            {
+              "kind": "Role",
               "namespaced": true,
-              "singular": "",
+              "singular": "role",
               "plural": "roles",
               "description": "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding."
             },
             {
-              "kind": "",
+              "kind": "RoleBinding",
               "namespaced": true,
-              "singular": "",
+              "singular": "rolebinding",
               "plural": "rolebindings",
               "description": "RoleBinding references a role, but does not contain it.  It can reference a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in.  RoleBindings in a given namespace only have effect in that namespace."
-            },
-            {
-              "kind": "",
-              "namespaced": false,
-              "singular": "",
-              "plural": "clusterrolebindings",
-              "description": "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject."
             }
           ]
         }
@@ -467,9 +467,9 @@
           "version": "v1alpha1",
           "resources": [
             {
-              "kind": "",
+              "kind": "PodPreset",
               "namespaced": true,
-              "singular": "",
+              "singular": "podpreset",
               "plural": "podpresets",
               "description": "PodPreset is a policy resource that defines additional runtime requirements for a Pod."
             }
@@ -485,9 +485,9 @@
           "version": "v1",
           "resources": [
             {
-              "kind": "",
+              "kind": "StorageClass",
               "namespaced": false,
-              "singular": "",
+              "singular": "storageclass",
               "plural": "storageclasses",
               "description": "StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.\n\nStorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name."
             }
@@ -497,9 +497,9 @@
           "version": "v1beta1",
           "resources": [
             {
-              "kind": "",
+              "kind": "StorageClass",
               "namespaced": false,
-              "singular": "",
+              "singular": "storageclass",
               "plural": "storageclasses",
               "description": "StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.\n\nStorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name."
             }
