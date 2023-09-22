@@ -36,81 +36,83 @@
 
   <!-- the main page container -->
   <main class="site-container">
-    <table class="table non-roi-mode hide-archive container-xxl" id="release-megatable">
-      <thead>
-        <tr>
-          <th class="all-togglers">
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-sm btn-outline-primary" id="expand-all">⊕ Expand all</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary" id="collapse-all">⊙ Collapse all</button>
-            </div>
-          </th>
-          {{ range $idx, $rel := .Timeline.Releases }}
-          <th
-            class="{{ getReleaseHeaderClass $.Timeline $rel }}"
-            data-release="{{ $rel.Version }}"
-            data-released="{{ $rel.Released }}"
-            data-latest-version="{{ $rel.LatestVersion }}"
-            data-release-date="{{ $rel.ReleaseDate.Format "2006-01-02" }}"
-            data-eol-date="{{ with $rel.EndOfLifeDate }}{{ .Format "2006-01-02" }}{{ end }}"
-          >
-            <a tabindex="{{ $idx }}" role="button" data-bs-toggle="popover" data-release="{{ $rel.Version }}">{{ $rel.Version }}</a>
-          </th>
-          {{ end }}
-        </tr>
-      </thead>
+    <div class="table-responsive-md">
+      <table class="table non-roi-mode hide-archive container-xxl" id="release-megatable">
+        <thead>
+          <tr>
+            <th class="all-togglers">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-outline-primary" id="expand-all">⊕ Expand all</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="collapse-all">⊙ Collapse all</button>
+              </div>
+            </th>
+            {{ range $idx, $rel := .Timeline.Releases }}
+            <th
+              class="{{ getReleaseHeaderClass $.Timeline $rel }}"
+              data-release="{{ $rel.Version }}"
+              data-released="{{ $rel.Released }}"
+              data-latest-version="{{ $rel.LatestVersion }}"
+              data-release-date="{{ $rel.ReleaseDate.Format "2006-01-02" }}"
+              data-eol-date="{{ with $rel.EndOfLifeDate }}{{ .Format "2006-01-02" }}{{ end }}"
+            >
+              <a tabindex="{{ $idx }}" role="button" data-bs-toggle="popover" data-release="{{ $rel.Version }}">{{ $rel.Version }}</a>
+            </th>
+            {{ end }}
+          </tr>
+        </thead>
 
-      {{ range $apiGroup := .Timeline.APIGroups }}
-      <tbody data-apigroup="{{ $apiGroup.Name }}" class="{{ getAPIGroupBodyClass $.Timeline $apiGroup }}">
-        <!-- row for the API group -->
-        <tr class="{{ getAPIGroupClass $.Timeline $apiGroup }}">
-          <th class="name">
-            <a href="#" class="toggle" title="expand/collapse this API group"><span class="icons hidden">⊕</span> <span class="name">{{ $apiGroup.Name }}</span></a>
-          </th>
-          {{ range $rel := $.Timeline.Releases }}
-          <td class="{{ getAPIGroupReleaseClass $.Timeline $apiGroup $rel }}">
-            <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel.Version }}</span>
-          </td>
-          {{ end }}
-        </tr>
+        {{ range $apiGroup := .Timeline.APIGroups }}
+        <tbody data-apigroup="{{ $apiGroup.Name }}" class="{{ getAPIGroupBodyClass $.Timeline $apiGroup }}">
+          <!-- row for the API group -->
+          <tr class="{{ getAPIGroupClass $.Timeline $apiGroup }}">
+            <th class="name">
+              <a href="#" class="toggle" title="expand/collapse this API group"><span class="icons hidden">⊕</span> <span class="name">{{ $apiGroup.Name }}</span></a>
+            </th>
+            {{ range $rel := $.Timeline.Releases }}
+            <td class="{{ getAPIGroupReleaseClass $.Timeline $apiGroup $rel }}">
+              <span class="badge text-bg">{{ $apiGroup.PreferredVersion $rel.Version }}</span>
+            </td>
+            {{ end }}
+          </tr>
 
-        {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
-        <!-- row for the API version -->
-        <!-- TODO: collapsed should be applied via JS -->
-        <tr class="{{ getAPIVersionClass $.Timeline $apiGroup $apiVersion }} collapsed" data-apiversion="{{ $apiVersion.Version }}">
-          <th class="name">
-            <a href="#" class="toggle" title="expand/collapse this API version"><span class="icons">⊕</span> <span class="hidden">{{ $apiGroup.Name }}/</span><span class="name">{{ $apiVersion.Version }}</span></a>
-          </th>
-          {{ range $rel := $.Timeline.Releases }}
-          <td class="{{ getAPIVersionReleaseClass $.Timeline $apiGroup $apiVersion $rel }}">
-            <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Timeline $apiGroup $apiVersion $rel }}</span>
-          </td>
-          {{ end }}
-        </tr>
+          {{ range $apiVersionIdx, $apiVersion := $apiGroup.APIVersions }}
+          <!-- row for the API version -->
+          <!-- TODO: collapsed should be applied via JS -->
+          <tr class="{{ getAPIVersionClass $.Timeline $apiGroup $apiVersion }} collapsed" data-apiversion="{{ $apiVersion.Version }}">
+            <th class="name">
+              <a href="#" class="toggle" title="expand/collapse this API version"><span class="icons">⊕</span> <span class="hidden">{{ $apiGroup.Name }}/</span><span class="name">{{ $apiVersion.Version }}</span></a>
+            </th>
+            {{ range $rel := $.Timeline.Releases }}
+            <td class="{{ getAPIVersionReleaseClass $.Timeline $apiGroup $apiVersion $rel }}">
+              <span class="badge text-bg">{{ getAPIVersionReleaseContent $.Timeline $apiGroup $apiVersion $rel }}</span>
+            </td>
+            {{ end }}
+          </tr>
 
-        {{ range $apiResource := $apiVersion.Resources }}
-        <!-- row for an API resource -->
-        <tr class="{{ getAPIResourceClass $.Timeline $apiGroup $apiVersion $apiResource }}" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
-          <th class="name">
-            <span title="{{ $apiResource.Description }}">{{ $apiResource.Kind }}</span>
-            <span class="icons"><small><a href="{{ getResourceDocumentationLink $.Timeline $apiGroup $apiVersion $apiResource }}" class="docs" title="view documentation for most recent Kubernetes release" target="_blank"><i class="fa-solid fa-book"></i></a></small></span>
-          </th>
-          {{ range $rel := $.Timeline.Releases }}
-          <td class="{{ getAPIResourceReleaseClass $.Timeline $apiGroup $apiVersion $apiResource $rel }}">
-            <span class="badge text-bg">{{ getAPIResourceReleaseContent $.Timeline $apiGroup $apiVersion $apiResource $rel }}</span>
-          </td>
+          {{ range $apiResource := $apiVersion.Resources }}
+          <!-- row for an API resource -->
+          <tr class="{{ getAPIResourceClass $.Timeline $apiGroup $apiVersion $apiResource }}" data-apiversion="{{ $apiVersion.Version }}" data-apiresource="{{ $apiResource.Plural }}">
+            <th class="name">
+              <span title="{{ $apiResource.Description }}">{{ $apiResource.Kind }}</span>
+              <span class="icons"><small><a href="{{ getResourceDocumentationLink $.Timeline $apiGroup $apiVersion $apiResource }}" class="docs" title="view documentation for most recent Kubernetes release" target="_blank"><i class="fa-solid fa-book"></i></a></small></span>
+            </th>
+            {{ range $rel := $.Timeline.Releases }}
+            <td class="{{ getAPIResourceReleaseClass $.Timeline $apiGroup $apiVersion $apiResource $rel }}">
+              <span class="badge text-bg">{{ getAPIResourceReleaseContent $.Timeline $apiGroup $apiVersion $apiResource $rel }}</span>
+            </td>
+            {{ end }}
+          </tr>
           {{ end }}
-        </tr>
+          {{ end }}
+        </tbody>
         {{ end }}
-        {{ end }}
-      </tbody>
-      {{ end }}
-      <tfoot>
-        <tr class="no-notable-changes">
-          <td colspan="{{ add 1 (len .Timeline.Releases) }}" class="infotext">There are no notable API changes in this release.<br><i class="fa-solid fa-face-smile-beam"></i></td>
-        </tr>
-      </tfoot>
-    </table>
+        <tfoot>
+          <tr class="no-notable-changes">
+            <td colspan="{{ add 1 (len .Timeline.Releases) }}" class="infotext">There are no notable API changes in this release.<br><i class="fa-solid fa-face-smile-beam"></i></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </main> <!-- main content done -->
 
   <div class="hidden">
