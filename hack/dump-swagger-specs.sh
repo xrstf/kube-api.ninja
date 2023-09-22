@@ -6,7 +6,7 @@ cd $(dirname $0)/..
 
 make clean build
 
-currentdev=1.29
+currentdev="$(cat "data/kubernetes-master.txt")"
 INCLUDE_EOL=${INCLUDE_EOL:-false}
 
 if ! $INCLUDE_EOL; then
@@ -24,20 +24,15 @@ for releaseDir in data/releases/*; do
     continue
   fi
 
-  echo "Dumping APIs for Kubernetes $release …"
-
-  # allow to fetch the development branch before it was released
-  branch="release-$release"
-  if [[ "$currentdev" == "$release" ]]; then
-    branch="master"
+  if [ ! -f "$releaseDir/swagger.json" ]; then
+    echo "Skipping release $release because it does not have a Swagger spec."
+    continue
   fi
 
-  wget --output-document swagger.json https://github.com/kubernetes/kubernetes/raw/$branch/api/openapi-spec/swagger.json
+  echo "Dumping APIs for Kubernetes $release …"
 
   _build/swaggerdumper \
-    -swagger-file swagger.json \
+    -swagger-file "$releaseDir/swagger.json" \
     -kubernetes-version "$release.0" \
-    > "data/releases/$release/api.json"
+    > "$releaseDir/api.json"
 done
-
-rm -f swagger.json
