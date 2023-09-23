@@ -251,6 +251,22 @@ data:
 
       <div class="accordion-item">
         <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq-missing-docs" aria-controls="faq-missing-docs">
+            Why is there no documention for Kubernetes releases before 1.7?
+          </button>
+        </h2>
+        <div id="faq-missing-docs" class="accordion-collapse">
+          <div class="accordion-body">
+            <p>
+              The <a href="https://github.com/kubernetes-sigs/reference-docs" target="_blank" class="external">documentation generator</a>
+              is based around Swagger 2.0 specs. Before Kubernetes 1.7, only Swagger 1.2 specs are available.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq-good-enough" aria-controls="faq-good-enough">
             Are the APIs listed here the only ones I need to care about when upgrading my cluster?
           </button>
