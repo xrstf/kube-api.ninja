@@ -23,6 +23,11 @@ if [ -z "${RELEASES:-}" ]; then
       continue
     fi
 
+    if [ -f "$releaseDir/skipapidocs" ]; then
+      echo "Skipping release $release because it has a skipapidocs file."
+      continue
+    fi
+
     RELEASES="$RELEASES $release"
   done
 fi
