@@ -7,7 +7,11 @@ cd $(dirname $0)/..
 rootDir="$(realpath .)"
 
 get_version() {
-  curl -sfL "https://dl.k8s.io/release/$1-$2.txt"
+  # Do not use dl.k8s.io, as it gives completely random results after new releases
+  # come out, as the CDN is not synced globally and doing the exact same request
+  # twice in a row can very easily return the wrong results.
+  # See also https://github.com/kubernetes/k8s.io/issues/5755
+  curl -sfL "https://storage.googleapis.com/kubernetes-release/release/$1-$2.txt"
 }
 
 cd data/releases/
