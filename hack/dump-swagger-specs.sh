@@ -15,8 +15,8 @@ fi
 
 today="$(date +'%Y-%m-%d')"
 
-for releaseDir in data/releases/*; do
-  release="$(basename "$releaseDir")"
+for release in $(ls data/releases | sort --version-sort); do
+  releaseDir="data/releases/$release"
   eolDate="$(cat "$releaseDir/eol.txt" 2>/dev/null || true)"
 
   if ! $INCLUDE_EOL && [ -n "$eolDate" ] && [[ "$eolDate" < "$today" ]]; then

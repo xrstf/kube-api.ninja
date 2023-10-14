@@ -14,9 +14,9 @@ fi
 if [ -z "${RELEASES:-}" ]; then
   RELEASES=""
 
-  for releaseDir in data/releases/*; do
+  for release in $(ls data/releases | sort --version-sort); do
+    releaseDir="data/releases/$release"
     eolDate="$(cat "$releaseDir/eol.txt" 2>/dev/null || true)"
-    release="$(basename $releaseDir)"
 
     if ! $INCLUDE_EOL && [ -n "$eolDate" ] && [[ "$eolDate" < "$today" ]]; then
       echo "Skipping release $release because it's end-of-life."
