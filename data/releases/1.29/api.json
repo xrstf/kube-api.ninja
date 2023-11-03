@@ -492,8 +492,27 @@
     },
     {
       "name": "flowcontrol.apiserver.k8s.io",
-      "preferredVersion": "v1beta3",
+      "preferredVersion": "v1",
       "apiVersions": [
+        {
+          "version": "v1",
+          "resources": [
+            {
+              "kind": "FlowSchema",
+              "namespaced": false,
+              "singular": "flowschema",
+              "plural": "flowschemas",
+              "description": "FlowSchema defines the schema of a group of flows. Note that a flow is made up of a set of inbound API requests with similar attributes and is identified by a pair of strings: the name of the FlowSchema and a \"flow distinguisher\"."
+            },
+            {
+              "kind": "PriorityLevelConfiguration",
+              "namespaced": false,
+              "singular": "prioritylevelconfiguration",
+              "plural": "prioritylevelconfigurations",
+              "description": "PriorityLevelConfiguration represents the configuration of a priority level."
+            }
+          ]
+        },
         {
           "version": "v1beta2",
           "resources": [
@@ -586,18 +605,18 @@
           "version": "v1alpha1",
           "resources": [
             {
-              "kind": "ClusterCIDR",
-              "namespaced": false,
-              "singular": "clustercidr",
-              "plural": "clustercidrs",
-              "description": "ClusterCIDR represents a single configuration for per-Node Pod CIDR allocations when the MultiCIDRRangeAllocator is enabled (see the config for kube-controller-manager).  A cluster may have any number of ClusterCIDR resources, all of which will be considered when allocating a CIDR for a Node.  A ClusterCIDR is eligible to be used for a given Node when the node selector matches the node in question and has free CIDRs to allocate.  In case of multiple matching ClusterCIDR resources, the allocator will attempt to break ties using internal heuristics, but any ClusterCIDR whose node selector matches the Node may be used."
-            },
-            {
               "kind": "IPAddress",
               "namespaced": false,
               "singular": "ipaddress",
               "plural": "ipaddresses",
               "description": "IPAddress represents a single IP of a single IP Family. The object is designed to be used by APIs that operate on IP addresses. The object is used by the Service core API for allocation of IP addresses. An IP address can be represented in different formats, to guarantee the uniqueness of the IP, the name of the object is the IP address in canonical format, four decimal digits separated by dots suppressing leading zeros for IPv4 and the representation defined by RFC 5952 for IPv6. Valid: 192.168.1.5 or 2001:db8::1 or 2001:db8:aaaa:bbbb:cccc:dddd:eeee:1 Invalid: 10.01.2.3 or 2001:db8:0:0:0::1"
+            },
+            {
+              "kind": "ServiceCIDR",
+              "namespaced": false,
+              "singular": "servicecidr",
+              "plural": "servicecidrs",
+              "description": "ServiceCIDR defines a range of IP addresses using CIDR format (e.g. 192.168.0.0/24 or 2001:db2::/64). This range is used to allocate ClusterIPs to Service objects."
             }
           ]
         }
@@ -776,6 +795,18 @@
               "singular": "volumeattachment",
               "plural": "volumeattachments",
               "description": "VolumeAttachment captures the intent to attach or detach the specified volume to/from the specified node.\n\nVolumeAttachment objects are non-namespaced."
+            }
+          ]
+        },
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "VolumeAttributesClass",
+              "namespaced": false,
+              "singular": "volumeattributesclass",
+              "plural": "volumeattributesclasses",
+              "description": "VolumeAttributesClass represents a specification of mutable volume attributes defined by the CSI driver. The class can be specified during dynamic provisioning of PersistentVolumeClaims, and changed in the PersistentVolumeClaim spec after provisioning."
             }
           ]
         }
