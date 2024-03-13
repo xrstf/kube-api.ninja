@@ -140,6 +140,20 @@
               "description": "MutatingWebhookConfiguration describes the configuration of and admission webhook that accept or reject and may change the object."
             },
             {
+              "kind": "ValidatingAdmissionPolicy",
+              "namespaced": false,
+              "singular": "validatingadmissionpolicy",
+              "plural": "validatingadmissionpolicies",
+              "description": "ValidatingAdmissionPolicy describes the definition of an admission validation policy that accepts or rejects an object without changing it."
+            },
+            {
+              "kind": "ValidatingAdmissionPolicyBinding",
+              "namespaced": false,
+              "singular": "validatingadmissionpolicybinding",
+              "plural": "validatingadmissionpolicybindings",
+              "description": "ValidatingAdmissionPolicyBinding binds the ValidatingAdmissionPolicy with paramerized resources. ValidatingAdmissionPolicyBinding and parameter CRDs together define how cluster administrators configure policies for clusters.\n\nFor a given admission request, each binding will cause its policy to be evaluated N times, where N is 1 for policies/bindings that don't use params, otherwise N is the number of parameters selected by the binding.\n\nThe CEL expressions of a policy must have a computed CEL cost below the maximum CEL budget. Each evaluation of the policy is given an independent CEL cost budget. Adding/removing policies, bindings, or params can not affect whether a given (policy, binding, param) combination is within its own CEL budget."
+            },
+            {
               "kind": "ValidatingWebhookConfiguration",
               "namespaced": false,
               "singular": "validatingwebhookconfiguration",
@@ -700,6 +714,13 @@
               "description": "ResourceClaim describes which resources are needed by a resource consumer. Its status tracks whether the resource has been allocated and what the resulting attributes are.\n\nThis is an alpha type and requires enabling the DynamicResourceAllocation feature gate."
             },
             {
+              "kind": "ResourceClaimParameters",
+              "namespaced": true,
+              "singular": "resourceclaimparameters",
+              "plural": "resourceclaimparameters",
+              "description": "ResourceClaimParameters defines resource requests for a ResourceClaim in an in-tree format understood by Kubernetes."
+            },
+            {
               "kind": "ResourceClaimTemplate",
               "namespaced": true,
               "singular": "resourceclaimtemplate",
@@ -712,6 +733,20 @@
               "singular": "resourceclass",
               "plural": "resourceclasses",
               "description": "ResourceClass is used by administrators to influence how resources are allocated.\n\nThis is an alpha type and requires enabling the DynamicResourceAllocation feature gate."
+            },
+            {
+              "kind": "ResourceClassParameters",
+              "namespaced": true,
+              "singular": "resourceclassparameters",
+              "plural": "resourceclassparameters",
+              "description": "ResourceClassParameters defines resource requests for a ResourceClass in an in-tree format understood by Kubernetes."
+            },
+            {
+              "kind": "ResourceSlice",
+              "namespaced": false,
+              "singular": "resourceslice",
+              "plural": "resourceslices",
+              "description": "ResourceSlice provides information about available resources on individual nodes."
             }
           ]
         }
@@ -788,6 +823,24 @@
               "singular": "volumeattributesclass",
               "plural": "volumeattributesclasses",
               "description": "VolumeAttributesClass represents a specification of mutable volume attributes defined by the CSI driver. The class can be specified during dynamic provisioning of PersistentVolumeClaims, and changed in the PersistentVolumeClaim spec after provisioning."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "storagemigration.k8s.io",
+      "preferredVersion": "v1alpha1",
+      "apiVersions": [
+        {
+          "version": "v1alpha1",
+          "resources": [
+            {
+              "kind": "StorageVersionMigration",
+              "namespaced": false,
+              "singular": "storageversionmigration",
+              "plural": "storageversionmigrations",
+              "description": "StorageVersionMigration represents a migration of stored data to the latest storage version."
             }
           ]
         }
