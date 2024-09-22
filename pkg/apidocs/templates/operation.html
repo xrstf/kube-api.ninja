@@ -1,0 +1,41 @@
+{{ define "operation-samples" }}
+{{ if .examples }}
+  {{ range $example := .examples }}
+  {{ $sampleID := (join "-" (list .name $example.LinkID .op.ID)) }}
+  <button class="btn btn-info" type="button" data-toggle="collapse"
+    data-target="#{{ $sampleID }}" aria-controls="{{ $sampleID }}"
+    aria-expanded="false">{{ $example.SampleType }} {{ .name }} example</button>
+  {{ end }}
+
+  {{ range $example := .examples }}
+  {{ $sampleID := (join "-" (list .name $example.LinkID .op.ID)) }}
+  <div class="collapse" id="{{ $sampleID }}">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        {{ if and (eq $example.SampleType "curl") (contains "proxy" $example.Msg) }}
+        <code>curl</code> command (<i>requires <code>kubectl proxy</code> to be running</i>)
+        {{ else if (eq $example.SampleType "kubectl") (contains "Command" $example.Msg) }}
+        <code>kubectl</code> command
+        {{ else }}
+        {{ $example.Msg }}
+        {{ end }}
+      </div>
+      <div class="panel-body">
+        <pre class="{{ $example.SampleType }}"><code class="lang-{{ $example.CodeLanguage }}">{{ trim $example.Text }}</code></pre>
+      </div>
+    </div>
+  </div>
+  {{ end }}
+{{ end }}
+{{ end }}
+
+<div class="operation-container" id="{{ .linkID }}">
+  <h2 class="toc-item operation">{{ .nvg }}</h2>
+
+  {{ if .operation.Definition }}
+    {{ template "operation-samples" (dict "op" .operation "examples" .operation.GetExampleRequests "name" "request") }}
+    {{ template "operation-samples" (dict "op" .operation "examples" .operation.GetExampleResponses "name" "response") }}
+  {{ end }}
+
+  {{ template "operation-body.html" . }}
+</div>

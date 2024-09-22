@@ -1,0 +1,15 @@
+<div class="definition-container" id="{{ .linkID }}">
+  <h2 class="definition">{{ .nvg }}</H2>
+
+  {{ template "gvk.html" (dict
+    "g" .definition.GroupDisplayName
+    "v" .definition.Version
+    "k" .definition.Kind
+  ) }}
+
+  <p>{{ .definition.Description }}</p>
+
+  {{ template "other-versions.html" (dict "versions" .definition.OtherVersions) }}
+  {{ template "appears-in.html" (dict "definitions" .definition.AppearsIn) }}
+  {{ template "fields.html" (dict "fields" .definition.Fields) }}
+</div>

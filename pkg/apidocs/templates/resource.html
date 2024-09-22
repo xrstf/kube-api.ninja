@@ -1,0 +1,77 @@
+{{ $def := .resource.Definition }}
+
+<div class="resource-container" id="{{ .linkID }}">
+  <h1 class="toc-item resource">{{ .dvg }}</h1>
+
+  {{ if $def.Sample.Sample }}
+  <div class="samples-container">
+    <p>
+      {{ range $sample := $def.GetSamples }}
+      {{ $linkID := $sample.LinkID $def }}
+      <button class="btn btn-info" type="button" data-toggle="collapse"
+        data-target="#{{ $linkID }}" aria-controls="{{ $linkID }}"
+        aria-expanded="false">show {{ $sample.SampleType }}</button>
+      {{ end }}
+    </p>
+
+    {{ range $sample := $def.GetSamples }}
+    {{ $linkID := $sample.LinkID $def }}
+    <div class="collapse" id="{{ $linkID }}">
+      <div class="panel panel-default">
+        <div class="panel-heading">{{ $def.Sample.Note }}</div>
+        <div class="panel-body">
+          <pre class="{{ $sample.SampleType }}"><code class="lang-{{ $sample.CodeLanguage }}">{{ trim $sample.Text }}</code></pre>
+        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  {{ template "gvk.html" (dict
+    "g" .resource.Definition.GroupDisplayName
+    "v" .resource.Definition.Version
+    "k" .resource.Name
+  ) }}
+
+  {{ with .resource.DescriptionWarning }}
+  <div class="alert alert-warning col-md-8">
+    <p><i class="fa fa-warning"></i> <strong>Warning:</strong></p>
+    <p>{{ . }}</p>
+  </div>
+  {{ end }}
+
+  {{ with .resource.DescriptionNote }}
+  <div class="alert alert-info col-md-8">
+    <p><i class="fa fa-bullhorn"></i> {{ . }}</p>
+  </div>
+  {{ end }}
+
+  {{ template "other-versions.html" (dict "versions" $def.OtherVersions) }}
+  {{ template "appears-in.html" (dict "definitions" $def.AppearsIn) }}
+  {{ template "fields.html" (dict "fields" $def.Fields) }}
+
+  {{ if $def.Inline }}
+  <div class="inline-definitions-container">
+    {{ range $def := $def.Inline }}
+    <h3 class="inline-definition" id="{{ $def.LinkID }}">{{ $def.Name }} {{ $def.Version }} {{ $def.Group }}</h3>
+    {{ template "appears-in.html" (dict "definitions" $def.AppearsIn) }}
+    {{ template "fields.html" (dict "fields" $def.Fields) }}
+    {{ end }}
+  </div>
+  {{ end }}
+
+  {{ range $oc := $def.OperationCategories }}
+  {{ if not $oc.Operations }}{{ continue }}{{ end }}
+  <div class="operation-category-container" id="{{ $oc.TocID $def }}">
+    <h2 class="toc-item operation-category">{{ $oc.Name }}</H2>
+
+    {{ range $op := $oc.Operations }}
+    <div class="operation-container" id="{{ $op.TocID $def }}">
+      <h2 class="toc-item operation">{{ $op.Type.Name }}</H2>
+      {{ template "operation-body.html" (dict "operation" $op) }}
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>

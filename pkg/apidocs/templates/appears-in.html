@@ -1,0 +1,10 @@
+{{ if .definitions }}
+<div class="alert alert-info col-md-8">
+  <i class="fa fa-info-circle"></i> Appears In:
+  <ul>
+    {{ range .definitions }}
+    <li>{{ .FullHrefLink }}</li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

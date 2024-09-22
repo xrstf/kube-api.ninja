@@ -1,0 +1,21 @@
+<table class="fields">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ range .fields }}
+    <tr>
+      <td>
+        <code>{{ .Name }}</code>
+        {{ if .Link }}<br><i>{{ .FullLink }}</i>{{ end }}
+        {{ with .PatchStrategy }}<br><b>patch strategy</b>: <i>{{ . }}</i>{{ end }}
+        {{ with .PatchMergeKey }}<br><b>patch merge key</b>: <i>{{ . }}</i>{{ end }}
+      </td>
+      <td>{{ .Description }}</td>
+    </tr>
+    {{ end }}
+  </tbody>
+</table>

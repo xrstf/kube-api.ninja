@@ -1,0 +1,8 @@
+{{ if .versions }}
+<div class="alert alert-success col-md-8">
+  <i class="fa fa-toggle-right"></i> Other API versions of this object exist:
+  {{ range .versions }}
+  {{ .VersionLink }}
+  {{ end }}
+</div>
+{{ end }}

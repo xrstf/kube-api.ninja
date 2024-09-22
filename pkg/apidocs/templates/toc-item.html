@@ -1,0 +1,10 @@
+<li class="nav-level level-{{ .Level }}{{ if .SubSections}} has-children{{ end }}" data-level="{{ .Level }}">
+  <a href="#{{ .Link }}" class="nav-item">{{ .Title }}</a>
+  {{ if .SubSections }}
+  <ul id="{{ .Link }}-nav">
+    {{ range .SubSections }}
+    {{ .ToHTML }}
+    {{ end }}
+  </ul>
+  {{ end }}
+</li>

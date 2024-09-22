@@ -1,0 +1,47 @@
+{{ define "parameters" }}
+<h3>{{ .title }}</h3>
+<table class="parameters">
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ range .parameters }}
+    <tr>
+      <td><code>{{ .Name }}</code>{{ if .Link }}<br><i>{{ .FullLink }}</i>{{ end }}</td>
+      <td>{{ .Description }}</td>
+    </tr>
+    {{ end }}
+  </tbody>
+</table>
+{{ end }}
+
+<p>{{ .operation.Description }}</p>
+<h3>HTTP Request</h3>
+<p><code>{{ .operation.GetDisplayHttp }}</code></p>
+
+{{ with .operation.PathParams }}{{ template "parameters" (dict "title" "Path Parameters" "parameters" .) }}{{ end }}
+{{ with .operation.QueryParams }}{{ template "parameters" (dict "title" "Query Parameters" "parameters" .) }}{{ end }}
+{{ with .operation.BodyParams }}{{ template "parameters" (dict "title" "Body Parameters" "parameters" .) }}{{ end }}
+
+{{ if .operation.HttpResponses }}
+<h3>Response</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{ range .operation.HttpResponses }}
+  <tr>
+    <td>{{ .Name }}{{ if .Field.Link }}<br><i>{{ .Field.FullLink }}</i>{{ end }}</td>
+    <td>{{ .Field.Description }}</td>
+  </tr>
+  {{ end }}
+  </tbody>
+</table>
+{{ end }}

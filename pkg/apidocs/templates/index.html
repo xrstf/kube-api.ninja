@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ .toc.Title }}</title>
+  <link rel="shortcut icon" href="../static/images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="../static/css/bootstrap-4.3.1.min.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/fontawesome-4.7.0.min.css" type="text/css">
+  <link rel="stylesheet" href="../static/css/style_apiref.css" type="text/css">
+</head>
+<body class="theme-auto">
+  <div id="wrapper" class="container-fluid">
+    <div class="row">
+      <div id="sidebar-wrapper" class="col-xs-4 col-sm-3 col-md-2 side-nav side-bar-nav">
+        <ul id="navigation">
+          {{ range $sec := .toc.Sections }}
+          {{ $sec.ToHTML }}
+          {{ end }}
+        </ul>
+      </div>
+
+      <div id="page-content-wrapper" class="col-xs-8 offset-xs-4 col-sm-9 offset-sm-3 col-md-10 offset-md-2 body-content">
+        <div class="row">
+          <div class="col-md-6 copyright"><a href="https://github.com/kubernetes/kubernetes">Copyright 2016-{{ now | date "2006" }} The Kubernetes Authors.</a></div>
+          <div class="col-md-6 text-right">
+            <div>Generated at: {{ now | date "2006-01-02 15:04:05 (MST)" }}</div>
+            <div>
+              API Version: <a href="{{ .specLink }}">{{ .config.SpecVersion }}</a>
+              <a href="#" class="btn btn-info btn-sm switch-theme">Switch <i class="fa fa-sun-o"></i>/<i class="fa fa-moon-o"></i></a>
+            </div>
+          </div>
+        </div>
+
+        {{ .content }}
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/js/jquery-3.6.0.min.js"></script>
+  <script src="../static/js/jquery.scrollTo-2.1.3.min.js"></script>
+  <script src="../static/js/bootstrap-4.6.1.min.js"></script>
+  <script src="../static/js/apiref.js"></script>
+</body>
+</html>

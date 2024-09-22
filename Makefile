@@ -20,6 +20,7 @@ build:
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/clusterdumper
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/swaggerdumper
 	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/render
+	go build $(GO_BUILD_FLAGS) -o $(OUTPUT_DIR)/ ./cmd/apidocs
 
 .PHONY: test
 test:

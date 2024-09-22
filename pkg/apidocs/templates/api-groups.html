@@ -1,0 +1,21 @@
+<div id="api-groups">
+  {{ template "section-heading.html" "API Groups" }}
+  <p>The API Groups and their versions are summarized in the following table.</p>
+
+  <table class="col-md-8">
+    <thead>
+      <tr>
+        <th>Group</th>
+        <th>Versions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .groups }}
+      <tr>
+        <td><code>{{ .group }}</code></td>
+        <td><code>{{ .versions | join ", " }}</code></td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</div>

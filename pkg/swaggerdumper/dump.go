@@ -6,6 +6,7 @@ package swaggerdumper
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"os"
 	"path"
 	"regexp"
@@ -13,8 +14,6 @@ import (
 
 	"go.xrstf.de/kube-api.ninja/pkg/types"
 	"go.xrstf.de/kube-api.ninja/pkg/version"
-
-	"log/slog"
 )
 
 // define just enough of swagger's spec to parse what we need :)
