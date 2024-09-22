@@ -23,8 +23,8 @@ if [ -z "${RELEASES:-}" ]; then
       continue
     fi
 
-    if [ -f "$releaseDir/skipapidocs" ]; then
-      echo "Skipping release $release because it has a skipapidocs file."
+    if [ ! -f "$releaseDir/apidocs.yaml" ]; then
+      echo "Skipping release $release because it has no apidocs.yaml file."
       continue
     fi
 
@@ -32,20 +32,10 @@ if [ -z "${RELEASES:-}" ]; then
   done
 fi
 
-docker run \
-  --rm \
-  -it \
-  -e "RELEASES=$RELEASES" \
-  -v "$(realpath public/apidocs/):/output" \
-  kubernetes-apidocs:latest /make.sh
+make build
 
-cd public/apidocs/
 for release in $RELEASES; do
-  cd "$release"
-
-  sed -i 's#href="favicon.ico" type="image/vnd.microsoft.icon"#href="../static/images/favicon.png" type="image/png"#g' index.html
-  sed -i 's#"/css/#"../static/css/#g' index.html
-  sed -i 's#"/js/#"../static/js/#g' index.html
-
-  cd ..
+  (set -x; _build/apidocs \
+    -kubernetes-release "$release" \
+    -build-dir "public/apidocs/$release/")
 done

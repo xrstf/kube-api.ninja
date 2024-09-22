@@ -51,7 +51,3 @@ quickrender:
 .PHONY: deploy
 deploy:
 	rsync --delete --recursive public/ xrstf@kube-api.ninja:/srv/www/kube-api.ninja/public
-
-.PHONY: build-refdocs-image
-build-refdocs-image:
-	docker build --no-cache -t kubernetes-apidocs:latest hack/containers/kubernetes-reference-docs/
