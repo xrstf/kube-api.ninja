@@ -1,0 +1,24 @@
+note: Deployment Config to run 3 nginx instances (max rollback set to 10 revisions).
+sample: |
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    # Unique key of the Deployment instance
+    name: deployment-example
+  spec:
+    # 3 Pods should exist at all times.
+    replicas: 3
+    selector:
+      matchLabels:
+        app: nginx
+    template:
+      metadata:
+        labels:
+          # Apply this label to pods and default
+          # the Deployment label selector to this value
+          app: nginx
+      spec:
+        containers:
+        - name: nginx
+          # Run this image
+          image: nginx:1.14
