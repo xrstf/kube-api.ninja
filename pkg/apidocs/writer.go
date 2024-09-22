@@ -33,8 +33,8 @@ type htmlWriter struct {
 	config *api.Config
 	toc    tableOfContents
 
-	buildDir    string
-	includesDir string
+	buildDir string
+	tmpFiles map[string]template.HTML
 
 	// currentTOCItem is used to remember the current item between
 	// calls to e.g. WriteResourceCategory() followed by WriteResource().
@@ -43,9 +43,9 @@ type htmlWriter struct {
 
 func newHTMLWriter(opts types.Options, config *api.Config, title string) (*htmlWriter, error) {
 	writer := htmlWriter{
-		config:      config,
-		buildDir:    opts.BuildDirectory,
-		includesDir: filepath.Join(opts.BuildDirectory, "includes"),
+		config:   config,
+		buildDir: opts.BuildDirectory,
+		tmpFiles: map[string]template.HTML{},
 		toc: tableOfContents{
 			Title:    title,
 			Sections: []*tocItem{},
@@ -53,10 +53,6 @@ func newHTMLWriter(opts types.Options, config *api.Config, title string) (*htmlW
 	}
 
 	if err := os.MkdirAll(writer.buildDir, os.FileMode(0755)); err != nil {
-		return nil, err
-	}
-
-	if err := os.MkdirAll(writer.includesDir, os.FileMode(0755)); err != nil {
 		return nil, err
 	}
 
@@ -105,14 +101,7 @@ func (w *htmlWriter) WriteAPIGroupVersions(gvs api.GroupVersions) error {
 	}
 
 	filename := "_api_groups.html"
-	path := filepath.Join(w.includesDir, filename)
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	if err := renderTemplateTo(f, "api-groups.html", map[string]any{
+	if err := w.writeTemplate(filename, "api-groups.html", map[string]any{
 		"groups": tplGroups,
 	}); err != nil {
 		return err
@@ -205,13 +194,6 @@ func (w *htmlWriter) WriteOrphanedOperationsOverview() error {
 
 func (w *htmlWriter) WriteDefinition(d *api.Definition) error {
 	filename := definitionFileName(d)
-	path := filepath.Join(w.includesDir, filename)
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
 	nvg := fmt.Sprintf("%s %s %s", d.Name, d.Version, d.GroupDisplayName())
 	linkID := getLink(nvg)
 	title := gvkMarkup(d.GroupDisplayName(), d.Version, d.Name)
@@ -227,7 +209,7 @@ func (w *htmlWriter) WriteDefinition(d *api.Definition) error {
 	}
 	w.currentTOCItem.SubSections = append(w.currentTOCItem.SubSections, &item)
 
-	return renderTemplateTo(f, "definition.html", map[string]any{
+	return w.writeTemplate(filename, "definition.html", map[string]any{
 		"nvg":        title,
 		"linkID":     linkID,
 		"definition": d,
@@ -236,13 +218,6 @@ func (w *htmlWriter) WriteDefinition(d *api.Definition) error {
 
 func (w *htmlWriter) WriteOperation(o *api.Operation) error {
 	filename := operationFileName(o)
-	path := filepath.Join(w.includesDir, filename)
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
 	nvg := o.ID
 	linkID := getLink(nvg)
 
@@ -258,14 +233,6 @@ func (w *htmlWriter) WriteOperation(o *api.Operation) error {
 		return strings.Compare(o.HttpResponses[i].Name, o.HttpResponses[j].Name) < 0
 	})
 
-	if err := renderTemplateTo(f, "operation.html", map[string]any{
-		"linkID":    linkID,
-		"nvg":       nvg,
-		"operation": o,
-	}); err != nil {
-		panic(err)
-	}
-
 	item := tocItem{
 		Level: 2,
 		Title: title,
@@ -274,19 +241,15 @@ func (w *htmlWriter) WriteOperation(o *api.Operation) error {
 	}
 	w.currentTOCItem.SubSections = append(w.currentTOCItem.SubSections, &item)
 
-	return nil
+	return w.writeTemplate(filename, "operation.html", map[string]any{
+		"linkID":    linkID,
+		"nvg":       nvg,
+		"operation": o,
+	})
 }
 
 func (w *htmlWriter) WriteResource(r *api.Resource) error {
 	filename := conceptFileName(r.Definition)
-	path := filepath.Join(w.includesDir, filename)
-
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
 	dvg := fmt.Sprintf("%s %s %s", r.Name, r.Definition.Version, r.Definition.GroupDisplayName())
 	linkID := getLink(dvg)
 
@@ -319,15 +282,11 @@ func (w *htmlWriter) WriteResource(r *api.Resource) error {
 		}
 	}
 
-	if err := renderTemplateTo(f, "resource.html", map[string]any{
+	return w.writeTemplate(filename, "resource.html", map[string]any{
 		"resource": r,
 		"dvg":      resourceItem.Title,
 		"linkID":   linkID,
-	}); err != nil {
-		return err
-	}
-
-	return nil
+	})
 }
 
 func (w *htmlWriter) WriteOldVersionsOverview() error {
@@ -358,10 +317,8 @@ func (w *htmlWriter) WriteIndex() error {
 	var content strings.Builder
 
 	collect := func(filename string) {
-		fileContent, err := os.ReadFile(filepath.Join(w.includesDir, filename))
-		if err == nil {
-			content.Write(fileContent)
-			log.Printf("Collecting %s… \033[32mOK\033[0m", filename)
+		if fileContent, exists := w.tmpFiles[filename]; exists {
+			content.WriteString(string(fileContent))
 		} else {
 			log.Printf("Collecting %s… \033[31mNot found\033[0m", filename)
 		}
@@ -421,11 +378,21 @@ func getLink(s string) string {
 	return strings.ToLower(strings.ReplaceAll(tmp, " ", "-"))
 }
 
+func (w *htmlWriter) writeTemplate(filename string, tplName string, data any) error {
+	rendered, err := renderTemplate(tplName, data)
+	if err != nil {
+		return err
+	}
+
+	w.tmpFiles[filename] = rendered
+
+	return nil
+}
+
 func (w *htmlWriter) writeStaticFile(filename string, defaultContent template.HTML) error {
 	src := filepath.Join(w.config.SectionsDirectory, filename)
-	dst := filepath.Join(w.includesDir, filename)
 
-	// copy the file if it exists
+	// prefer a hand-crafted file if available
 	if _, err := os.Stat(src); err == nil {
 		content, err := os.ReadFile(src)
 		if err != nil {
@@ -434,7 +401,7 @@ func (w *htmlWriter) writeStaticFile(filename string, defaultContent template.HT
 		defaultContent = template.HTML(content)
 	}
 
-	log.Printf("Creating file %s…", dst)
+	w.tmpFiles[filename] = defaultContent
 
-	return os.WriteFile(dst, []byte(defaultContent), 0644)
+	return nil
 }
