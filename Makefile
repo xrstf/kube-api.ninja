@@ -43,11 +43,11 @@ dump-swagger: build
 
 .PHONY: render
 render: build quickrender
+	hack/tidy-html.sh
 
 .PHONY: quickrender
 quickrender:
 	ASSET_STAMP=$(GIT_HEAD) _build/render
-	hack/tidy-html.sh
 
 .PHONY: deploy
 deploy:

@@ -68,6 +68,8 @@ func CreateTimeline(releases []*database.KubernetesRelease, now time.Time) (*Tim
 			return version.CompareAPIVersions(apiGroup.APIVersions[j].Version, apiGroup.APIVersions[i].Version)
 		})
 
+		apiGroup.ReleasesOfInterest = version.SortReleases(apiGroup.ReleasesOfInterest)
+
 		timeline.APIGroups[idx] = apiGroup
 	}
 
@@ -165,6 +167,21 @@ func mergeAPIGroupOverviews(dest *APIGroup, groupinfo *types.APIGroup, groupName
 		}
 	}
 
+	// version-sort the .Releases on each created APIResource
+	for i, apiVersion := range dest.APIVersions {
+		apiVersion.Releases = version.SortReleases(apiVersion.Releases)
+		apiVersion.ReleasesOfInterest = version.SortReleases(apiVersion.ReleasesOfInterest)
+
+		dest.APIVersions[i] = apiVersion
+
+		for j, apiResource := range apiVersion.Resources {
+			apiResource.Releases = version.SortReleases(apiResource.Releases)
+			apiResource.ReleasesOfInterest = version.SortReleases(apiResource.ReleasesOfInterest)
+
+			dest.APIVersions[i].Resources[j] = apiResource
+		}
+	}
+
 	return nil
 }
 
@@ -212,7 +229,7 @@ func mergeAPIResourceOverviews(dest *APIResource, resourceinfo *types.Resource, 
 	dest.Plural = resourceinfo.Plural
 	dest.Singular = resourceinfo.Singular
 	dest.Description = resourceinfo.Description
-	dest.Releases = sets.List(sets.New(dest.Releases...).Insert(release))
+	dest.Releases = sets.New(dest.Releases...).Insert(release).UnsortedList()
 
 	// remember the scope, which _could_ technically change between versions and/or releases
 	if dest.Scopes == nil {

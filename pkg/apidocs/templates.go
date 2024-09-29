@@ -25,8 +25,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Masterminds/sprig/v3"
 	"go.xrstf.de/kube-api.ninja/pkg/apidocs/api"
+
+	"github.com/Masterminds/sprig/v3"
 )
 
 //go:embed templates/*
