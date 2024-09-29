@@ -64,11 +64,11 @@
   {{ range $oc := $def.OperationCategories }}
   {{ if not $oc.Operations }}{{ continue }}{{ end }}
   <div class="operation-category-container" id="{{ $oc.TocID $def }}">
-    <h2 class="toc-item operation-category">{{ $oc.Name }}</H2>
+    <h2 class="toc-item operation-category">{{ $oc.Name }}</h2>
 
     {{ range $op := $oc.Operations }}
     <div class="operation-container" id="{{ $op.TocID $def }}">
-      <h2 class="toc-item operation">{{ $op.Type.Name }}</H2>
+      <h2 class="toc-item operation">{{ $op.Type.Name }}</h2>
       {{ template "operation-body.html" (dict "operation" $op) }}
     </div>
     {{ end }}

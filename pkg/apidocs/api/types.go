@@ -338,8 +338,6 @@ type HttpResponse struct {
 	Code string
 }
 
-type HttpResponses []*HttpResponse
-
 type Operation struct {
 	item          spec.PathItem
 	op            *spec.Operation
@@ -351,7 +349,7 @@ type Operation struct {
 	BodyParams    Fields
 	QueryParams   Fields
 	PathParams    Fields
-	HttpResponses HttpResponses
+	HttpResponses []*HttpResponse
 
 	ExampleConfig ExampleConfig
 

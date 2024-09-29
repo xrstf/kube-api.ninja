@@ -229,10 +229,6 @@ func (w *htmlWriter) WriteOperation(o *api.Operation) error {
 		title = gvkMarkup(oGroup, oApiVersion, oKind)
 	}
 
-	sort.Slice(o.HttpResponses, func(i, j int) bool {
-		return strings.Compare(o.HttpResponses[i].Name, o.HttpResponses[j].Name) < 0
-	})
-
 	item := tocItem{
 		Level: 2,
 		Title: title,

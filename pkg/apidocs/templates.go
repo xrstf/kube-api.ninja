@@ -21,8 +21,12 @@ import (
 	"embed"
 	"html/template"
 	"io"
+	"slices"
+	"sort"
+	"strings"
 
 	"github.com/Masterminds/sprig/v3"
+	"go.xrstf.de/kube-api.ninja/pkg/apidocs/api"
 )
 
 //go:embed templates/*
@@ -36,7 +40,23 @@ func init() {
 	templates, err = template.
 		New("base").
 		Funcs(sprig.FuncMap()).
-		Funcs(template.FuncMap{}).
+		Funcs(template.FuncMap{
+			"sortFields": func(fields api.Fields) api.Fields {
+				fields = slices.Clone(fields)
+				sort.Sort(fields)
+
+				return fields
+			},
+
+			"sortResponses": func(responses []*api.HttpResponse) []*api.HttpResponse {
+				responses = slices.Clone(responses)
+				slices.SortFunc(responses, func(a, b *api.HttpResponse) int {
+					return strings.Compare(a.Name, b.Name)
+				})
+
+				return responses
+			},
+		}).
 		ParseFS(embeddedFS, "templates/*")
 	if err != nil {
 		panic(err)

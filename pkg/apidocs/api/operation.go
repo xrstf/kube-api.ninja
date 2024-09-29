@@ -69,10 +69,6 @@ func (o *Operation) Description() string {
 	return o.op.Description
 }
 
-func (a HttpResponses) Len() int           { return len(a) }
-func (a HttpResponses) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a HttpResponses) Less(i, j int) bool { return a[i].Code < a[j].Code }
-
 // VisitOperations calls fn once for each operation found in the collection of Documents
 // VisitOperations calls fn once for each operation found in the collection of Documents
 func VisitOperations(spec *loads.Document, fn func(operation Operation)) {

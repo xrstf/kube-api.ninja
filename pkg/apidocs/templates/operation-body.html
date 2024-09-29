@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    {{ range .parameters }}
+    {{ range (sortFields .parameters) }}
     <tr>
       <td><code>{{ .Name }}</code>{{ if .Link }}<br><i>{{ .FullLink }}</i>{{ end }}</td>
       <td>{{ .Description }}</td>
@@ -36,7 +36,7 @@
     </tr>
   </thead>
   <tbody>
-  {{ range .operation.HttpResponses }}
+  {{ range (sortResponses .operation.HttpResponses) }}
   <tr>
     <td>{{ .Name }}{{ if .Field.Link }}<br><i>{{ .Field.FullLink }}</i>{{ end }}</td>
     <td>{{ .Field.Description }}</td>
