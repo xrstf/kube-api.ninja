@@ -35,7 +35,25 @@ fi
 make build
 
 for release in $RELEASES; do
-  (set -x; _build/apidocs \
-    -kubernetes-release "$release" \
-    -build-dir "public/apidocs/$release/")
+  (
+    releaseDir="public/apidocs/$release"
+
+    set -x
+
+    _build/apidocs \
+      -kubernetes-release "$release" \
+      -build-dir "$releaseDir"
+
+    # warnings make tidy always exit with 1, there's no way to disable that
+    # cf. https://github.com/htacg/tidy-html5/issues/1071
+    tidy \
+      -config public/apidocs/tidy.conf \
+      -modify \
+      -quiet \
+      "$releaseDir/index.html" || true
+
+    # trim trailing whitespace added by tidy
+    # cf. https://github.com/htacg/tidy-html5/issues/523
+    sed -i 's/[[:blank:]]\+$//g' "$releaseDir/index.html"
+  )
 done
