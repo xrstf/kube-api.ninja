@@ -47,6 +47,7 @@ render: build quickrender
 .PHONY: quickrender
 quickrender:
 	ASSET_STAMP=$(GIT_HEAD) _build/render
+	hack/tidy-html.sh
 
 .PHONY: deploy
 deploy:
