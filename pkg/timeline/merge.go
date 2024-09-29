@@ -46,8 +46,9 @@ func CreateTimeline(releases []*database.KubernetesRelease, now time.Time) (*Tim
 	}
 
 	// calculate "releases of interest":
-	//   a) an API resource disappears
-	//   b) a more mature version of an API group becomes available
+	//   a) an API resource was added
+	//   b) an API resource disappears
+	//   c) a more mature version of an API group becomes available
 	if err := calculateReleasesOfInterest(timeline); err != nil {
 		return nil, fmt.Errorf("failed to calculate ROIs: %w", err)
 	}
@@ -311,18 +312,18 @@ func calculateReleasesOfInterest(tl *Timeline) error {
 	return nil
 }
 
-func getReleasesWithNotableChangesForResource(res APIResource, releases []ReleaseMetadata) []string {
+func getReleasesWithNotableChangesForResource(res APIResource, sortedReleases []ReleaseMetadata) []string {
 	availableInReleases := sets.New(res.Releases...)
 	result := []string{}
 
 	var wasAvailable bool
-	for i, release := range releases {
+	for i, release := range sortedReleases {
 		// for the first known release, we cannot determine if
 		// there are breaking changes; this makes the loop quite neat
 		if i > 0 {
 			isAvailable := availableInReleases.Has(release.Version)
 
-			if wasAvailable && !isAvailable {
+			if wasAvailable != isAvailable {
 				result = append(result, release.Version)
 			}
 		}
