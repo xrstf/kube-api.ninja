@@ -719,13 +719,6 @@
               "description": "DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.\n\nThis is an alpha type and requires enabling the DynamicResourceAllocation feature gate."
             },
             {
-              "kind": "PodSchedulingContext",
-              "namespaced": true,
-              "singular": "podschedulingcontext",
-              "plural": "podschedulingcontexts",
-              "description": "PodSchedulingContext objects hold information that is needed to schedule a Pod with ResourceClaims that use \"WaitForFirstConsumer\" allocation mode.\n\nThis is an alpha type and requires enabling the DRAControlPlaneController feature gate."
-            },
-            {
               "kind": "ResourceClaim",
               "namespaced": true,
               "singular": "resourceclaim",
