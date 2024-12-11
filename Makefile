@@ -41,6 +41,10 @@ full-rebuild: clean build dump-swagger render
 dump-swagger: build
 	./hack/dump-swagger-specs.sh
 
+.PHONY: apidocs
+apidocs:
+	./hack/generate-apidocs.sh
+
 .PHONY: render
 render: build quickrender
 	hack/tidy-html.sh
