@@ -129,7 +129,7 @@ resource_categories:
       version: v1
       group: apiextensions
     - name: DeviceClass
-      version: v1alpha3
+      version: v1beta1
       group: resource
     - name: Event
       version: v1
@@ -143,9 +143,6 @@ resource_categories:
     - name: MutatingWebhookConfiguration
       version: v1
       group: admissionregistration
-    - name: PodSchedulingContext
-      version: v1alpha3
-      group: resource
     - name: PodTemplate
       version: v1
       group: core
@@ -156,19 +153,25 @@ resource_categories:
       version: v1
       group: scheduling
     - name: ResourceClaim
-      version: v1alpha3
+      version: v1beta1
       group: resource
     - name: ResourceClaimTemplate
-      version: v1alpha3
+      version: v1beta1
       group: resource
     - name: ResourceSlice
-      version: v1alpha3
+      version: v1beta1
       group: resource
     - name: ValidatingAdmissionPolicy
       version: v1
       group: admissionregistration
     - name: ValidatingAdmissionPolicyBinding
       version: v1
+      group: admissionregistration
+    - name: MutatingAdmissionPolicy
+      version: v1alpha1
+      group: admissionregistration
+    - name: MutatingAdmissionPolicyBinding
+      version: v1alpha1
       group: admissionregistration
     - name: ValidatingWebhookConfiguration
       version: v1
@@ -204,7 +207,7 @@ resource_categories:
       version: v1
       group: coordination
     - name: LeaseCandidate
-      version: v1alpha1
+      version: v1alpha2
       group: coordination
     - name: LocalSubjectAccessReview
       version: v1
