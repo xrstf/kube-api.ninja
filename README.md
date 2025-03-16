@@ -1,3 +1,4 @@
-# kube-api.ninja
+# Migration note
 
-This repository holds all data and scripts for [kube-api.ninja](https://kube-api.ninja/).
+> [!IMPORTANT]
+> The source code for kube-api.ninja has been moved to [codeberg.org/xrstf/kube-api.ninja](https://codeberg.org/xrstf/kube-api.ninja).
